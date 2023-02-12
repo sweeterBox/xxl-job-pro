@@ -39,7 +39,6 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 /**
  * @author sweeter
- * @description
  * @date 2022/9/3
  */
 @Transactional(rollbackFor = Exception.class,readOnly = true)
@@ -74,10 +73,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public ResultPage<TaskInfo> findPageList(TaskQuery query) {
-        Page<Task> page = taskRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHandler.getPredicate(root, query, criteriaBuilder), query.createPageRequest());
-
+        Page<Task> page = this.taskRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHandler.getPredicate(root, query, criteriaBuilder), query.createPageRequest());
         List<String> applicationNames = page.get().map(Task::getApplicationName).collect(Collectors.toList());
-        List<Application> applicationList = applicationRepository.findAllByNameIn(applicationNames);
+        List<Application> applicationList = this.applicationRepository.findAllByNameIn(applicationNames);
         Map<String, Application> applicationMaps = applicationList.stream().collect(Collectors.toMap(Application::getName, o -> o, (a, b) -> b));
         Page<TaskInfo> taskInfoPage = page.map(v -> {
             TaskInfo info = new TaskInfo();
@@ -101,7 +99,6 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public R<String> save(Task task) {
         // valid base
-        Application application = applicationRepository.findByName(task.getApplicationName());
         if (Objects.isNull(task.getId())) {
             if (Objects.isNull(task.getExecutorTimeout())) {
                 task.setExecutorTimeout(0L);
@@ -276,7 +273,7 @@ public class TaskServiceImpl implements TaskService {
      */
     @Override
     public List<com.xxl.job.model.TaskInfo> tasks(String applicationName) {
-        List<Instance> instances = instanceRepository.findByNameAndStatus(applicationName, InstanceStatus.UP);
+        List<Instance> instances = this.instanceRepository.findByNameAndStatus(applicationName, InstanceStatus.UP);
         Optional<String> clientUrlOpt = instances.stream().findAny().map(Instance::getUrl);
         if (clientUrlOpt.isPresent()) {
             Executor executor = new ExecutorHttpClient(clientUrlOpt.get(), XxlJobAdminConfig.getAdminConfig().getAccessToken());

@@ -8,10 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author sweeter
- * @description
  * @date 2022/9/4
  */
 public interface AuthService {
 
     AuthInfo login(HttpServletRequest request, HttpServletResponse response, ReqLogin req);
+
+    void logout(HttpServletRequest request, HttpServletResponse response);
 }

@@ -33,7 +33,7 @@ public class LoginService {
     private User parseToken(String tokenHex){
         User user = null;
         if (tokenHex != null) {
-            String tokenJson = new String(new BigInteger(tokenHex, 16).toByteArray());      // username_password(md5)
+            String tokenJson = new String(new BigInteger(tokenHex, 16).toByteArray());
             user = JsonUtils.json2Obj(tokenJson, User.class);
         }
         return user;
@@ -44,17 +44,17 @@ public class LoginService {
 
         // param
         if (username==null || username.trim().length()==0 || password==null || password.trim().length()==0){
-            return new R<String>(500, I18nUtil.getString("login_param_empty"));
+            return new R<>(500, I18nUtil.getString("login_param_empty"));
         }
 
         // valid passowrd
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            return new R<String>(500, I18nUtil.getString("login_param_unvalid"));
+            return new R<>(500, I18nUtil.getString("login_param_unvalid"));
         }
         String passwordMd5 = DigestUtils.md5DigestAsHex(password.getBytes());
         if (!passwordMd5.equals(user.getPassword())) {
-            return new R<String>(500, I18nUtil.getString("login_param_unvalid"));
+            return new R<>(500, I18nUtil.getString("login_param_unvalid"));
         }
 
         String loginToken = makeToken(user);

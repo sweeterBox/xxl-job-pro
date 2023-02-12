@@ -7,7 +7,6 @@ import com.xxl.job.admin.query.ApplicationQuery;
 import com.xxl.job.admin.service.ApplicationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -15,7 +14,6 @@ import java.util.List;
 
 /**
  * @author sweeter
- * @description
  * @date 2022/9/4
  */
 @Api(tags = "应用(Application)")
@@ -30,7 +28,8 @@ public class ApplicationController {
     @ApiOperation(value = "查询列表")
     @GetMapping(value = "findPageList")
     public ResponseEntity<ResultPage<ApplicationInfo>> findPageList(ApplicationQuery query) {
-        return new ResponseEntity<>(applicationService.findPageList(query), HttpStatus.OK);
+        ResultPage<ApplicationInfo> resultPage = applicationService.findPageList(query);
+        return ResponseEntity.ok(resultPage);
     }
 
 

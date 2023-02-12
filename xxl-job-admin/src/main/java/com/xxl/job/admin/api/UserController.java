@@ -6,7 +6,6 @@ import com.xxl.job.admin.query.UserQuery;
 import com.xxl.job.admin.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -14,7 +13,6 @@ import javax.annotation.Resource;
 
 /**
  * @author sweeter
- * @description
  * @date 2022/9/4
  */
 @Api(tags = "用户(User)")
@@ -28,7 +26,8 @@ public class UserController {
     @ApiOperation(value = "查询列表(Query List)")
     @GetMapping("findPageList")
     public ResponseEntity<ResultPage<User>> findPageList(UserQuery query) {
-         return new ResponseEntity<>(userService.findPageList(query), HttpStatus.OK);
+        ResultPage<User> resultPage = userService.findPageList(query);
+        return ResponseEntity.ok(resultPage);
     }
 
 
@@ -47,7 +46,7 @@ public class UserController {
         return ResponseEntity.ok(null);
     }
 
-    @ApiOperation(value = "删除")
+    @ApiOperation(value = "删除(Delete)")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         userService.delete(id);

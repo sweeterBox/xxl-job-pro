@@ -25,7 +25,6 @@ import java.util.Optional;
 
 /**
  * @author sweeter
- * @description
  * @date 2023/01/25
  */
 @Slf4j
@@ -138,7 +137,7 @@ public class ApiServiceImpl  {
                 this.instanceRepository.save(instance);
             }
         }else {
-            new R<>(R.FAIL_CODE, "not found.");
+          return new R<>(R.FAIL_CODE, "not found.");
         }
         return R.SUCCESS;
     }

@@ -2,8 +2,6 @@ package com.xxl.job.admin.api;
 
 import com.xxl.job.admin.common.ResultPage;
 import com.xxl.job.admin.entity.Instance;
-import com.xxl.job.admin.model.ApplicationInfo;
-import com.xxl.job.admin.query.ApplicationQuery;
 import com.xxl.job.admin.query.InstanceQuery;
 import com.xxl.job.admin.service.InstanceService;
 import io.swagger.annotations.Api;

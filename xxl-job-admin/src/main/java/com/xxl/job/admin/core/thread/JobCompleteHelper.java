@@ -1,8 +1,8 @@
 package com.xxl.job.admin.core.thread;
 
+import com.xxl.job.admin.repository.LogRepository;
 import com.xxl.job.utils.SpringContextUtils;
 import com.xxl.job.admin.core.complete.XxlJobCompleter;
-import com.xxl.job.admin.core.conf.XxlJobAdminConfig;
 import com.xxl.job.admin.entity.Log;
 import com.xxl.job.admin.core.util.I18nUtil;
 import com.xxl.job.admin.service.LogService;
@@ -11,7 +11,6 @@ import com.xxl.job.model.R;
 import com.xxl.job.utils.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -73,11 +72,11 @@ public class JobCompleteHelper {
 
 					// 任务结果丢失处理：调度记录停留在 "运行中" 状态超过10min，且对应执行器心跳注册失败不在线，则将本地调度主动标记失败；
 					Date losedTime = DateUtil.addMinutes(new Date(), -10);
-					List<Long> losedJobIds  = XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao().findLostJobIds(losedTime);
+					List<Long> losedJobIds  = SpringContextUtils.getBean(LogRepository.class).findLostJobIds(losedTime);
 
 					if (losedJobIds!=null && losedJobIds.size()>0) {
 						for (Long logId: losedJobIds) {
-							Log jobLog = XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao().getOne(logId);
+							Log jobLog = SpringContextUtils.getBean(LogRepository.class).getOne(logId);
 							jobLog.setHandleEndTime(LocalDateTime.now());
 							jobLog.setHandleStatus(R.FAIL_CODE);
 							jobLog.setHandleContent( I18nUtil.getString("joblog_lost_fail") );

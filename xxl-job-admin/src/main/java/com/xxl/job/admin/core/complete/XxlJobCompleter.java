@@ -1,16 +1,17 @@
 package com.xxl.job.admin.core.complete;
 
-import com.xxl.job.admin.core.conf.XxlJobAdminConfig;
 import com.xxl.job.admin.entity.Task;
 import com.xxl.job.admin.entity.Log;
 import com.xxl.job.admin.core.thread.TaskTriggerThread;
 import com.xxl.job.admin.core.trigger.TriggerTypeEnum;
 import com.xxl.job.admin.core.util.I18nUtil;
+import com.xxl.job.admin.repository.LogRepository;
+import com.xxl.job.admin.repository.TaskRepository;
 import com.xxl.job.model.R;
+import com.xxl.job.utils.SpringContextUtils;
 import com.xxl.job.utils.XxlJobContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.text.MessageFormat;
 
 /**
@@ -36,7 +37,7 @@ public class XxlJobCompleter {
         }
 
         // fresh handle
-         XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao().save(log);
+        SpringContextUtils.getBean(LogRepository.class).save(log);
     }
 
 
@@ -48,7 +49,7 @@ public class XxlJobCompleter {
         // 1、handle success, to trigger child job
         String triggerChildMsg = null;
         if (XxlJobContext.HANDLE_CODE_SUCCESS == log.getHandleStatus()) {
-            Task info = XxlJobAdminConfig.getAdminConfig().getXxlJobInfoDao().getOne(log.getTaskId());
+            Task info = SpringContextUtils.getBean(TaskRepository.class).getOne(log.getTaskId());
             if (info !=null && info.getChildJobId()!=null && info.getChildJobId().trim().length()>0) {
                 triggerChildMsg = "<br><br><span style=\"color:#00c0ef;\" > "+ I18nUtil.getString("jobconf_trigger_child_run") +"<<<<<<<<<<< </span><br>";
 

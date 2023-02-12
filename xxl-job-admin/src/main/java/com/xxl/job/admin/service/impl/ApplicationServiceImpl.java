@@ -17,7 +17,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +26,6 @@ import java.util.stream.Stream;
 
 /**
  * @author sweeter
- * @description
  * @date 2022/9/3
  */
 @Transactional(rollbackFor = Exception.class,readOnly = true)
@@ -43,12 +41,10 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ResultPage<ApplicationInfo> findPageList(ApplicationQuery query) {
-        Page<Application> page = applicationRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHandler.getPredicate(root, query, criteriaBuilder), query.createPageRequest());
-        //查询实例信息
+        Page<Application> page = this.applicationRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHandler.getPredicate(root, query, criteriaBuilder), query.createPageRequest());
         List<String> names = page.get().map(Application::getName).collect(Collectors.toList());
-        List<Instance> instances = instanceRepository.findAllByNameIn(names);
+        List<Instance> instances = this.instanceRepository.findAllByNameIn(names);
         Map<String, List<Instance>> instanceMaps = instances.stream().collect(Collectors.groupingBy(Instance::getName));
-
         Page<ApplicationInfo> infoPage = page.map(new ApplicationInfo())
                 .map(v -> {
                     List<Instance> instanceList = instanceMaps.get(v.getName());
@@ -74,9 +70,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application application = new Application();
         application.setId(id);
         Example<Application> example = Example.of(application);
-        ApplicationInfo applicationInfo = applicationRepository.findOne(example).map(new ApplicationInfo()).orElseThrow(() -> new RuntimeException("记录不存在"));
+        ApplicationInfo applicationInfo = this.applicationRepository.findOne(example).map(new ApplicationInfo()).orElseThrow(() -> new RuntimeException("记录不存在"));
         //查询应用实例
-        List<Instance> instances = instanceRepository.findByNameAndStatus(applicationInfo.getName(), InstanceStatus.UP);
+        List<Instance> instances = this.instanceRepository.findByNameAndStatus(applicationInfo.getName(), InstanceStatus.UP);
         if (!CollectionUtils.isEmpty(instances)) {
             List<String> clientUrls = instances.stream().map(Instance::getUrl).filter(StringUtils::isNotBlank).distinct().collect(Collectors.toList());
             int allSize = instances.size();
@@ -93,9 +89,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application application = new Application();
         application.setName(name);
         Example<Application> example = Example.of(application);
-        ApplicationInfo applicationInfo = applicationRepository.findOne(example).map(new ApplicationInfo()).orElseThrow(() -> new RuntimeException("记录不存在"));
+        ApplicationInfo applicationInfo = this.applicationRepository.findOne(example).map(new ApplicationInfo()).orElseThrow(() -> new RuntimeException("记录不存在"));
         //查询应用实例
-        List<Instance> instances = instanceRepository.findByNameAndStatus(applicationInfo.getName(), InstanceStatus.UP);
+        List<Instance> instances = this.instanceRepository.findByNameAndStatus(applicationInfo.getName(), InstanceStatus.UP);
         if (!CollectionUtils.isEmpty(instances)) {
             List<String> clientUrls = instances.stream().map(Instance::getUrl).filter(StringUtils::isNotBlank).distinct().collect(Collectors.toList());
             int allSize = instances.size();
@@ -115,7 +111,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public List<Application> findAll() {
-
         return applicationRepository.findAll();
     }
 

@@ -5,7 +5,6 @@ import com.xxl.job.admin.entity.LogGlue;
 import java.util.List;
 /**
  * @author sweeter
- * @description
  * @date 2022/9/3
  */
 public interface LogGlueRepository extends BaseJpaRepository<LogGlue, Long> {

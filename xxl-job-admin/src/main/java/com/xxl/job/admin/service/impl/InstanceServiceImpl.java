@@ -2,7 +2,6 @@ package com.xxl.job.admin.service.impl;
 
 import com.xxl.job.admin.common.ResultPage;
 import com.xxl.job.admin.common.jpa.query.QueryHandler;
-import com.xxl.job.admin.entity.Application;
 import com.xxl.job.admin.entity.Instance;
 import com.xxl.job.admin.query.InstanceQuery;
 import com.xxl.job.admin.repository.InstanceRepository;
@@ -19,7 +18,6 @@ import java.util.List;
 
 /**
  * @author sweeter
- * @description
  * @date 2022/9/3
  */
 @Transactional(rollbackFor = Exception.class,readOnly = true)
@@ -45,12 +43,12 @@ public class InstanceServiceImpl implements InstanceService {
             }
             return predicate;
         };
-        return instanceRepository.findAll(specification);
+        return this.instanceRepository.findAll(specification);
     }
 
     @Override
     public ResultPage<Instance> findPageList(InstanceQuery query) {
-        Page<Instance> page = instanceRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHandler.getPredicate(root, query, criteriaBuilder), query.createPageRequest());
+        Page<Instance> page = this.instanceRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHandler.getPredicate(root, query, criteriaBuilder), query.createPageRequest());
         return ResultPage.of(page);
     }
 

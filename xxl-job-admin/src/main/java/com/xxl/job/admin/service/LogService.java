@@ -6,7 +6,6 @@ import com.xxl.job.admin.query.LogQuery;
 
 /**
  * @author sweeter
- * @description
  * @date 2022/9/3
  */
 public interface LogService {

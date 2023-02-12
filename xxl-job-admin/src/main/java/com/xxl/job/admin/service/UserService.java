@@ -6,7 +6,6 @@ import com.xxl.job.admin.query.UserQuery;
 
 /**
  * @author sweeter
- * @description
  * @date 2022/9/3
  */
 public interface UserService {

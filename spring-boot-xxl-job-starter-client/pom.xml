@@ -27,7 +27,6 @@
         <dependencyManagement>
             <dependencies>
                 <dependency>
-                    <!-- Import dependency management from Spring Boot (依赖管理：继承一些默认的依赖，工程需要依赖的jar包的管理，申明其他dependency的时候就不需要version) -->
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-parent</artifactId>
                     <version>${spring-boot.version}</version>
@@ -38,7 +37,6 @@
         </dependencyManagement>
 
         <dependencies>
-            <!-- spring-boot-starter-web (spring-webmvc + tomcat) -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
@@ -50,7 +48,6 @@
                 <scope>compile</scope>
             </dependency>
 
-            <!-- ********************** embed server: netty + gson ********************** -->
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
@@ -91,24 +88,5 @@
                 <version>2.4.0-SNAPSHOT</version>
             </dependency>
         </dependencies>
-
-        <build>
-            <plugins>
-                <!-- spring-boot-maven-plugin (提供了直接运行项目的插件：如果是通过parent方式继承spring-boot-starter-parent则不用此插件) -->
-<!--                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>${spring-boot.version}</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>repackage</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>-->
-            </plugins>
-        </build>
-
 
     </project>

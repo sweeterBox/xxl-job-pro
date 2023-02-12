@@ -1,5 +1,6 @@
 package com.xxl.job.admin.core.thread;
 
+import com.xxl.job.admin.repository.LogRepository;
 import com.xxl.job.utils.SpringContextUtils;
 import com.xxl.job.admin.core.conf.XxlJobAdminConfig;
 import com.xxl.job.admin.entity.LogReport;
@@ -55,7 +56,7 @@ public class JobLogReportHelper {
                         LogReport logReport = new LogReport();
                         logReport.setTriggerDay(todayFrom);
 
-                        Map<String, Long> triggerCountMap = XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao().findLogReport(todayFrom, todayTo);
+                        Map<String, Long> triggerCountMap = SpringContextUtils.getBean(LogRepository.class).findLogReport(todayFrom, todayTo);
                         if (triggerCountMap!=null && triggerCountMap.size()>0) {
                             int triggerDayCount = triggerCountMap.containsKey("triggerDayCount")?Integer.valueOf(String.valueOf(triggerCountMap.get("triggerDayCount"))):0;
                             int triggerDayCountRunning = triggerCountMap.containsKey("triggerDayCountRunning")?Integer.valueOf(String.valueOf(triggerCountMap.get("triggerDayCountRunning"))):0;

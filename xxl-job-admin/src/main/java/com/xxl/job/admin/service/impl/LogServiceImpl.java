@@ -3,7 +3,6 @@ package com.xxl.job.admin.service.impl;
 import com.xxl.job.admin.common.ResultPage;
 import com.xxl.job.admin.common.jpa.query.QueryHandler;
 import com.xxl.job.admin.entity.Log;
-import com.xxl.job.admin.entity.User;
 import com.xxl.job.admin.query.LogQuery;
 import com.xxl.job.admin.repository.LogRepository;
 import com.xxl.job.admin.service.LogService;
@@ -13,12 +12,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.annotation.Resource;
 
 /**
  * @author sweeter
- * @description
  * @date 2022/9/3
  */
 @Transactional(rollbackFor = Exception.class,readOnly = true)
@@ -32,19 +29,19 @@ public class LogServiceImpl  implements LogService {
     @Transactional(readOnly = false)
     @Override
     public int updateAlarmStatus(long failLogId, int i, int i1) {
-        return logRepository.updateAlarmStatus(failLogId, i, i1);
+        return this.logRepository.updateAlarmStatus(failLogId, i, i1);
     }
 
     @Override
     public ResultPage<Log> findPageList(LogQuery query) {
         PageRequest pageRequest = query.createPageRequest(Sort.by(Sort.Direction.DESC, "id"));
-        Page<Log> page = logRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHandler.getPredicate(root, query, criteriaBuilder),pageRequest);
+        Page<Log> page = this.logRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHandler.getPredicate(root, query, criteriaBuilder),pageRequest);
         return ResultPage.of(page);
     }
 
     @Override
     public Log findOne(Long id) {
-        return logRepository.findById(id).orElse(null);
+        return this.logRepository.findById(id).orElse(null);
     }
 
     @Transactional(readOnly = false)

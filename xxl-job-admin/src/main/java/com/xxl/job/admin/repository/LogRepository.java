@@ -10,7 +10,6 @@ import java.util.Map;
 
 /**
  * @author sweeter
- * @description
  * @date 2022/9/3
  */
 public interface LogRepository extends BaseJpaRepository<Log, Long> {

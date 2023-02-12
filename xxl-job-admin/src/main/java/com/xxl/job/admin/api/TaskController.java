@@ -11,14 +11,12 @@ import com.xxl.job.admin.model.ReqTask;
 import com.xxl.job.admin.model.TaskInfo;
 import com.xxl.job.admin.query.TaskQuery;
 import com.xxl.job.admin.service.TaskService;
-import com.xxl.job.enums.ExecutorBlockStrategy;
 import com.xxl.job.utils.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +24,6 @@ import java.util.*;
 
 /**
  * @author sweeter
- * @description
  * @date 2022/9/11
  */
 @Slf4j
@@ -41,23 +38,12 @@ public class TaskController {
     @ApiOperation(value = "查询列表")
     @GetMapping("findPageList")
     public ResponseEntity<ResultPage<TaskInfo>> findPageList(TaskQuery query) {
-        return new ResponseEntity<>(taskService.findPageList(query), HttpStatus.OK);
+        ResultPage<TaskInfo> resultPage = taskService.findPageList(query);
+        return ResponseEntity.ok(resultPage);
     }
 
 
-    @ApiOperation(value = "查询枚举")
-    @GetMapping("findEnums")
-    public ResponseEntity<Map<String, Object>> findEnums() {
-        Map<String, Object> data = new HashMap<>();
-        // data.put("ExecutorRouteStrategyEnum", ExecutorRouteStrategyEnum.values());	    // 路由策略-列表
-        //  data.put("GlueTypeEnum", GlueTypeEnum.values());								// Glue类型-字典
-        data.put("ExecutorBlockStrategyEnum", ExecutorBlockStrategy.values());        // 阻塞处理策略-字典
-        data.put("ScheduleTypeEnum", ScheduleTypeEnum.values());                        // 调度类型
-        data.put("MisfireStrategyEnum", MisfireStrategyEnum.values());                    // 调度过期策略
-        return new ResponseEntity<>(data, HttpStatus.OK);
-    }
-
-    @ApiOperation(value = "查询枚举")
+    @ApiOperation(value = "保存(Save)")
     @PostMapping("save")
     public ResponseEntity<Void> save(@Validated @RequestBody ReqTask reqTask) {
         log.info("/v1.0/task/save 入参{}", reqTask);
@@ -68,7 +54,7 @@ public class TaskController {
         return ResponseEntity.ok(null);
     }
 
-    @ApiOperation(value = "删除任务")
+    @ApiOperation(value = "删除(Delete)")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         taskService.delete(id);

@@ -18,7 +18,6 @@ import java.math.BigInteger;
 
 /**
  * @author sweeter
- * @description
  * @date 2022/9/4
  */
 @Transactional(rollbackFor = Exception.class,readOnly = true)
@@ -45,6 +44,12 @@ public class AuthServiceImpl implements AuthService {
         String loginToken = makeToken(user);
         CookieUtil.set(response, LOGIN_IDENTITY_KEY, loginToken, true);
         return new AuthInfo(loginToken, true);
+    }
+
+    @Override
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        CookieUtil.remove(request, response, LOGIN_IDENTITY_KEY);
+
     }
 
     private String makeToken(User user) {

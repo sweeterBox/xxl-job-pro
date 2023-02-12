@@ -1,7 +1,7 @@
 spring:
   jpa:
     database-platform: com.xxl.job.admin.config.db.MySQLInnoDBDialect
-    show-sql: false
+    show-sql: true
     properties:
       hibernate:
         #在没有事务的情况下允许懒加载

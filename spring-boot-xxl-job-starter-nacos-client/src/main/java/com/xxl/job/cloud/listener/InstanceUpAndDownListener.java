@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * @author sweeter
- * @description
+
  * @date 2022/12/27 CompositeInstanceUpAndDownListenerAutoConfiguration
  */
 public interface InstanceUpAndDownListener {

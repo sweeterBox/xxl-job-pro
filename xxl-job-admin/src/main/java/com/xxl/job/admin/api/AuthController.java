@@ -1,10 +1,8 @@
 package com.xxl.job.admin.api;
 
 import com.xxl.job.admin.permission.Permission;
-import com.xxl.job.admin.core.util.CookieUtil;
 import com.xxl.job.admin.model.AuthInfo;
 import com.xxl.job.admin.model.ReqLogin;
-import com.xxl.job.admin.model.UserInfo;
 import com.xxl.job.admin.service.AuthService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
 
 /**
  * @author sweeter
@@ -24,8 +21,6 @@ import java.util.Arrays;
 @RestController
 @RequestMapping("/v1.0/auth")
 public class AuthController {
-
-    public static final String LOGIN_IDENTITY_KEY = "XXL_JOB_LOGIN_IDENTITY";
 
     @Resource
     private AuthService authService;
@@ -38,20 +33,11 @@ public class AuthController {
         return ResponseEntity.ok(authVO);
     }
 
-    @ApiOperation(value = "查询用户信息")
-    @GetMapping("info")
-    public ResponseEntity<UserInfo> info() {
-        UserInfo userInfoVO = new UserInfo();
-        userInfoVO.setRoles(Arrays.asList("admin"));
-        return ResponseEntity.ok(userInfoVO);
-    }
 
     @ApiOperation("退出登录")
     @DeleteMapping("logout")
     public ResponseEntity<Object> logout(HttpServletRequest request, HttpServletResponse response) {
-        CookieUtil.remove(request, response, LOGIN_IDENTITY_KEY);
-
-        // TODO
+        authService.logout(request, response);
         return ResponseEntity.ok(null);
     }
 

@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 /**
  * @author sweeter
- * @description
  * @date 2022/9/3
  */
 public interface LogReportRepository extends BaseJpaRepository<LogReport, Long> {

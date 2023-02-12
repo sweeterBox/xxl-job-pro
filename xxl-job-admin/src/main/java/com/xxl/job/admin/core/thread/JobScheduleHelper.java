@@ -1,5 +1,6 @@
 package com.xxl.job.admin.core.thread;
 
+import com.xxl.job.admin.repository.TaskRepository;
 import com.xxl.job.utils.SpringContextUtils;
 import com.xxl.job.admin.config.SystemProperties;
 import com.xxl.job.admin.core.conf.XxlJobAdminConfig;
@@ -75,7 +76,7 @@ public class JobScheduleHelper {
                         // 1、pre read
                         long nowTime = System.currentTimeMillis();
                         //读取即将执行的任务
-                        List<Task> scheduleList = XxlJobAdminConfig.getAdminConfig().getXxlJobInfoDao().scheduleJobQuery(nowTime + PRE_READ_MS, preReadCount);
+                        List<Task> scheduleList = SpringContextUtils.getBean(TaskRepository.class).scheduleJobQuery(nowTime + PRE_READ_MS, preReadCount);
                         if (scheduleList!=null && scheduleList.size()>0) {
                             // 2、push time-ring
                             for (Task jobInfo: scheduleList) {
@@ -138,7 +139,7 @@ public class JobScheduleHelper {
 
                             // 3、update trigger info
                             for (Task jobInfo: scheduleList) {
-                                XxlJobAdminConfig.getAdminConfig().getXxlJobInfoDao().save(jobInfo);
+                                SpringContextUtils.getBean(TaskRepository.class).save(jobInfo);
                             }
 
                         } else {
@@ -241,7 +242,6 @@ public class JobScheduleHelper {
         // push async ring
         List<Integer> ringItemData = ringData.computeIfAbsent(ringSecond, k -> new ArrayList<>());
         ringItemData.add(jobId);
-
         logger.debug(" xxl-job, schedule push time-ring : " + ringSecond + " = " + Arrays.asList(ringItemData) );
     }
 
@@ -300,7 +300,7 @@ public class JobScheduleHelper {
             }
         }
 
-        logger.info(" xxl-job, JobScheduleHelper stop");
+        logger.info("xxl-job, JobScheduleHelper stop");
     }
 
 
@@ -308,10 +308,9 @@ public class JobScheduleHelper {
     public static Date generateNextValidTime(Task jobInfo, Date fromTime) throws Exception {
         ScheduleTypeEnum scheduleTypeEnum = ScheduleTypeEnum.match(jobInfo.getScheduleType().name(), null);
         if (ScheduleTypeEnum.CRON == scheduleTypeEnum) {
-            Date nextValidTime = new CronExpression(jobInfo.getScheduleConf()).getNextValidTimeAfter(fromTime);
-            return nextValidTime;
+            return new CronExpression(jobInfo.getScheduleConf()).getNextValidTimeAfter(fromTime);
         } else if (ScheduleTypeEnum.FIX_RATE == scheduleTypeEnum /*|| ScheduleTypeEnum.FIX_DELAY == scheduleTypeEnum*/) {
-            return new Date(fromTime.getTime() + Integer.valueOf(jobInfo.getScheduleConf())*1000 );
+            return new Date(fromTime.getTime() + Integer.parseInt(jobInfo.getScheduleConf())*1000 );
         }
         return null;
     }

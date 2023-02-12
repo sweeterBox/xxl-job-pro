@@ -8,7 +8,6 @@ import java.util.Optional;
 
 /**
  * @author sweeter
- * @description
  * @date 2022/9/3
  */
 public interface InstanceRepository extends BaseJpaRepository<Instance, Long> {

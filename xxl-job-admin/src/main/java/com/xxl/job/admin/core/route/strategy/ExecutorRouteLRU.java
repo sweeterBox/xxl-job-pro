@@ -1,8 +1,8 @@
 package com.xxl.job.admin.core.route.strategy;
 
 import com.xxl.job.admin.core.route.ExecutorRouter;
-import com.xxl.job.core.biz.model.ReturnT;
-import com.xxl.job.core.biz.model.TriggerParam;
+import com.xxl.job.model.R;
+import com.xxl.job.model.TriggerParam;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -19,10 +19,11 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class ExecutorRouteLRU extends ExecutorRouter {
 
-    private static ConcurrentMap<Integer, LinkedHashMap<String, String>> jobLRUMap = new ConcurrentHashMap<Integer, LinkedHashMap<String, String>>();
+    private static ConcurrentMap<Long, LinkedHashMap<String, String>> jobLRUMap = new ConcurrentHashMap<>();
+
     private static long CACHE_VALID_TIME = 0;
 
-    public String route(int jobId, List<String> addressList) {
+    public String route(Long jobId, List<String> addressList) {
 
         // cache clear
         if (System.currentTimeMillis() > CACHE_VALID_TIME) {
@@ -68,9 +69,9 @@ public class ExecutorRouteLRU extends ExecutorRouter {
     }
 
     @Override
-    public ReturnT<String> route(TriggerParam triggerParam, List<String> addressList) {
-        String address = route(triggerParam.getJobId(), addressList);
-        return new ReturnT<String>(address);
+    public R<String> route(TriggerParam triggerParam, List<String> addressList) {
+        String address = route(triggerParam.getTaskId(), addressList);
+        return new R<String>(address);
     }
 
 }

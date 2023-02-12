@@ -1,14 +1,13 @@
 package com.xxl.job.admin.service;
 
-import com.xxl.job.admin.core.model.XxlJobUser;
+import com.xxl.job.admin.entity.User;
 import com.xxl.job.admin.core.util.CookieUtil;
 import com.xxl.job.admin.core.util.I18nUtil;
-import com.xxl.job.admin.core.util.JacksonUtil;
-import com.xxl.job.admin.dao.XxlJobUserDao;
-import com.xxl.job.core.biz.model.ReturnT;
+import com.xxl.job.admin.repository.UserRepository;
+import com.xxl.job.model.R;
+import com.xxl.job.utils.JsonUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.DigestUtils;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,46 +22,46 @@ public class LoginService {
     public static final String LOGIN_IDENTITY_KEY = "XXL_JOB_LOGIN_IDENTITY";
 
     @Resource
-    private XxlJobUserDao xxlJobUserDao;
+    private UserRepository userRepository;
 
 
-    private String makeToken(XxlJobUser xxlJobUser){
-        String tokenJson = JacksonUtil.writeValueAsString(xxlJobUser);
+    private String makeToken(User user){
+        String tokenJson = JsonUtils.obj2Json(user);
         String tokenHex = new BigInteger(tokenJson.getBytes()).toString(16);
         return tokenHex;
     }
-    private XxlJobUser parseToken(String tokenHex){
-        XxlJobUser xxlJobUser = null;
+    private User parseToken(String tokenHex){
+        User user = null;
         if (tokenHex != null) {
             String tokenJson = new String(new BigInteger(tokenHex, 16).toByteArray());      // username_password(md5)
-            xxlJobUser = JacksonUtil.readValue(tokenJson, XxlJobUser.class);
+            user = JsonUtils.json2Obj(tokenJson, User.class);
         }
-        return xxlJobUser;
+        return user;
     }
 
 
-    public ReturnT<String> login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean ifRemember){
+    public R<String> login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean ifRemember){
 
         // param
         if (username==null || username.trim().length()==0 || password==null || password.trim().length()==0){
-            return new ReturnT<String>(500, I18nUtil.getString("login_param_empty"));
+            return new R<String>(500, I18nUtil.getString("login_param_empty"));
         }
 
         // valid passowrd
-        XxlJobUser xxlJobUser = xxlJobUserDao.loadByUserName(username);
-        if (xxlJobUser == null) {
-            return new ReturnT<String>(500, I18nUtil.getString("login_param_unvalid"));
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            return new R<String>(500, I18nUtil.getString("login_param_unvalid"));
         }
         String passwordMd5 = DigestUtils.md5DigestAsHex(password.getBytes());
-        if (!passwordMd5.equals(xxlJobUser.getPassword())) {
-            return new ReturnT<String>(500, I18nUtil.getString("login_param_unvalid"));
+        if (!passwordMd5.equals(user.getPassword())) {
+            return new R<String>(500, I18nUtil.getString("login_param_unvalid"));
         }
 
-        String loginToken = makeToken(xxlJobUser);
+        String loginToken = makeToken(user);
 
         // do login
         CookieUtil.set(response, LOGIN_IDENTITY_KEY, loginToken, ifRemember);
-        return ReturnT.SUCCESS;
+        return R.SUCCESS;
     }
 
     /**
@@ -71,9 +70,9 @@ public class LoginService {
      * @param request
      * @param response
      */
-    public ReturnT<String> logout(HttpServletRequest request, HttpServletResponse response){
+    public R<String> logout(HttpServletRequest request, HttpServletResponse response){
         CookieUtil.remove(request, response, LOGIN_IDENTITY_KEY);
-        return ReturnT.SUCCESS;
+        return R.SUCCESS;
     }
 
     /**
@@ -82,17 +81,17 @@ public class LoginService {
      * @param request
      * @return
      */
-    public XxlJobUser ifLogin(HttpServletRequest request, HttpServletResponse response){
+    public User ifLogin(HttpServletRequest request, HttpServletResponse response){
         String cookieToken = CookieUtil.getValue(request, LOGIN_IDENTITY_KEY);
         if (cookieToken != null) {
-            XxlJobUser cookieUser = null;
+            User cookieUser = null;
             try {
                 cookieUser = parseToken(cookieToken);
             } catch (Exception e) {
                 logout(request, response);
             }
             if (cookieUser != null) {
-                XxlJobUser dbUser = xxlJobUserDao.loadByUserName(cookieUser.getUsername());
+                User dbUser = userRepository.findByUsername(cookieUser.getUsername());
                 if (dbUser != null) {
                     if (cookieUser.getPassword().equals(dbUser.getPassword())) {
                         return dbUser;

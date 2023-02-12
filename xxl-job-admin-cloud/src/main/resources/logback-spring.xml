@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+    <springProperty scope="context" name="serverName" source="spring.application.name"/>
+    <springProperty scope="context" name="home" source="logging.log_path"
+                    defaultValue="logs/${serverName}"/>
+    <springProperty scope="context" name="LOGBACK_ROLLINGPOLICY_MAX_HISTORY"
+                    source="logging.logback.rollingpolicy.max-history"
+                    defaultValue="60"/>
+
+    <property name="LOG_PATH" value="${home}"/>
+    <property name="pattern"
+              value="%date{yyyy-MM-dd HH:mm:ss} [%X{traceId}] %-5level [%thread] %logger:%line - %msg%n"/>
+
+    <property name="consolePattern"
+              value="%date{yyyy-MM-dd HH:mm:ss} [%X{traceId}] %highlight(%-5level) %boldYellow([%thread]) %boldGreen(%logger:%line) - %msg%n"/>
+
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>${consolePattern}</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE_ALL"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/server.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${LOGBACK_ROLLINGPOLICY_MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE_ERROR"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/server-err.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${LOGBACK_ROLLINGPOLICY_MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+    </appender>
+
+    <root>
+        <level value="info"/>
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE_ALL"/>
+        <appender-ref ref="FILE_ERROR"/>
+    </root>
+
+</configuration>

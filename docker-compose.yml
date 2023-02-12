@@ -1,0 +1,17 @@
+version: '3'
+services:
+  xxl-job-pro-admin:
+    container_name: xxl-job-pro-admin
+    build: ./xxl-job-admin/
+    image: sweeter/xxl-job-pro-admin:v2.4
+    ports:
+      - 8282:8282
+    environment:
+      - TZ=Asia/Shanghai
+      - JAVA_OPTS=-Xms1g -Xmx1g
+     #- nacos.namespace=${NACOS_NAMESPACE}
+     #- nacos.server-addr=${NACOS_SERVER_ADDR}
+     #- nacos.group=${NACOS_GROUP}
+      - port=8282
+    network_mode: host
+    restart: always

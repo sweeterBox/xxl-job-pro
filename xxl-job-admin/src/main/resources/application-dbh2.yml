@@ -1,0 +1,81 @@
+management:
+  health:
+    mail:
+      enabled: false
+  server:
+    base-path: /actuator
+
+server:
+  port: 8080
+  servlet:
+    context-path: /xxl-job-admin
+
+spring:
+  h2:
+    console:
+      enabled: true
+      port: 81
+      path: /console
+      settings:
+        webAllowOthers: true
+        web-admin-password: 123456
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        #配置在没有事务的情况下允许懒加载
+        enable_lazy_load_no_trans: true
+    hibernate:
+      dialect: org.hibernate.dialect.H2Dialect
+      ddl-auto: update
+      naming:
+        physical-strategy: com.xxl.job.admin.config.JpaPhysicalNamingStrategy
+  datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:file:./dbh2/xxl-job
+    username: root
+    password: 123456
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+    #hikari:
+    #  auto-commit: true
+    #  connection-test-query: SELECT 1
+    #  connection-timeout: 10000
+    #  idle-timeout: 30000
+    #  max-lifetime: 900000
+    #  maximum-pool-size: 30
+    #  minimum-idle: 10
+    #  pool-name: HikariCP
+    #  validation-timeout: 1000
+    #password: root
+    #type: com.zaxxer.hikari.HikariDataSource
+    #url: jdbc:mysql://10.0.0.233:3306/xxl_job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    #username: root
+  fr#eemarker:
+    charset: UTF-8
+    request-context-attribute: request
+    settings:
+      number_format: 0.##########
+    suffix: .ftl
+    templateLoaderPath: classpath:/templates/
+  mvc:
+    pathmatch:
+        # 配置策略
+        matching-strategy: ANT_PATH_MATCHER
+    servlet:
+      load-on-startup: 0
+    static-path-pattern: /static/**
+  web:
+    resources:
+      static-locations: classpath:/static/
+
+
+xxl:
+  job:
+    accessToken: default_token
+    i18n: zh_CN
+    logretentiondays: 30
+    triggerpool:
+      fast:
+        max: 200
+      slow:
+        max: 100

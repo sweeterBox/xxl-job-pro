@@ -1,0 +1,38 @@
+server:
+  port: ${port:8082}
+
+spring:
+  application:
+    name: xxl-job-client
+  cloud:
+    inetutils:
+      preferred-networks:
+    nacos:
+      discovery:
+        password: ${nacos.password:nacos}
+        username: ${nacos.username:nacos}
+        server-addr: ${nacos.server-addr:10.0.0.100:8848}
+        namespace: ${nacos.namespace:public}
+        metadata:
+          'xxl.job.client': true
+      config:
+        password: ${spring.cloud.nacos.discovery.password}
+        username: ${spring.cloud.nacos.discovery.username}
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        namespace: ${spring.cloud.nacos.discovery.namespace}
+        file-extension: yaml
+        group: ${nacos.group:DEFAULT_GROUP}
+
+  boot:
+    xxl:
+      job:
+        client:
+          enabled: true
+          proxyEnabled: true
+          #adminAddresses: http://127.0.0.1:8080/xxl-job-admin
+          name: ${spring.application.name}
+          title: 'Demo Client'
+          contextPath: /xxl-job
+          #accessToken:
+          #ip:
+          #port:

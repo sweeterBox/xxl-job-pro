@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "spring.boot.xxljob.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用xxl-job client."
+    }
+  ]
+}

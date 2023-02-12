@@ -1,13 +1,13 @@
 package com.xxl.job.admin.core.util;
 
 import com.xxl.job.admin.core.conf.XxlJobAdminConfig;
+import com.xxl.job.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
-
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -72,7 +72,7 @@ public class I18nUtil {
             }
         }
 
-        String json = JacksonUtil.writeValueAsString(map);
+        String json = JsonUtils.obj2Json(map);
         return json;
     }
 

@@ -1,0 +1,192 @@
+/*滚动条整体样式*/
+::-webkit-scrollbar {
+    /*高宽分别对应横竖滚动条的尺寸*/
+    width: 1px;
+    height: 1px;
+}
+
+/*滚动条里面轨道*/
+::-webkit-scrollbar-track {
+    background: #EDEDED;
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    border-radius: 1px;
+}
+
+/*滚动条里面小方块*/
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: #535353;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(100, 100, 100);
+    border-radius: 1px;
+}
+::-webkit-scrollbar-thumb:active {
+    background: rgb(68, 68, 68);
+    border-radius: 1px;
+}
+
+body {
+    box-shadow: 5px 5px 5px rgba(255, 255, 255, 0) !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    margin-bottom: 0 !important;
+    overflow-x: hidden;
+    /*
+    font-size: 14px;
+    */
+}
+
+/*移除input[number]的上下箭头 start */
+/*谷歌*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+/*在谷歌下移除input[number]的上下箭头*/
+.inputNumber input[type='number']::-webkit-outer-spin-button,
+.inputNumber input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+/*在firefox下移除input[number]的上下箭头*/
+.inputNumber input[type="number"] {
+    -moz-appearance: textfield;
+}
+/*火狐*/
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+/*移除input[number]的上下箭头 end */
+
+/*		section select option:first-child {
+			color: #8f8f8f;
+		}*/
+
+
+.toasts-top-right{
+    top: 15px !important;
+}
+.toast,.toast .toast-header {
+    border-radius: 6px !important;
+    min-width: 250px !important;
+    max-width: 300px !important;
+}
+
+.content-wrapper {
+    background-color: #fff;
+    background: #fff !important;
+
+}
+
+.btn-search{
+    color: #fff !important;
+    background-color: #13ce66 !important;
+    border-color: #13ce66 !important;
+}
+
+.btn-search:active {
+    background: #11b95c !important;
+    border-color: #11b95c !important;
+    color: #fff !important;
+}
+
+.btn-search:hover {
+    background: #42d885 !important;
+    border-color: #42d885 !important;
+    color: #fff !important;
+}
+
+.container-fluid .row{
+    margin-top: 15px;
+}
+
+.container-fluid .form-control[readonly],.modal-dialog .form-control[readonly]{
+    background-color:white !important;
+}
+.container-fluid .form-control,.modal-dialog .form-control{
+    height: auto !important;
+}
+
+.container-fluid .input-group-text,.modal-dialog .input-group-text{
+    border-radius: 0.25rem 0 0 0.25rem !important;
+    border-right-width: 0 !important;
+    background-color: #ffffff !important;
+}
+
+textarea:focus-visible,textarea:focus{
+    border: 1px solid #80bdff !important;
+    background-color: #fff;
+    outline: 0;
+}
+
+.dataTables_length select {
+    width: 60px !important;
+    height: 28px !important;
+}
+
+/*模态框*/
+.modal-content {
+    border-color: rgba(255, 255, 255, 0) !important;
+}
+
+/*返回按钮*/
+.btn-back {
+    color: #1f2d3d;
+    background-color: #cacccd;
+    border-color: #f8f9fa;
+    box-shadow: none;
+    border-radius: 2.25rem !important;
+}
+
+
+.btn-success {
+    color: #fff !important;
+    background-color: #28C76F !important;
+    border-color: #28C76F !important;
+}
+
+.btn-primary {
+    color: #fff !important;
+    background-color: #6993FF !important;
+    border-color: #6993FF !important;
+}
+
+.btn-danger {
+    color: #fff !important;
+    background-color: #ea5455 !important;
+    border-color: #ea5455 !important;
+}
+
+
+.layout-fixed ,.main-sidebar{
+    font-size: 14px;
+}
+
+
+.toasts-success{
+    background-color: #f8f9fa !important;
+    border-color: #f8f9fa !important;
+    color: #28C76F !important;
+}
+
+.toasts-info{
+    background-color: #f8f9fa !important;
+    border-color: #f8f9fa !important;
+    color: #6c757d !important;
+}
+
+
+.toasts-error{
+    background-color: #f8f9fa !important;
+    border-color: #f8f9fa !important;
+    color: #ea5455 !important;
+}
+
+
+.toasts-warn{
+    background-color: #f8f9fa !important;
+    border-color: #f8f9fa !important;
+    color: #ffc107 !important;
+}

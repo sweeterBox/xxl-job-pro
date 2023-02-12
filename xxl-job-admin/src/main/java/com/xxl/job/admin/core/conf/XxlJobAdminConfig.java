@@ -1,11 +1,14 @@
 package com.xxl.job.admin.core.conf;
 
-import com.xxl.job.admin.core.alarm.JobAlarmer;
+import com.xxl.job.utils.SpringContextUtils;
 import com.xxl.job.admin.core.scheduler.XxlJobScheduler;
-import com.xxl.job.admin.dao.*;
+import com.xxl.job.admin.repository.*;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.core.Ordered;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +22,9 @@ import java.util.Arrays;
  * @author xuxueli 2017-04-28
  */
 
+//@Lazy
 @Component
-public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
+public class XxlJobAdminConfig implements CommandLineRunner, DisposableBean , Ordered {
 
     private static XxlJobAdminConfig adminConfig = null;
     public static XxlJobAdminConfig getAdminConfig() {
@@ -32,13 +36,10 @@ public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
 
     private XxlJobScheduler xxlJobScheduler;
 
-    @Override
+/*    @Override
     public void afterPropertiesSet() throws Exception {
-        adminConfig = this;
 
-        xxlJobScheduler = new XxlJobScheduler();
-        xxlJobScheduler.init();
-    }
+    }*/
 
     @Override
     public void destroy() throws Exception {
@@ -67,24 +68,13 @@ public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
     @Value("${xxl.job.logretentiondays}")
     private int logretentiondays;
 
-    // dao, service
 
     @Resource
-    private XxlJobLogDao xxlJobLogDao;
-    @Resource
-    private XxlJobInfoDao xxlJobInfoDao;
-    @Resource
-    private XxlJobRegistryDao xxlJobRegistryDao;
-    @Resource
-    private XxlJobGroupDao xxlJobGroupDao;
-    @Resource
-    private XxlJobLogReportDao xxlJobLogReportDao;
-    @Resource
     private JavaMailSender mailSender;
+
     @Resource
     private DataSource dataSource;
-    @Resource
-    private JobAlarmer jobAlarmer;
+
 
 
     public String getI18n() {
@@ -123,36 +113,30 @@ public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
         return logretentiondays;
     }
 
-    public XxlJobLogDao getXxlJobLogDao() {
-        return xxlJobLogDao;
+    public LogRepository getXxlJobLogDao() {
+        return SpringContextUtils.getBean(LogRepository.class);
     }
 
-    public XxlJobInfoDao getXxlJobInfoDao() {
-        return xxlJobInfoDao;
+    public TaskRepository getXxlJobInfoDao() {
+        return SpringContextUtils.getBean(TaskRepository.class);
     }
 
-    public XxlJobRegistryDao getXxlJobRegistryDao() {
-        return xxlJobRegistryDao;
-    }
-
-    public XxlJobGroupDao getXxlJobGroupDao() {
-        return xxlJobGroupDao;
-    }
-
-    public XxlJobLogReportDao getXxlJobLogReportDao() {
-        return xxlJobLogReportDao;
-    }
-
-    public JavaMailSender getMailSender() {
-        return mailSender;
-    }
 
     public DataSource getDataSource() {
         return dataSource;
     }
 
-    public JobAlarmer getJobAlarmer() {
-        return jobAlarmer;
+
+    @Override
+    public int getOrder() {
+        return LOWEST_PRECEDENCE;
     }
 
+    @Override
+    public void run(String... args) throws Exception {
+        adminConfig = this;
+
+        xxlJobScheduler = new XxlJobScheduler();
+        xxlJobScheduler.init();
+    }
 }

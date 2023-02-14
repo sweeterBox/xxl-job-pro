@@ -459,6 +459,39 @@
 	</div>
 </div>
 
+
+<#-- trigger -->
+<div class="modal fade" id="jobTriggerModal" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" >${I18n.jobinfo_opt_run}</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal form" role="form" >
+                    <input hidden name="id">
+                    <div class="form-group">
+                        <label for="executorParam" class="col-sm-2 control-label">${I18n.jobinfo_field_executorparam}<font color="black">*</font></label>
+                        <div class="col-sm-10">
+                            <textarea class="textarea form-control" name="executorParam" placeholder="${I18n.system_please_input}${I18n.jobinfo_field_executorparam}" maxlength="512" style="height: 63px; line-height: 1.2;"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientUrl" class="col-sm-2 control-label">${I18n.jobgroup_field_registryList}<font color="black">*</font></label>
+                        <div class="col-sm-10">
+                            <textarea class="textarea form-control" name="clientUrl" placeholder="${I18n.jobinfo_opt_run_tips}" maxlength="512" style="height: 63px; line-height: 1.2;"></textarea>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="executeOnce"  >${I18n.system_save}</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">${I18n.system_cancel}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <@netCommon.commonScript />
 <script src="${request.contextPath}/static/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="${request.contextPath}/static/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>

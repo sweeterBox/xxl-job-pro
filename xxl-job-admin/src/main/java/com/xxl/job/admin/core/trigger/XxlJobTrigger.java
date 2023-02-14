@@ -1,5 +1,6 @@
 package com.xxl.job.admin.core.trigger;
 
+import com.xxl.job.admin.enums.NotifyStatus;
 import com.xxl.job.utils.SpringContextUtils;
 import com.xxl.job.admin.entity.Instance;
 import com.xxl.job.admin.entity.Task;
@@ -114,7 +115,7 @@ public class XxlJobTrigger {
         taskLog.setApplicationName(task.getApplicationName());
         taskLog.setTaskId(task.getId());
         taskLog.setTriggerTime(LocalDateTime.now());
-        taskLog.setNotifyStatus(0);
+        taskLog.setNotifyStatus(NotifyStatus.NOT);
         taskLog.setExecutorFailRetryCount(0);
         taskLog.setHandleStatus(0);
         logService.save(taskLog);
@@ -186,6 +187,11 @@ public class XxlJobTrigger {
         taskLog.setExecutorFailRetryCount(finalFailRetryCount);
         //jobLog.setTriggerTime();
         taskLog.setTriggerStatus(triggerResult.getCode());
+        if (triggerResult.getCode()==200 || triggerResult.getCode() == 0) {
+            taskLog.setNotifyStatus(NotifyStatus.NOT);
+        }else {
+            taskLog.setNotifyStatus(NotifyStatus.TODO);
+        }
         taskLog.setTriggerContent(triggerMsgSb.toString());
         logService.save(taskLog);
         log.debug(" xxl-job trigger end, taskId:{}", taskLog.getId());

@@ -42,7 +42,7 @@ public class InstanceRegistry implements Serializable {
     /**
      * 权重
      */
-    private int weight = 1;
+    private Double weight = 1.0;
 
 
     /**

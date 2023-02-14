@@ -14,7 +14,5 @@ public interface ApplicationRepository extends BaseJpaRepository<Application, Lo
 
     List<Application> findAllByNameIn(List<String> names);
 
-    Application findByName(String name);
-
 
 }

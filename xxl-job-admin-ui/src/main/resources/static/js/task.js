@@ -261,19 +261,18 @@ $(function() {
 
     // job trigger
     $("#job_list").on('click', '.job_trigger',function() {
-        var id = id = $(this).parent('div').attr("id");;
+        var id  = $(this).parent('div').attr("id");
         var row = tableData['key'+id];
-
         $("#jobTriggerModal .form input[name='id']").val( row.id );
         $("#jobTriggerModal .form textarea[name='executorParam']").val( row.executorParam );
-
         $('#jobTriggerModal').modal({backdrop: false, keyboard: false}).modal('show');
     });
-    $("#jobTriggerModal .ok").on('click',function() {
+
+    $("#executeOnce").on('click',function() {
 		let param = {
 			"id": $("#jobTriggerModal .form input[name='id']").val(),
 			"executorParam": $("#jobTriggerModal .textarea[name='executorParam']").val(),
-			"clientUrl": $("#jobTriggerModal .textarea[name='addressList']").val()
+			"clientUrl": $("#jobTriggerModal .textarea[name='clientUrl']").val()
 		};
         $.ajax({
             type : 'POST',
@@ -282,13 +281,14 @@ $(function() {
 			data: JSON.stringify(param),
             success : function(data){
 				$('#jobTriggerModal').modal('hide');
-
+			//	dataTable.fnDraw();
             }
         });
     });
-    $("#jobTriggerModal").on('hide.bs.modal', function () {
+
+/*    $("#jobTriggerModal").on('hide.bs.modal', function () {
         $("#jobTriggerModal .form")[0].reset();
-    });
+    });*/
 
 
     // job registryinfo
@@ -483,8 +483,14 @@ $(function() {
 		 getTask(applicationName);
 	});
 	$('#tasks ').on('click', '.dropdown-item', function () {
-		console.log($(this).data('name'))
-		$('input[name="executorHandler"]').val($(this).data('name'));
+		let handlerName = $(this).data('name');
+		let handlerDescription = $(this).data('description');
+		$('input[name="executorHandler"]').val(handlerName);
+		let description = $('input[name="description"]').val();
+		if (description && description != '') {
+		}else {
+			$('input[name="description"]').val(handlerDescription)
+		}
 	});
 	// scheduleType change
 	$(".scheduleType").change(function(){
@@ -706,7 +712,7 @@ $(function() {
 					let html = "";
 					data.forEach(m => {
 						html += '<div role="separator" class="dropdown-divider"></div>'
-						html += '<a class="dropdown-item" data-name="' + m.name + '" href="#">' + m.name + '(' + m.description + ')' + '</a>';
+						html += '<a class="dropdown-item" data-name="' + m.name + '" data-description="' + m.description + '" href="#">' + m.name + '(' + m.description + ')' + '</a>';
 					});
 					$('#tasks').html(html);
 				}

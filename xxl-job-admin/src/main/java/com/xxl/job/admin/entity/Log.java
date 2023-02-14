@@ -6,9 +6,11 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.xxl.job.admin.common.jpa.entity.IdEntity;
+import com.xxl.job.admin.enums.NotifyStatus;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Table;
@@ -83,7 +85,8 @@ public class Log extends IdEntity {
 	/**
 	 * 通知状态
 	 */
-	private Integer notifyStatus;
+	@Convert(converter = NotifyStatus.Converter.class)
+	private NotifyStatus notifyStatus;
 
 
 

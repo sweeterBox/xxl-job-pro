@@ -3,13 +3,13 @@ import com.xxl.job.utils.SpringContextUtils;
 import com.xxl.job.admin.config.SystemProperties;
 import com.xxl.job.admin.entity.User;
 import com.xxl.job.admin.repository.UserRepository;
-import com.xxl.job.admin.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
 import java.util.Optional;
 
 /**
@@ -35,13 +35,16 @@ public class Init implements CommandLineRunner {
         if (userOpt.isPresent()) {
 
         }else {
-            user.setUsername("admin");
-            user.setPassword("e10adc3949ba59abbe56e057f20f883e");
+            String username = "admin";
+            String password = "xxljob";
+            String slat = DigestUtils.md5DigestAsHex(username.getBytes());
+            String passwordMd5 = DigestUtils.md5DigestAsHex((DigestUtils.md5DigestAsHex(password.getBytes()) + slat).getBytes());
+            user.setUsername(username);
+            user.setPassword(passwordMd5);
             user.setRole(1);
             userRepository.save(user);
-            log.info("初始化管理员用户信息，data:{}", user);
+            System.out.println("初始化管理员用户信息，用户名：" + username + "密码：" + password);
         }
-
 
     }
 }

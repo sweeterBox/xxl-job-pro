@@ -46,7 +46,7 @@ public class Instance extends IdEntity {
 
     private String host;
 
-    private int port;
+    private Integer port;
 
     private Boolean secure;
 

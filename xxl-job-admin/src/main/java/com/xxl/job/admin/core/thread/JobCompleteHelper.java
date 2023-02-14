@@ -1,5 +1,6 @@
 package com.xxl.job.admin.core.thread;
 
+import com.xxl.job.admin.enums.NotifyStatus;
 import com.xxl.job.admin.repository.LogRepository;
 import com.xxl.job.utils.SpringContextUtils;
 import com.xxl.job.admin.core.complete.XxlJobCompleter;
@@ -9,6 +10,7 @@ import com.xxl.job.admin.service.LogService;
 import com.xxl.job.model.HandleCallbackParam;
 import com.xxl.job.model.R;
 import com.xxl.job.utils.DateUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
@@ -80,7 +82,7 @@ public class JobCompleteHelper {
 							jobLog.setHandleEndTime(LocalDateTime.now());
 							jobLog.setHandleStatus(R.FAIL_CODE);
 							jobLog.setHandleContent( I18nUtil.getString("joblog_lost_fail") );
-							jobLog.setNotifyStatus(1);
+							jobLog.setNotifyStatus(NotifyStatus.TODO);
 							XxlJobCompleter.updateHandleInfoAndFinish(jobLog);
 						}
 
@@ -140,36 +142,42 @@ public class JobCompleteHelper {
 	private R<String> callback(HandleCallbackParam param) {
 		// valid log item
 		LogService logService = SpringContextUtils.getBean(LogService.class);
-		Log log = logService.findOne(param.getLogId());
-		if (log == null) {
+		Log en = logService.findOne(param.getLogId());
+		if (en == null) {
 			return new R<>(R.FAIL_CODE, "log item not found.");
 		}
 
 		// avoid repeat callback, trigger child job etc
-		if (log.getHandleStatus() > 0) {
-			return new R<>(R.FAIL_CODE, "log repeate callback.");
+		if (en.getHandleStatus() > 0) {
+			return new R<>(R.FAIL_CODE, "en repeate callback.");
 		}
 
 		// handle msg
 		StringBuffer handleMsg = new StringBuffer();
-		if (log.getHandleContent()!=null) {
-			handleMsg.append(log.getHandleContent()).append("<br>");
+		if (en.getHandleContent()!=null) {
+			handleMsg.append(en.getHandleContent()).append("<br>");
 		}
 		if (param.getContent() != null) {
 			handleMsg.append(param.getContent());
 		}
 
 		// success, save log
-		if (Objects.isNull(log.getHandleStartTime())) {
-			log.setHandleStartTime(param.getStartTime());
+		if (Objects.isNull(en.getHandleStartTime())) {
+			en.setHandleStartTime(param.getStartTime());
 		}
-		log.setHandleEndTime(param.getEndTime());
-
-		log.setHandleStatus(param.getStatus());
-		log.setHandleContent(handleMsg.toString());
-		log.setNotifyStatus(1);
-		XxlJobCompleter.updateHandleInfoAndFinish(log);
-
+		en.setHandleEndTime(param.getEndTime());
+		en.setHandleStatus(param.getStatus());
+		en.setHandleContent(handleMsg.toString());
+		if (param.getStatus().compareTo(200) == 0 || param.getStatus().compareTo(0) == 0) {
+			en.setNotifyStatus(NotifyStatus.NOT);
+		}else {
+			en.setNotifyStatus(NotifyStatus.TODO);
+		}
+		// text最大64kb 避免长度过长
+		if (StringUtils.isNotBlank(en.getHandleContent()) && en.getHandleContent().length() > 15000) {
+			en.setHandleContent(en.getHandleContent().substring(0, 15000));
+		}
+		XxlJobCompleter.updateHandleInfoAndFinish(en);
 		return R.SUCCESS;
 	}
 

@@ -28,8 +28,8 @@ import java.util.concurrent.TimeUnit;
  * @author xuxueli 2019-12-11 21:52:51
  */
 @Component
-public class SampleXxlJob {
-    private static Logger logger = LoggerFactory.getLogger(SampleXxlJob.class);
+public class SampleTaskHandler {
+    private static Logger logger = LoggerFactory.getLogger(SampleTaskHandler.class);
 
 
     /**
@@ -44,11 +44,13 @@ public class SampleXxlJob {
             XxlJobHelper.log("beat at:" + i);
             TimeUnit.SECONDS.sleep(6);
         }
-        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-        // default success
+        logger.error("demoJobHandler 执行完成");
+    }
+
+    @ScheduledTask(value = "exceptionJobHandler",description = "这是一个异常任务")
+    public void exceptionJobHandler(){
+        logger.error("这是一个异常任务");
+        throw new RuntimeException("这是一个异常任务");
     }
 
 
@@ -130,7 +132,7 @@ public class SampleXxlJob {
      *      "method: get\n" +
      *      "data: content\n";
      */
-    @ScheduledTask(value = "httpJobHandler")
+    @ScheduledTask(value = "httpJobHandler",description = "跨平台Http任务")
     public void httpJobHandler() throws Exception {
 
         // param parse

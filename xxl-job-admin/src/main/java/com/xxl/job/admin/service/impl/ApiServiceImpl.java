@@ -4,6 +4,7 @@ import com.xxl.job.admin.entity.Application;
 import com.xxl.job.admin.entity.Instance;
 import com.xxl.job.admin.entity.Log;
 import com.xxl.job.admin.enums.InstanceStatus;
+import com.xxl.job.admin.enums.NotifyStatus;
 import com.xxl.job.admin.repository.ApplicationRepository;
 import com.xxl.job.admin.repository.InstanceRepository;
 import com.xxl.job.admin.repository.LogRepository;
@@ -11,10 +12,10 @@ import com.xxl.job.model.HandleCallbackParam;
 import com.xxl.job.model.InstanceRegistry;
 import com.xxl.job.model.R;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import javax.annotation.Resource;
@@ -69,7 +70,15 @@ public class ApiServiceImpl  {
 
                 en.setHandleStatus(param.getStatus());
                 en.setHandleContent(handleMsg.toString());
-                en.setNotifyStatus(1);
+                if (param.getStatus().compareTo(200) == 0 || param.getStatus().compareTo(0) == 0) {
+                    en.setNotifyStatus(NotifyStatus.NOT);
+                }else {
+                    en.setNotifyStatus(NotifyStatus.TODO);
+                }
+                // text最大64kb 避免长度过长
+                if (StringUtils.isNotBlank(en.getHandleContent()) && en.getHandleContent().length() > 15000) {
+                    en.setHandleContent(en.getHandleContent().substring(0, 15000));
+                }
                 logRepository.save(en);
             }else {
                 log.error("log[{}] item not found.", param.getLogId());
@@ -80,14 +89,15 @@ public class ApiServiceImpl  {
 
     @Transactional
     public R<String> registry(InstanceRegistry registry) {
-        if (!StringUtils.hasText(registry.getName())
-                || !StringUtils.hasText(registry.getUrl())) {
+        if (StringUtils.isBlank(registry.getName())
+                || StringUtils.isBlank(registry.getUrl())) {
             return new R<>(400, "Illegal Argument.");
         }
         Optional<Instance> instanceOpt = this.instanceRepository.findAllByNameAndUrl(registry.getName(), registry.getUrl());
         if (instanceOpt.isPresent()) {
             Instance instance = instanceOpt
                     .map(v -> {
+                        v.setWeight(registry.getWeight());
                         v.setStatus(InstanceStatus.UP);
                         v.setHealthy(true);
                         v.setUpdateTime(LocalDateTime.now());

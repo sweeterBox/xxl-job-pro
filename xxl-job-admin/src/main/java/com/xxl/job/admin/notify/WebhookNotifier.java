@@ -1,5 +1,6 @@
 package com.xxl.job.admin.notify;
 
+import com.xxl.job.utils.JsonUtils;
 import org.springframework.context.expression.MapAccessor;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ParserContext;
@@ -8,6 +9,7 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import javax.annotation.Nullable;
 import java.net.URI;
@@ -50,12 +52,16 @@ public class WebhookNotifier extends AbstractEventNotifier {
         if (webhookUrl == null) {
             throw new IllegalStateException("'webhookUrl' must not be null.");
         }
-        restTemplate.postForEntity(webhookUrl, createDiscordNotification((TaskEvent)event), Void.class);
+        try {
+            ResponseEntity<String> responseEntity = restTemplate.postForEntity(webhookUrl, createDiscordNotification((TaskEvent) event), String.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     protected Object createDiscordNotification(TaskEvent event) {
         Map<String, Object> body = new HashMap<>();
-        body.put("content", createContent(event));
+        body.put("content", event);
         body.put("tts", tts);
 
         HttpHeaders headers = new HttpHeaders();

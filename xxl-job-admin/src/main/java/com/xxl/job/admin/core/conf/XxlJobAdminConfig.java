@@ -36,8 +36,6 @@ public class XxlJobAdminConfig implements CommandLineRunner, DisposableBean , Or
     }
 
 
-    // ---------------------- XxlJobScheduler ----------------------
-
     // conf
     @Value("${xxl.job.i18n:}")
     private String i18n;
@@ -46,8 +44,6 @@ public class XxlJobAdminConfig implements CommandLineRunner, DisposableBean , Or
     private String accessToken;
 
 
-    @Resource
-    private DataSource dataSource;
 
 
     public String getI18n() {
@@ -62,9 +58,6 @@ public class XxlJobAdminConfig implements CommandLineRunner, DisposableBean , Or
     }
 
 
-    public DataSource getDataSource() {
-        return dataSource;
-    }
 
 
     @Override

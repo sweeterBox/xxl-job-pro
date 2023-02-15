@@ -8,6 +8,7 @@ import com.xxl.job.admin.repository.LogRepository;
 import com.xxl.job.admin.repository.TaskRepository;
 import com.xxl.job.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.domain.Page;
@@ -69,10 +70,14 @@ public class TaskNotifyCheck implements CommandLineRunner {
     private void doNotify(Log en) {
         Task task = taskRepository.findById(en.getTaskId()).get();
         TaskEvent taskEvent = new TaskEvent();
+        TaskEvent.Task taskInfo = new TaskEvent.Task();
+        TaskEvent.Log logInfo = new TaskEvent.Log();
+        BeanUtils.copyProperties(task,taskInfo);
+        BeanUtils.copyProperties(en,logInfo);
         taskEvent.setTimestamp(Instant.now());
-        taskEvent.setId(UUID.randomUUID().toString());
-        taskEvent.setLog(en);
-        taskEvent.setTask(task);
+        taskEvent.setId(UUID.randomUUID().toString().replace("-", ""));
+        taskEvent.setLog(logInfo);
+        taskEvent.setTask(taskInfo);
         try {
             compositeNotifier.notify(taskEvent);
             log.info("触发通知,{}", JsonUtils.obj2Json(taskEvent));

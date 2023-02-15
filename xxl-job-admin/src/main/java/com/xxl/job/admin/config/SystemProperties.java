@@ -1,6 +1,5 @@
 package com.xxl.job.admin.config;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -8,10 +7,10 @@ import org.springframework.context.annotation.Configuration;
  * @date 2021/6/20
  */
 @Configuration
-//@ConfigurationProperties(prefix = "system")
+//@ConfigurationProperties(prefix = "spring.boot")
 public class SystemProperties {
 
-    @Value("${xxl.job.tablePrefix:'xxl_job_'}")
+    @Value("${xxl.job.tablePrefix:'xxl_job_pro_'}")
     private String tablePrefix;
 
     @Value("${xxl.job.i18n:}")

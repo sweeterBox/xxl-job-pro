@@ -1,14 +1,14 @@
 package com.xxl.job.admin.notify;
 
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
  * @author sweeter
  * @date 2023/2/13
  */
+@ImportAutoConfiguration(MailSenderAutoConfiguration.class)
 @Configuration(proxyBeanMethods = false)
 public class NotifierAutoConfiguration {
 
@@ -42,7 +43,7 @@ public class NotifierAutoConfiguration {
 
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnProperty(prefix = "xxl.job.notify.webhook", name = "webhook-url")
+    @ConditionalOnProperty(prefix = "xxl.job.notify.webhook", name = "webhookUrl")
     @AutoConfigureBefore({RestTemplate.class})
     @Lazy(false)
     public static class WebhookNotifierConfiguration {
@@ -58,7 +59,8 @@ public class NotifierAutoConfiguration {
 
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnBean(MailSender.class)
+    @ConditionalOnProperty(prefix = "xxl.job.notify.mail", name = "to")
+    @AutoConfigureBefore({JavaMailSender.class})
     @Lazy(false)
     public static class MailNotifierConfiguration {
 

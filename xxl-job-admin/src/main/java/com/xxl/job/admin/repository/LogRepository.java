@@ -2,6 +2,7 @@ package com.xxl.job.admin.repository;
 
 import com.xxl.job.admin.common.jpa.repository.BaseJpaRepository;
 import com.xxl.job.admin.entity.Log;
+import com.xxl.job.admin.enums.TriggerStatus;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import java.util.Date;
@@ -32,4 +33,5 @@ public interface LogRepository extends BaseJpaRepository<Log, Long> {
 	@Query(value = "SELECT IFNULL(COUNT(handle_status),0) triggerDayCount ,IFNULL(SUM(CASE WHEN (trigger_status in (0, 200) and handle_status = 0) then 1 else 0 end),0) as triggerDayCountRunning,IFNULL(SUM(CASE WHEN handle_status = 200 then 1 else 0 end),0) as triggerDayCountSuc  FROM xxl_job_log WHERE trigger_time BETWEEN ?1  and ?2", nativeQuery = true)
 	Map<String, Long> findLogReport(Date from, Date to);
 
+	Long countAllByTriggerStatusAndHandleStatus(Integer triggerStatus, Integer handleStatus);
 }

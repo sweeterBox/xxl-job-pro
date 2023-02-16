@@ -44,6 +44,10 @@ public class Init implements CommandLineRunner {
             user.setRole(1);
             userRepository.save(user);
             System.out.println("初始化管理员用户信息，用户名：" + username + "密码：" + password);
+            System.out.println("JAVA_HOME:" + System.getProperty("java.home"));
+            System.out.println("JAVA_VERSION:" + System.getProperty("java.version"));
+            System.out.println("USER_HOME:" + System.getProperty("user.home"));
+            System.out.println("USER_NAME:" + System.getProperty("user.name"));
         }
 
     }

@@ -26,7 +26,10 @@
                         </span>
                         <div class="info-box-content">
                             <span class="info-box-text">${I18n.job_dashboard_job_num}</span>
-                            <span class="info-box-number" id="jobInfoCount">0</span>
+                            <p>
+                                <span class="" id="taskRunningNum">0</span>/
+                                <span class="" id="taskAllNum">0</span>
+                            </p>
 
                             <div class="progress">
                                 <div class="progress-bar" style="width: 100%"></div>
@@ -41,7 +44,11 @@
                         <span class="info-box-icon"><i class="fas fa-tag"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">${I18n.job_dashboard_trigger_num}</span>
-                            <span class="info-box-number" id="jobLogCount">0</span>
+                            <p>
+                                <span class="" id="triggerSuccessNum">0</span>/
+                                <span class="" id="triggerAllNum">0</span>
+                            </p>
+
                             <div class="progress">
                                 <div class="progress-bar" style="width: 100%"></div>
                             </div>
@@ -56,7 +63,11 @@
                         <span class="info-box-icon"><i class="fas fa-paperclip"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">${I18n.job_dashboard_jobgroup_num}</span>
-                            <span class="info-box-number" id="executorCount">0</span>
+                            <p>
+                                <span class="" id="instanceUpNum">0</span>/
+                                <span class="" id="instanceAllNum">0</span>
+                            </p>
+
 
                             <div class="progress">
                                 <div class="progress-bar" style="width: 100%"></div>

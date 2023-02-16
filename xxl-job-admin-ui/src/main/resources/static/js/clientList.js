@@ -59,7 +59,15 @@ $(function() {
             {
                 "data": 'healthy',
                 "width":'5%',
-                "visible" : true
+                "visible" : true,
+                "render": function (data, type, row ) {
+                    if (data) {
+                        return '<span style="color: #13ce66">'+data+'</span>';
+                    }else {
+                        return '<span  style="color: #dc3545">'+data+'</span>';
+                    }
+                    return data;
+                }
             },
             {
                 "data": 'ephemeral',
@@ -90,7 +98,16 @@ $(function() {
             {
                 "data": 'status',
                 "width":'10%',
-                "visible" : true
+                "visible" : true,
+                "render": function (data, type, row ) {
+                    if ('UP' == data) {
+                        return '<span style="color: #13ce66">UP</span>';
+                    }
+                    if ('DOWN' == data){
+                        return '<span  style="color: #ffc107 ">DOWN</span>';
+                    }
+                    return data;
+                }
             }
         ],
         "language" : {

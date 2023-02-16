@@ -131,8 +131,6 @@ $(function() {
 				Toasts.success()
 			},
 			error: function (XMLHttpRequest, textStatus, errorThrown) {
-				console.error(textStatus)
-				console.error(errorThrown)
 				dataTable.fnDraw();
 				Toasts.error()
 			}

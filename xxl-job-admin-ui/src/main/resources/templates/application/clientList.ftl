@@ -52,9 +52,9 @@
                                         <th name="healthy">健康</th>
                                         <th name="ephemeral">临时</th>
                                         <th name="weight">权重</th>
-                                        <th name="host">host</th>
-                                        <th name="port">port</th>
-                                        <th name="url">url</th>
+                                        <th name="host">HOST</th>
+                                        <th name="port">PORT</th>
+                                        <th name="url">URL</th>
                                         <th name="status">状态</th>
                                     </tr>
                                     </thead>

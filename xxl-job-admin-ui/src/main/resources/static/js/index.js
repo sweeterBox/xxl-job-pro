@@ -202,12 +202,12 @@ $(function () {
             url : base_url + '/v1.0/dashboard/statistics',
             dataType : "json",
             success : function(data){
-                $("#executorCount").text(data.executorCount)
-                $("#jobLogCount").text(data.jobLogCount)
-                $("#jobInfoCount").text(data.jobInfoCount)
-                // $("#jobLogSuccessCount").text(data.jobLogSuccessCount)
-
-                console.log(data);
+                $("#taskAllNum").text(data.taskAllNum)
+                $("#taskRunningNum").text(data.taskRunningNum)
+                $("#triggerAllNum").text(data.triggerAllNum)
+                $("#triggerSuccessNum").text(data.triggerSuccessNum)
+                $("#instanceAllNum").text(data.instanceAllNum)
+                $("#instanceUpNum").text(data.instanceUpNum)
             }
         });
 

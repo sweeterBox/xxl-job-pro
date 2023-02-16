@@ -1,5 +1,7 @@
 package com.xxl.job.admin.api;
 
+import com.xxl.job.admin.model.StatisticsInfo;
+import com.xxl.job.admin.model.SystemInfo;
 import com.xxl.job.admin.service.DashboardService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.Map;
+
 
 /**
  * @author sweeter
@@ -32,10 +35,18 @@ public class DashboardController {
 
     @ApiOperation("统计(card)")
     @GetMapping(value = "statistics")
-    public ResponseEntity<Map<String, Object>> statistics() {
-        Map<String, Object> dashboardMap = dashboardService.statistics();
-        return ResponseEntity.ok(dashboardMap);
+    public ResponseEntity<StatisticsInfo> statistics() {
+        StatisticsInfo info = dashboardService.statistics();
+        return ResponseEntity.ok(info);
     }
+
+    @ApiOperation("system Info")
+    @GetMapping(value = "systemInfo")
+    public ResponseEntity<SystemInfo> systemInfo() {
+        SystemInfo systemInfo = dashboardService.findSystemInfo();
+        return ResponseEntity.ok(systemInfo);
+    }
+
 
 
 }

@@ -229,6 +229,7 @@ $(function() {
 				type : 'POST',
 				url : url,
 				success : function(data){
+					Toasts.success();
 					dataTable.fnDraw();
 				}
 			});
@@ -241,6 +242,7 @@ $(function() {
 				type : 'POST',
 				url : url,
 				success : function(data){
+					Toasts.success();
 					dataTable.fnDraw();
 				}
 			});
@@ -251,6 +253,7 @@ $(function() {
 				type : 'DELETE',
 				url : url,
 				success : function(data){
+					Toasts.success();
 					dataTable.fnDraw();
 				}
 			});
@@ -280,15 +283,11 @@ $(function() {
 			contentType: 'application/json',
 			data: JSON.stringify(param),
             success : function(data){
-				$('#jobTriggerModal').modal('hide');
-			//	dataTable.fnDraw();
+				Toasts.success({title: '成功', content: '触发成功'});
+				$('#jobTriggerModal').modal({backdrop: false, keyboard: false}).modal('hide');
             }
         });
     });
-
-/*    $("#jobTriggerModal").on('hide.bs.modal', function () {
-        $("#jobTriggerModal .form")[0].reset();
-    });*/
 
 
     // job registryinfo

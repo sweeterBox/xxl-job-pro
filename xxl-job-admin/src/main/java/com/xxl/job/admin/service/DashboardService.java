@@ -1,5 +1,8 @@
 package com.xxl.job.admin.service;
 
+import com.xxl.job.admin.model.StatisticsInfo;
+import com.xxl.job.admin.model.SystemInfo;
+
 import java.util.Date;
 import java.util.Map;
 
@@ -11,6 +14,8 @@ public interface DashboardService {
 
     Map<String, Object> chart(Date startDate, Date endDate);
 
-    Map<String, Object> statistics();
+    StatisticsInfo statistics();
+
+    SystemInfo findSystemInfo();
 
 }

@@ -18,4 +18,6 @@ public interface InstanceRepository extends BaseJpaRepository<Instance, Long> {
 
     List<Instance> findAllByNameIn(List<String> names);
 
+    Long countAllByStatus(InstanceStatus status);
+
 }

@@ -18,7 +18,7 @@
         }
     </style>
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="sidebar-mini layout-footer-fixed control-sidebar-slide-open layout-fixed layout-navbar-fixed">
 <div class="wrapper">
     <!-- header -->
     <@netCommon.commonHeader />

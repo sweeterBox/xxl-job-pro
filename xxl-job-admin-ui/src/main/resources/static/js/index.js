@@ -80,7 +80,7 @@ $(function () {
                    }
                },
                legend: {
-                   data:[I18n.joblog_status_suc, I18n.joblog_status_fail, I18n.joblog_status_running]
+                   data:[I18n.joblog_status_suc, I18n.joblog_status_fail]
                },
                toolbox: {
                    feature: {
@@ -125,16 +125,9 @@ $(function () {
                        },
                        areaStyle: {normal: {}},
                        data: data.triggerDayCountFailList
-                   },
-                   {
-                       name:I18n.joblog_status_running,
-                       type:'line',
-                       stack: 'Total',
-                       areaStyle: {normal: {}},
-                       data: data.triggerDayCountRunningList
                    }
                ],
-                color:['#00A65A', '#c23632', '#F39C12']
+                color:['#28a745', '#f6236f']
         };
 
         var lineChart = echarts.init(document.getElementById('lineChart'));
@@ -158,7 +151,7 @@ $(function () {
             legend: {
                 orient: 'vertical',
                 left: 'left',
-                data: [I18n.joblog_status_suc, I18n.joblog_status_fail, I18n.joblog_status_running ]
+                data: [I18n.joblog_status_suc, I18n.joblog_status_fail]
             },
             series : [
                 {
@@ -174,10 +167,6 @@ $(function () {
                         {
                             name:I18n.joblog_status_fail,
                             value:data.triggerCountFailTotal
-                        },
-                        {
-                            name:I18n.joblog_status_running,
-                            value:data.triggerCountRunningTotal
                         }
                     ],
                     itemStyle: {
@@ -189,7 +178,7 @@ $(function () {
                     }
                 }
             ],
-            color:['#00A65A', '#c23632', '#F39C12']
+            color:['#28a745', '#f6236f']
         };
         var pieChart = echarts.init(document.getElementById('pieChart'));
         pieChart.setOption(option);
@@ -211,6 +200,54 @@ $(function () {
             }
         });
 
+    }
+
+    systemInfo();
+    function systemInfo() {
+        $.ajax({
+            type : 'GET',
+            url : base_url + '/v1.0/dashboard/systemInfo',
+            dataType : "json",
+            success : function(data){
+                $("#initHeapMemorySize").text(formatBytes(data.heapMemory.initMemorySize))
+                $("#maxHeapMemorySize").text(formatBytes(data.heapMemory.maxMemorySize));
+                $("#usedHeapMemorySize").text(formatBytes(data.heapMemory.usedMemorySize));
+
+                $("#initNonHeapMemorySize").text(formatBytes(data.nonHeapMemory.initMemorySize));
+                $("#maxNonHeapMemorySize").text('-');
+                $("#usedNonHeapMemorySize").text(formatBytes(data.nonHeapMemory.usedMemorySize));
+
+                $("#totalPhysicalMemorySize").text(formatBytes(data.physicalMemory.totalPhysicalMemorySize));
+                $("#freePhysicalMemorySize").text(formatBytes(data.physicalMemory.freePhysicalMemorySize));
+                $("#usedPhysicalMemorySize").text(formatBytes(data.physicalMemory.usedPhysicalMemorySize));
+
+                $("#pid").text(data.pid);
+                $("#osName").text(data.osName);
+                $("#cpuCoreSize").text(data.cpuCoreSize);
+                $("#totalThread").text(data.totalThread);
+                $("#startTime").text(data.startTime);
+                updateRunTimeLength(data.startTime);
+            }
+        });
+
+    }
+
+    startClock();
+
+    /**
+     * 定时更新系统运行时长
+     */
+    function startClock() {
+       let clock = setInterval(function(){
+           var startTime = $("#startTime").text();
+           if (startTime) {
+               updateRunTimeLength(startTime);
+           }
+        }, 1000);
+    }
+    function updateRunTimeLength(startTime) {
+        var span = moment.duration(moment() - moment(new Date(startTime)));
+        $('#runTimeLength').text(span.days() + '天' + span.hours() + '小时' + span.minutes() + '分钟' + span.seconds() + '秒');
     }
 
 });

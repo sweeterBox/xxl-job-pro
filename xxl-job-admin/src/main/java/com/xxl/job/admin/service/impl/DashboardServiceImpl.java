@@ -136,6 +136,7 @@ public class DashboardServiceImpl implements DashboardService {
             String osName = System.getProperty("os.name");
             info.setOsName(osName);
 
+            //系统物理内存
             info.setPhysicalMemory(new SystemInfo.PhysicalMemory(osmxb.getTotalPhysicalMemorySize(), osmxb.getFreePhysicalMemorySize(), osmxb.getTotalPhysicalMemorySize() - osmxb.getFreePhysicalMemorySize()));
 
             ThreadGroup parentThread;

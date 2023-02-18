@@ -29,9 +29,7 @@
 
 body {
     box-shadow: 5px 5px 5px rgba(255, 255, 255, 0) !important;
-    margin-right: 0 !important;
-    margin-left: 0 !important;
-    margin-bottom: 0 !important;
+    margin: 0 !important;
     overflow-x: hidden;
     /*
     font-size: 14px;
@@ -189,4 +187,42 @@ textarea:focus-visible,textarea:focus{
     background-color: #f8f9fa !important;
     border-color: #f8f9fa !important;
     color: #ffc107 !important;
+}
+
+.layout-navbar-fixed .os-content{
+    padding: 30px !important;
+}
+
+.layout-navbar-fixed .os-viewport{
+    left: -25px !important;
+}
+
+.brand-link .brand-image {
+    float: left;
+    line-height: .8;
+    margin-left: 0.2rem !important;
+    margin-right: 0.5rem;
+    margin-top: -3px;
+    max-height: 33px;
+    width: auto;
+}
+
+.content-wrapper>.content {
+    padding: 2px 0.5rem !important;
+}
+
+.info-box-card {
+    background: #fff linear-gradient(180deg,#fff,#fff) repeat-x!important;
+    color:#1f2d3d !important;
+}
+
+
+.info-box-card  .progress .progress-bar {
+    background-color: #6c757d !important;
+}
+.info-box-card  .info-box-icon {
+    min-width: 100px !important;
+}
+.info-box-card  .info-box-icon i{
+    margin: 1px;
 }

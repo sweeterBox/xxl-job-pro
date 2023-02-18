@@ -12,7 +12,7 @@ spring:
         password: ${nacos.password:nacos}
         username: ${nacos.username:nacos}
         server-addr: ${nacos.server-addr:10.0.0.100:8848}
-        namespace: ${nacos.namespace:public}
+        namespace: ${nacos.namespace:xxl}
         metadata:
           'xxl.job.client': true
       config:

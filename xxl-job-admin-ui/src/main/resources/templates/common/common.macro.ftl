@@ -70,14 +70,14 @@
 
 	<script type="text/javascript" src="${request.contextPath}/static/js/pxmu.min.js"></script>
 	<script src="${request.contextPath}/static/js/toasts.js"></script>
-	<script src="${request.contextPath}/static/js/common.1.js"></script>
+	<script src="${request.contextPath}/static/js/common.js"></script>
 
 </#macro>
 
 <#macro commonHeader>
 		<nav class="main-header navbar navbar-expand navbar-white navbar-light">
 			<!-- Left navbar links -->
-			<ul class="navbar-nav">
+			<ul class="navbar-nav" id="collapse">
 				<li class="nav-item">
 					<a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
 				</li>
@@ -91,17 +91,11 @@
 
 			<!-- Right navbar links -->
 			<ul class="navbar-nav ml-auto">
-<#--				<li class="nav-item">
+				<li class="nav-item">
 					<a class="nav-link" data-widget="fullscreen" href="#" role="button">
 						<i class="fas fa-expand-arrows-alt"></i>
 					</a>
-				</li>-->
-				<li class="nav-item">
-					<a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
-						<i class="fas fa-th-large"></i>
-					</a>
 				</li>
-
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						${I18n.system_welcome} ${Request["XXL_JOB_LOGIN_IDENTITY"].username}
@@ -144,15 +138,18 @@
 
 <#macro commonLeft menuCode >
 	<!-- Left side column. contains the logo and sidebar -->
+<#--
 	<aside class="main-sidebar sidebar-dark-primary elevation-4">
+-->
+	<aside class="main-sidebar elevation-4 sidebar-light-teal">
 		<!-- Brand Logo -->
-		<a href="${request.contextPath}/" class="brand-link" style="text-align: center">
-			<img src="https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+		<a href="${request.contextPath}/" class="brand-link" style="text-align: center;min-height: 50px">
+			<img src="static/images/xxl-logo.jpg" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
 			<span class="brand-text" style="font-weight: bolder !important;font-size: 28px  !important">XXL-JOB Pro</span>
 		</a>
 
 		<!-- Sidebar -->
-		<div class="sidebar">
+		<div class="sidebar os-host os-host-resize-disabled os-host-transition os-host-overflow os-host-overflow-y os-host-scrollbar-horizontal-hidden os-theme-light">
 			<nav class="mt-2">
 			<!-- sidebar menu: : style can be found in sidebar.less -->
 			<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" id="menus" data-menucode="${menuCode}">
@@ -172,10 +169,10 @@
 
 <#macro commonFooter >
 	<footer class="main-footer">
-		<strong>Copyright &copy; 2020-${.now?string('yyyy')} <a href="">XXL-JOB Pro</a>.</strong>
+		<strong>Copyright &copy; 2023-${.now?string('yyyy')} <a href="">XXL-JOB Pro</a>.</strong>
 		All rights reserved.
 		<div class="float-right d-none d-sm-inline-block">
-			<b>Version</b> ${I18n.admin_version}
+			<b>version</b> ${I18n.admin_version}
 		</div>
 	</footer>
 </#macro>

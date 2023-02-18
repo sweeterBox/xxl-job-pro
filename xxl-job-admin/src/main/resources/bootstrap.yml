@@ -11,7 +11,7 @@ spring:
         password: ${nacos.password:nacos}
         username: ${nacos.username:nacos}
         server-addr: ${nacos.server-addr:10.0.0.100:8848}
-        namespace: ${nacos.namespace:public}
+        namespace: ${nacos.namespace:xxl}
         group: ${nacos.group:DEFAULT_GROUP}
         metadata:
           'xxl.job.admin': true
@@ -21,5 +21,5 @@ spring:
         username: ${spring.cloud.nacos.discovery.username}
         server-addr: ${spring.cloud.nacos.discovery.server-addr}
         namespace: ${spring.cloud.nacos.discovery.namespace}
-        file-extension: yaml
+        file-extension: yml
         group: ${spring.cloud.nacos.discovery.group}

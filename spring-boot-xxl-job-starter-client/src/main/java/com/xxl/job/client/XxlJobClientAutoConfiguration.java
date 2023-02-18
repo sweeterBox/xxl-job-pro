@@ -112,7 +112,7 @@ public class XxlJobClientAutoConfiguration {
                 , JobThreadRepository jobThreadRepository, Executor executor, ProxyProperties proxyProperties) {
             XxlJobSpringExecutor xxlJobSpringExecutor = new XxlJobSpringExecutor();
             //TODO 需要支持多admin
-           // xxlJobSpringExecutor.setAdminAddresses(this.xxlJobProperties.getAdminAddresses()[0]);
+            xxlJobSpringExecutor.setAdminAddresses(this.xxlJobProperties.getAddress());
             xxlJobSpringExecutor.setName(xxlJobProperties.getName());
             xxlJobSpringExecutor.setTitle(xxlJobProperties.getTitle());
             xxlJobSpringExecutor.setIp(xxlJobProperties.getIp());

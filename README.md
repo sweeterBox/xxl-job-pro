@@ -1,7 +1,7 @@
 # XXL-JOB Pro
 >基于XXL-JOB项目二次开发,由于变动较大不准备申请合并到XXL-JOB仓库，后续将独立维护
 ## 简介
-  基于学习[XXL-JOB](https://github.com/xuxueli/xxl-job)的目的,作者尝试编码了XXL-JOB Pro，主要目的是让XXL-JOB更好的和Spring Cloud架构融合。
+  出于学习[XXL-JOB](https://github.com/xuxueli/xxl-job)的目的,作者尝试编码了XXL-JOB Pro，主要目的是让XXL-JOB更好的和Spring Cloud架构融合。
 ## 原XXL-JOB文档
 - [XXL-JOB](https://github.com/xuxueli/xxl-job/blob/master/README.md)  
 - [XXL-JOB官方文档](https://www.xuxueli.com/xxl-job/#%E3%80%8A%E5%88%86%E5%B8%83%E5%BC%8F%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E5%B9%B3%E5%8F%B0XXL-JOB%E3%80%8B)
@@ -31,6 +31,7 @@
 ## Supported database
 - mysql v5.7
 - mariadb v10.6.x
+### 待测试
 - h2
 - TiDB
 - oceanBase
@@ -43,6 +44,7 @@
 
 ```shell script
 docker pull sweeter/xxl-job-pro-admin:v2.4
+docker run --network=host  sweeter/xxl-job-pro-admin:v2.4
 ```
 
 ## 使用
@@ -56,3 +58,11 @@ docker pull sweeter/xxl-job-pro-admin:v2.4
 </dependency>
 ```
 - 支持的nacos版本 v2.0.3
+
+
+## 消息通知
+### 邮件通知
+
+### 飞书通知
+
+### webhook通知

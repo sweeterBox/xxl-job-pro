@@ -1,3 +1,5 @@
+function formatBytes(a,b=2,k=1024){with(Math){let d=floor(log(a)/log(k));return 0==a?"0 Bytes":parseFloat((a/pow(k,d)).toFixed(max(0,b)))+" "+["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"][d]}}
+
 $.fn.serializeJson = function () {
     var serializeObj = {};
     var array = this.serializeArray();
@@ -204,5 +206,27 @@ $(function(){
         $("#updatePwdModal .form .form-group").removeClass("has-error");
     });
 
+
+    $("#collapse").click(function(){
+        let bodyClass = $('body').attr('class');
+        let collapse = bodyClass && bodyClass.search("sidebar-collapse") !== -1;
+        console.log(collapse)
+        localStorage.setItem("collapse", !collapse);
+    });
+
+    initCollapse();
+    function initCollapse() {
+        let collapse = localStorage.getItem("collapse");
+        let bodyClass = $('body').attr('class');
+
+        if (collapse && collapse == 'true') {
+            $('body').addClass('sidebar-collapse');
+        }else {
+            let bodyCollapse = bodyClass && bodyClass.search("sidebar-collapse") !== -1;
+            if (bodyCollapse) {
+                $('body').removeClass('sidebar-collapse')
+            }
+        }
+    }
 });
 

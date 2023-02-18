@@ -32,16 +32,6 @@ public class WebController {
         return "application/clientList";
     }
 
-    @GetMapping("/jobcode")
-    public String jobcode() {
-        return "jobcode/jobcode.index";
-    }
-
-    @GetMapping("/joblog/logDetailPage")
-    public String logDetailPage() {
-        return "joblog/joblog.detail";
-    }
-
     @GetMapping("/user")
     public String user() {
         return "user/index";

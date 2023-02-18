@@ -26,10 +26,10 @@ public class UiController {
     public ResponseEntity<List<Menu>> menus() {
         String contextPath = applicationContext.getEnvironment().getProperty("server.servlet.context-path");
         List<Menu> menus = new ArrayList<>();
-        menus.add(new Menu("nav-icon fas fa-table", "application", "应用", contextPath + "/application", "_self", 1));
-        menus.add(new Menu("nav-icon fas fa-th", "user", "用户", contextPath +"/user", "_self",4));
-        menus.add(new Menu("nav-icon fas fa-book", "log", "日志", contextPath +"/log", "_self",3));
-        menus.add(new Menu("nav-icon fas fa-table", "task", "任务", contextPath +"/task", "_self",2));
+        menus.add(new Menu("nav-icon fas fa-table", "application", "应用管理", contextPath + "/application", "_self", 1));
+        menus.add(new Menu("nav-icon fas fa-th", "user", "用户管理", contextPath +"/user", "_self",4));
+        menus.add(new Menu("nav-icon fas fa-book", "log", "调度日志", contextPath +"/log", "_self",3));
+        menus.add(new Menu("nav-icon fas fa-table", "task", "调度任务", contextPath +"/task", "_self",2));
        // menus.add(new Menu("nav-icon fas fa-tachometer-alt", "index", "Dashboard", contextPath +"/", "_self",0));
         menus.add(new Menu("nav-icon fas fa-tachometer-alt", "dashboard", "看板", contextPath +"/index", "_self", 0));
         menus.add(new Menu("nav-icon fas fa-tachometer-alt", "api-doc", "Api Doc", contextPath +"/doc.html", "_blank", 5));

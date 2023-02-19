@@ -53,7 +53,30 @@
 docker pull sweeter/xxl-job-pro-admin:v2.4
 docker run --network=host  sweeter/xxl-job-pro-admin:v2.4
 ```
-
+- docker-compose
+```yaml
+version: '3'
+services:
+  xxl-job-pro-admin:
+    container_name: xxl-job-pro-admin
+    image: sweeter/xxl-job-pro-admin:v2.4
+    ports:
+      - 8282:8282
+    environment:
+      - TZ=Asia/Shanghai
+      - JAVA_OPTS=-Xms1g -Xmx1g
+      - nacos.namespace=${NACOS_NAMESPACE}
+      - nacos.server-addr=${NACOS_SERVER_ADDR}
+      - nacos.username=${NACOS_USERNAME}
+      - nacos.password=${NACOS_PASSWORD}
+      - nacos.group=${NACOS_GROUP}
+      - port=8282
+    network_mode: host
+    restart: always
+```
+```shell script
+docker-compose up -d
+```
 ## 使用
 ### spring-cloud 微服务架构项目
 - spring-cloud-alibaba项目中引入如下maven依赖

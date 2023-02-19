@@ -13,9 +13,9 @@
 - UI界面美化
 - 前端与后端代码分离，便于重写前端UI
 - 添加swagger接口文档
-## 待修改功能点
-- 增加任务监控回调api hook，在配置文件中增加回调通知配置地址（支持数组）参照spring-boot-admin 实现邮件、钉钉及飞书的通知消息
+- 增加任务监控回调api hook，参照spring-boot-admin 实现邮件、钉钉及飞书的通知消息
 - 增加监控参数包括内存、网络、磁盘等
+## 待修改功能点
 - 用户登录支持oauth2
 - tomcat->netty springMvc ->webflux
 - 优化执行器的执行日志，最好能在admin中实时显示  
@@ -38,7 +38,14 @@
 - oracle
 - Postgresql
 
+## 功能预览
+- 登录页
+![](./doc/img/xxl-job-pro-login.jpg)
+-首页信息看板
+![](./doc/img/xxl-job-pro-index.jpg)
 
+- 任务调度管理
+![](./doc/img/xxl-job-pro-task.jpg)
 
 ## Docker 
 

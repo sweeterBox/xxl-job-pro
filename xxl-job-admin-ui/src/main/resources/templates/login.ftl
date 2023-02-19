@@ -245,8 +245,8 @@
 		<div class="switch_circle"></div>
 		<div class="switch_circle switch_circle-t"></div>
 		<div class="switch_container" id="switch-c1">
-			<h2 class="switch_title title" style="letter-spacing: 0;">XXL-JOB Pro </h2>
-			<p class="switch_description description">分布式任务调度平台</p>
+			<h2 class="switch_title title" style="letter-spacing: 0;">XXL-JOB Pro</h2>
+			<p class="switch_description description">轻量级分布式任务调度平台</p>
 			<p class="switch_description description">支持Spring Cloud微服务分布式架构</p>
 			<p class="switch_description description" style="color: red">内部系统，切勿暴露到公网</p>
 		</div>

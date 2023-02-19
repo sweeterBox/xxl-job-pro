@@ -153,7 +153,7 @@ public class TaskServiceImpl implements TaskService {
                 if (childJobIdItem != null && childJobIdItem.trim().length() > 0 && isNumeric(childJobIdItem)) {
                     Task childJobInfo = taskRepository.findById(Long.valueOf(childJobIdItem)).get();
                     if (childJobInfo == null) {
-                        return new R<String>(R.FAIL_CODE,
+                        return new R<>(R.FAIL_CODE,
                                 MessageFormat.format((I18nUtil.getString("jobinfo_field_childJobId") + "({0})" + I18nUtil.getString("system_not_found")), childJobIdItem));
                     }
                 } else {
@@ -212,7 +212,6 @@ public class TaskServiceImpl implements TaskService {
         if (taskOpt.isPresent()) {
             Task task = taskOpt.get();
             task.setTriggerStatus(TriggerStatus.DISABLE);
-            task.setLastTriggerTime(0L);
             task.setNextTriggerTime(0L);
             taskRepository.save(task);
             return R.SUCCESS;

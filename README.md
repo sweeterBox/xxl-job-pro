@@ -53,7 +53,7 @@
 
 ```shell script
 docker pull sweeter/xxl-job-pro-admin:v2.4
-docker run --network=host  sweeter/xxl-job-pro-admin:v2.4
+docker run --network=host --restart=always  --name xxl-job-pro-admin -d sweeter/xxl-job-pro-admin:v2.4
 ```
 - docker-compose
 ```yaml
@@ -66,7 +66,7 @@ services:
       - 8282:8282
     environment:
       - TZ=Asia/Shanghai
-      - JAVA_OPTS=-Xms1g -Xmx1g
+      - JAVA_OPTS=-Dfile.encoding=UTF-8 -server -d64 -Xmx512g -Xms512g -Djava.security.egd=file:/dev/./urandom  -XX:+PrintGCDetails -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCDateStamps -XX:+UseGCLogFileRotation -XX:GCLogFileSize=10M -XX:NumberOfGCLogFiles=10 -Xloggc:./logs/gc.log -XX:+UseG1GC -XX:+PrintTenuringDistribution -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=./logs/dump.hprof
       - nacos.namespace=${NACOS_NAMESPACE}
       - nacos.server-addr=${NACOS_SERVER_ADDR}
       - nacos.username=${NACOS_USERNAME}
@@ -77,6 +77,11 @@ services:
     restart: always
 ```
 ```shell script
+export NACOS_NAMESPACE=XXL
+export NACOS_SERVER_ADDR=127.0.0.1:8848
+export NACOS_USERNAME=nacos
+export NACOS_PASSWORD=nacos
+export NACOS_GROUP=DEFAULT_GROUP
 docker-compose up -d
 ```
 ## 使用

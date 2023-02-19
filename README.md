@@ -39,13 +39,15 @@
 - Postgresql
 
 ## 功能预览
+
 - 登录页
-![](./doc/img/xxl-job-pro-login.jpg)
--首页信息看板
-![](./doc/img/xxl-job-pro-index.jpg)
+![登录页](./doc/img/xxl-job-pro-login.jpg)
+
+- 首页信息看板
+![首页信息看板](./doc/img/xxl-job-pro-index.jpg)
 
 - 任务调度管理
-![](./doc/img/xxl-job-pro-task.jpg)
+![任务调度管理](./doc/img/xxl-job-pro-task.jpg)
 
 ## Docker 
 

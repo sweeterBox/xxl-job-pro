@@ -1,13 +1,13 @@
 package com.xxl.job.client.task;
 
-import com.xxl.job.client.handler.AbstractJobHandler;
+import com.xxl.job.client.handler.AbstractHandler;
 import com.xxl.job.client.context.XxlJobContext;
 import com.xxl.job.client.context.XxlJobHelper;
 import com.xxl.job.client.executor.model.HandleCallbackParam;
 import com.xxl.job.model.R;
 import com.xxl.job.client.executor.model.TriggerParam;
 import com.xxl.job.client.log.XxlJobFileAppender;
-import com.xxl.job.client.repository.JobThreadRepository;
+import com.xxl.job.client.repository.ScheduledThreadRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.PrintWriter;
@@ -27,7 +27,7 @@ public class ScheduledTaskThread extends Thread{
 
 	private int jobId;
 
-	private AbstractJobHandler handler;
+	private AbstractHandler handler;
 
 	private LinkedBlockingQueue<TriggerParam> triggerQueue;
 	// avoid repeat trigger for the same TRIGGER_LOG_ID
@@ -42,10 +42,10 @@ public class ScheduledTaskThread extends Thread{
 	// idel times
 	private int idleTimes = 0;
 
-	private JobThreadRepository jobThreadRepository;
+	private ScheduledThreadRepository jobThreadRepository;
 
 
-	public ScheduledTaskThread(int jobId, AbstractJobHandler handler, JobThreadRepository jobThreadRepository) {
+	public ScheduledTaskThread(int jobId, AbstractHandler handler, ScheduledThreadRepository jobThreadRepository) {
 		this.jobId = jobId;
 		this.handler = handler;
 		this.triggerQueue = new LinkedBlockingQueue<>();
@@ -54,7 +54,7 @@ public class ScheduledTaskThread extends Thread{
 		this.setName("xxl-job, JobThread-" + jobId + "-" + System.currentTimeMillis());
 		this.jobThreadRepository = jobThreadRepository;
 	}
-	public AbstractJobHandler getHandler() {
+	public AbstractHandler getHandler() {
 		return handler;
 	}
 
@@ -210,10 +210,14 @@ public class ScheduledTaskThread extends Thread{
 			} finally {
                 if(triggerParam != null) {
                     // callback handler info
+					if (Objects.isNull(callbackParam.getEndTime())) {
+						callbackParam.setEndTime(LocalDateTime.now());
+					}
                     if (!toStop) {
                         // commonm
 						callbackParam.setStatus(XxlJobContext.getXxlJobContext().getHandleCode());
 						callbackParam.setContent(XxlJobContext.getXxlJobContext().getHandleMsg());
+
                         TriggerCallbackThread.pushCallBack(callbackParam);
                     } else {
                         // is killed

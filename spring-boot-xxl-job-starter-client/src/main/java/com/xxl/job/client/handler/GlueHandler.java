@@ -8,13 +8,13 @@ import com.xxl.job.client.context.XxlJobHelper;
  *
  * @author xuxueli 2016-5-19 21:05:45
  */
-public class GlueJobHandler extends AbstractJobHandler {
+public class GlueHandler extends AbstractHandler {
 
 	private long glueUpdatetime;
 
-	private AbstractJobHandler jobHandler;
+	private AbstractHandler jobHandler;
 
-	public GlueJobHandler(AbstractJobHandler jobHandler, long glueUpdatetime) {
+	public GlueHandler(AbstractHandler jobHandler, long glueUpdatetime) {
 		this.jobHandler = jobHandler;
 		this.glueUpdatetime = glueUpdatetime;
 	}

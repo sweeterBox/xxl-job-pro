@@ -42,6 +42,7 @@ public class Instance extends IdEntity {
     @Column(columnDefinition ="bit(1) COMMENT '是否是临时实例'",nullable = false)
     private Boolean ephemeral;
 
+    @Column(scale = 1)
     private Double weight;
 
     private String host;

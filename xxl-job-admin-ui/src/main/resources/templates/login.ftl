@@ -7,6 +7,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>XXL-JOB Pro Admin</title>
+	<#--copy from 作者：山羊の前端小窝 https://www.bilibili.com/read/cv21632661 出处：bilibili-->
 	<style>
 		* {
 			margin: 0;
@@ -333,6 +334,8 @@
 			url : 'v1.0/auth/login',
 			success : function(data){
 				if (data && data.success) {
+					localStorage.setItem("userInfo", JSON.stringify(data.user));
+
 					pxmu.toast({
 						msg: '登录成功',
 						time: 2500,

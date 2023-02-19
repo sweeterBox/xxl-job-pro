@@ -10,10 +10,8 @@ import com.xxl.job.admin.enums.NotifyStatus;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -55,8 +53,8 @@ public class Log extends IdEntity {
 	/**
 	 * 任务调度内容
 	 */
+	@Column(columnDefinition = "TEXT COMMENT '调度内容'")
 	private String triggerContent;
-
 	/**
 	 * 执行开始时间
 	 */
@@ -81,6 +79,7 @@ public class Log extends IdEntity {
 	/**
 	 * 执行日志内容
 	 */
+	@Column(columnDefinition = "TEXT COMMENT '执行日志内容'")
 	private String handleContent;
 
 	/**

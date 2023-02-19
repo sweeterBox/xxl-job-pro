@@ -26,7 +26,6 @@ $(function() {
 					page: page,
 					size: size
 				},
-				dataType: "json",
 				success: function (d) {
 					callback({
 						recordsTotal: d.total,
@@ -702,7 +701,6 @@ $(function() {
 
 	function getTask(applicationName) {
 		$('#tasks').html('<div role="separator" class="dropdown-divider"></div>');
-
 		$.ajax({
 			type : 'GET',
 			url: base_url + '/v1.0/task/findClientTasks?applicationName=' + applicationName,
@@ -711,7 +709,11 @@ $(function() {
 					let html = "";
 					data.forEach(m => {
 						html += '<div role="separator" class="dropdown-divider"></div>'
-						html += '<a class="dropdown-item" data-name="' + m.name + '" data-description="' + m.description + '" href="#">' + m.name + '(' + m.description + ')' + '</a>';
+						if (m.deprecated) {
+							html += '<a class="dropdown-item" style="text-decoration:line-through" data-name="' + m.name + '" data-description="' + m.description + '" href="#">' + m.name + '(' + m.description + ')' + '</a>';
+						}else {
+							html += '<a class="dropdown-item" data-name="' + m.name + '" data-description="' + m.description + '" href="#">' + m.name + '(' + m.description + ')' + '</a>';
+						}
 					});
 					$('#tasks').html(html);
 				}

@@ -34,22 +34,52 @@ public class AuthServiceImpl implements AuthService {
     public AuthInfo login(HttpServletRequest request, HttpServletResponse response, ReqLogin req) {
         User user = userRepository.findByUsername(req.getUserName());
         if (user == null) {
-            return new AuthInfo("", false);
+            return new AuthInfo(null, false,null);
         }
         String slat = DigestUtils.md5DigestAsHex(user.getUsername().getBytes());
         String passwordMd5 = DigestUtils.md5DigestAsHex((DigestUtils.md5DigestAsHex(req.getPassword().getBytes()) + slat).getBytes());
         if (!passwordMd5.equals(user.getPassword())) {
-            return new AuthInfo("", false);
+            return new AuthInfo(null, false,null);
         }
         String loginToken = makeToken(user);
         CookieUtil.set(response, LOGIN_IDENTITY_KEY, loginToken, true);
-        return new AuthInfo(loginToken, true);
+        return new AuthInfo(loginToken, true,new AuthInfo.UserInfo(user.getUsername()));
     }
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         CookieUtil.remove(request, response, LOGIN_IDENTITY_KEY);
 
+    }
+
+    /**
+     * 登录状态检查
+     *
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
+     * @return if login will return true else false
+     */
+    @Override
+    public boolean loginCheck(HttpServletRequest request, HttpServletResponse response) {
+        String cookieToken = CookieUtil.getValue(request, LOGIN_IDENTITY_KEY);
+        if (cookieToken != null) {
+            User cookieUser = null;
+            try {
+                cookieUser = parseToken(cookieToken);
+            } catch (Exception e) {
+                logout(request, response);
+            }
+            if (cookieUser != null) {
+                User dbUser = userRepository.findByUsername(cookieUser.getUsername());
+                if (dbUser != null) {
+                    if (cookieUser.getPassword().equals(dbUser.getPassword())) {
+                        return true;
+                    }
+                }
+                request.setAttribute(LOGIN_IDENTITY_KEY, cookieUser);
+            }
+        }
+        return false;
     }
 
     private String makeToken(User user) {

@@ -10,7 +10,7 @@ import java.io.File;
 /**
  * Created by xuxueli on 17/4/27.
  */
-public class ScriptJobHandler extends AbstractJobHandler {
+public class ScriptHandler extends AbstractHandler {
 
     private int jobId;
 
@@ -20,7 +20,7 @@ public class ScriptJobHandler extends AbstractJobHandler {
 
     private GlueTypeEnum glueType;
 
-    public ScriptJobHandler(int jobId, long glueUpdatetime, String gluesource, GlueTypeEnum glueType){
+    public ScriptHandler(int jobId, long glueUpdatetime, String gluesource, GlueTypeEnum glueType){
         this.jobId = jobId;
         this.glueUpdatetime = glueUpdatetime;
         this.gluesource = gluesource;

@@ -49,7 +49,7 @@
             <div class="row" style="margin-top: 30px">
                 <div class="col-md-4 col-sm-6 col-12">
                     <div class="info-box info-box-card">
-                        <span class="info-box-icon" style="width: 100px">堆内存</span>
+                        <span class="info-box-icon" >堆内存</span>
                         <div class="info-box-content">
                             <span class="info-box-text">初始</span>
                             <span class="info-box-number" id="initHeapMemorySize">-</span>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="col-md-4 col-sm-6 col-12">
                     <div class="info-box info-box-card">
-                        <span class="info-box-icon" style="width: 100px">非堆内存</span>
+                        <span class="info-box-icon" >非堆内存</span>
                         <div class="info-box-content">
                             <span class="info-box-text">初始</span>
                             <span class="info-box-number" id="initNonHeapMemorySize">-</span>
@@ -83,7 +83,7 @@
                 </div>
                 <div class="col-md-4 col-sm-6 col-12">
                     <div class="info-box info-box-card">
-                        <span class="info-box-icon" style="width: 100px">OS内存</span>
+                        <span class="info-box-icon" >OS内存</span>
                         <div class="info-box-content">
                             <span class="info-box-text">总共</span>
                             <span class="info-box-number" id="totalPhysicalMemorySize">-</span>
@@ -105,7 +105,7 @@
 
                 <div class="col-md-4 col-sm-6 col-12">
                     <div class="info-box  bg-gradient-info info-box-card">
-                        <span class="info-box-icon" style="width: 100px">
+                        <span class="info-box-icon" >
                             <i class="fas fa-tasks"></i>任务数量
                         </span>
                         <div class="info-box-content">
@@ -121,7 +121,7 @@
 
                 <div class="col-md-4 col-sm-6 col-12">
                     <div class="info-box bg-gradient-success info-box-card">
-                        <span class="info-box-icon" style="width: 100px"><i class="fas fa-tag"></i>调度次数</span>
+                        <span class="info-box-icon" ><i class="fas fa-tag"></i>调度次数</span>
                         <div class="info-box-content">
                             <span class="info-box-text">成功</span>
                             <span class="info-box-number" id="triggerSuccessNum">0</span>

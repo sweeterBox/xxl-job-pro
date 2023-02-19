@@ -77,8 +77,8 @@
 <#macro commonHeader>
 		<nav class="main-header navbar navbar-expand navbar-white navbar-light">
 			<!-- Left navbar links -->
-			<ul class="navbar-nav" id="collapse">
-				<li class="nav-item">
+			<ul class="navbar-nav" >
+				<li class="nav-item" id="collapse">
 					<a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
 				</li>
 				<li class="nav-item d-none d-sm-inline-block">
@@ -98,7 +98,7 @@
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						${I18n.system_welcome} ${Request["XXL_JOB_LOGIN_IDENTITY"].username}
+						欢迎<span id="header-user-info" style="margin-left: 10px"></span>
 					</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown2">
 						<a id="updatePwd" class="dropdown-item" href="javascript:">${I18n.change_pwd}</a>
@@ -119,7 +119,7 @@
 				<div class="modal-body">
 					<form class="form-horizontal form" role="form" >
 						<div class="form-group">
-							<label for="lastname" class="col-sm-2 control-label">${I18n.change_pwd_field_newpwd}<font color="red">*</font></label>
+							<label for="password" class="col-sm-2 control-label">${I18n.change_pwd_field_newpwd}<font color="red">*</font></label>
 							<div class="col-sm-10">
 								<input type="text" class="form-control" name="password" placeholder="${I18n.system_please_input} ${I18n.change_pwd_field_newpwd}" maxlength="18" >
 							</div>
@@ -144,7 +144,7 @@
 	<aside class="main-sidebar elevation-4 sidebar-light-teal">
 		<!-- Brand Logo -->
 		<a href="${request.contextPath}/" class="brand-link" style="text-align: center;min-height: 50px">
-			<img src="static/images/xxl-logo.jpg" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+			<img src="${request.contextPath}/static/images/xxl-logo.jpg" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
 			<span class="brand-text" style="font-weight: bolder !important;font-size: 28px  !important">XXL-JOB Pro</span>
 		</a>
 

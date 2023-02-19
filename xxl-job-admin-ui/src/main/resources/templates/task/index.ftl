@@ -51,7 +51,7 @@
                 </div>
                 <div class="col-2">
                     <div class="input-group ">
-                        <input type="text" class="form-control" id="executorHandler" placeholder="${I18n.system_please_input}JobHandler" aria-label="executorHandler">
+                        <input type="text" class="form-control" id="executorHandler" placeholder="${I18n.system_please_input}Handler" aria-label="executorHandler">
                     </div>
                 </div>
                 <div class="col-2">
@@ -164,9 +164,9 @@
                             </select>
                         </div>
 
-                        <label for="tasks" class="col-sm-2 control-label">JobHandler<font color="red">*</font></label>
+                        <label for="tasks" class="col-sm-2 control-label">Handler<font color="red">*</font></label>
                         <div class="col-sm-4 input-group">
-                            <input type="text" class="form-control" name="executorHandler" list="tasks" id="executorHandler" placeholder="${I18n.system_please_input}JobHandler" maxlength="100" >
+                            <input type="text" class="form-control" name="executorHandler" list="tasks" id="executorHandler" placeholder="${I18n.system_please_input}Handler" maxlength="100" >
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">请选择</button>
                                 <div class="dropdown-menu" id="tasks">
@@ -337,9 +337,9 @@
                             </select>
                         </div>
 
-                        <label for="tasks" class="col-sm-2 control-label">JobHandler<font color="red">*</font></label>
+                        <label for="tasks" class="col-sm-2 control-label">Handler<font color="red">*</font></label>
                         <div class="col-sm-4 input-group">
-                            <input type="text" class="form-control" name="executorHandler" list="tasks" id="executorHandler" placeholder="${I18n.system_please_input}JobHandler" maxlength="100" >
+                            <input type="text" class="form-control" name="executorHandler" list="tasks" id="executorHandler" placeholder="${I18n.system_please_input}Handler" maxlength="100" >
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">请选择</button>
                                 <div class="dropdown-menu" id="tasks">

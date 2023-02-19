@@ -4,17 +4,14 @@ import com.xxl.job.client.executor.model.IdleBeatParam;
 import com.xxl.job.client.executor.model.KillParam;
 import com.xxl.job.client.executor.model.LogParam;
 import com.xxl.job.client.executor.model.TriggerParam;
-import com.xxl.job.client.handler.AbstractJobHandler;
-import com.xxl.job.client.handler.GlueJobHandler;
-import com.xxl.job.client.handler.MethodJobHandler;
-import com.xxl.job.client.handler.ScriptJobHandler;
+import com.xxl.job.client.handler.*;
 import com.xxl.job.client.enums.BlockStrategy;
 import com.xxl.job.client.executor.Executor;
 import com.xxl.job.client.glue.GlueFactory;
 import com.xxl.job.client.glue.GlueTypeEnum;
 import com.xxl.job.client.log.XxlJobFileAppender;
-import com.xxl.job.client.repository.JobHandlerRepository;
-import com.xxl.job.client.repository.JobThreadRepository;
+import com.xxl.job.client.repository.ScheduledHandlerRepository;
+import com.xxl.job.client.repository.ScheduledThreadRepository;
 import com.xxl.job.client.task.ScheduledTaskThread;
 import com.xxl.job.model.R;
 import com.xxl.job.client.executor.model.*;
@@ -30,13 +27,13 @@ public class DefaultExecutor implements Executor {
 
     private static Logger log = LoggerFactory.getLogger(DefaultExecutor.class);
 
-    private JobHandlerRepository jobHandlerRepository;
+    private ScheduledHandlerRepository scheduledHandlerRepository;
 
-    private JobThreadRepository jobThreadRepository;
+    private ScheduledThreadRepository scheduledThreadRepository;
 
-    public DefaultExecutor(JobHandlerRepository jobHandlerRepository, JobThreadRepository jobThreadRepository) {
-        this.jobHandlerRepository = jobHandlerRepository;
-        this.jobThreadRepository = jobThreadRepository;
+    public DefaultExecutor(ScheduledHandlerRepository scheduledHandlerRepository, ScheduledThreadRepository scheduledThreadRepository) {
+        this.scheduledHandlerRepository = scheduledHandlerRepository;
+        this.scheduledThreadRepository = scheduledThreadRepository;
     }
 
     @Override
@@ -48,7 +45,7 @@ public class DefaultExecutor implements Executor {
     public R<String> idleBeat(IdleBeatParam idleBeatParam) {
         // isRunningOrHasQueue
         boolean isRunningOrHasQueue = false;
-        ScheduledTaskThread jobThread = this.jobThreadRepository.findOne(idleBeatParam.getJobId());
+        ScheduledTaskThread jobThread = this.scheduledThreadRepository.findOne(idleBeatParam.getJobId());
         if (jobThread != null && jobThread.isRunningOrHasQueue()) {
             isRunningOrHasQueue = true;
         }
@@ -62,8 +59,8 @@ public class DefaultExecutor implements Executor {
     @Override
     public R<String> run(TriggerParam triggerParam) {
         // load old：jobHandler + jobThread
-        ScheduledTaskThread jobThread = this.jobThreadRepository.findOne(triggerParam.getJobId());
-        AbstractJobHandler jobHandler = jobThread != null ? jobThread.getHandler() : null;
+        ScheduledTaskThread jobThread = this.scheduledThreadRepository.findOne(triggerParam.getJobId());
+        AbstractHandler jobHandler = jobThread != null ? jobThread.getHandler() : null;
         String removeOldReason = null;
 
         // valid：jobHandler + jobThread
@@ -74,20 +71,19 @@ public class DefaultExecutor implements Executor {
         switch (glueTypeEnum) {
             case BEAN:{
                 // new jobhandler
-                AbstractJobHandler newJobHandler = this.jobHandlerRepository.findOne(triggerParam.getExecutorHandler());
+                AbstractHandler newHandler = this.scheduledHandlerRepository.findOne(triggerParam.getExecutorHandler());
 
                 // valid old jobThread
-                if (jobThread!=null && jobHandler != newJobHandler) {
+                if (jobThread != null && jobHandler != newHandler) {
                     // change handler, need kill old thread
                     removeOldReason = "change jobhandler or glue type, and terminate the old job thread.";
-
                     jobThread = null;
                     jobHandler = null;
                 }
 
                 // valid handler
                 if (jobHandler == null) {
-                    jobHandler = newJobHandler;
+                    jobHandler = newHandler;
                     if (jobHandler == null) {
                         return new R<>(R.FAIL_CODE, "job handler [" + triggerParam.getExecutorHandler() + "] not found.");
                     }
@@ -97,8 +93,8 @@ public class DefaultExecutor implements Executor {
             case GLUE_GROOVY:{
                 // valid old jobThread
                 if (jobThread != null &&
-                        !(jobThread.getHandler() instanceof GlueJobHandler
-                                && ((GlueJobHandler) jobThread.getHandler()).getGlueUpdatetime()==triggerParam.getGlueUpdatetime() )) {
+                        !(jobThread.getHandler() instanceof GlueHandler
+                                && ((GlueHandler) jobThread.getHandler()).getGlueUpdatetime()==triggerParam.getGlueUpdatetime() )) {
                     // change handler or gluesource updated, need kill old thread
                     removeOldReason = "change job source or glue type, and terminate the old job thread.";
 
@@ -109,8 +105,8 @@ public class DefaultExecutor implements Executor {
                 // valid handler
                 if (jobHandler == null) {
                     try {
-                        AbstractJobHandler originJobHandler = GlueFactory.getInstance().loadNewInstance(triggerParam.getGlueSource());
-                        jobHandler = new GlueJobHandler(originJobHandler, triggerParam.getGlueUpdatetime());
+                        AbstractHandler originJobHandler = GlueFactory.getInstance().loadNewInstance(triggerParam.getGlueSource());
+                        jobHandler = new GlueHandler(originJobHandler, triggerParam.getGlueUpdatetime());
                     } catch (Exception e) {
                         log.error(e.getMessage(), e);
                         return new R<>(R.FAIL_CODE, e.getMessage());
@@ -124,8 +120,8 @@ public class DefaultExecutor implements Executor {
             case GLUE_PYTHON:
             case GLUE_POWERSHELL:{
                 if (jobThread != null &&
-                        !(jobThread.getHandler() instanceof ScriptJobHandler
-                                && ((ScriptJobHandler) jobThread.getHandler()).getGlueUpdatetime()==triggerParam.getGlueUpdatetime() )) {
+                        !(jobThread.getHandler() instanceof ScriptHandler
+                                && ((ScriptHandler) jobThread.getHandler()).getGlueUpdatetime()==triggerParam.getGlueUpdatetime() )) {
                     // change script or gluesource updated, need kill old thread
                     removeOldReason = "change job source or glue type, and terminate the old job thread.";
 
@@ -135,7 +131,7 @@ public class DefaultExecutor implements Executor {
 
                 // valid handler
                 if (jobHandler == null) {
-                    jobHandler = new ScriptJobHandler(triggerParam.getJobId(), triggerParam.getGlueUpdatetime(), triggerParam.getGlueSource(), GlueTypeEnum.match(triggerParam.getGlueType()));
+                    jobHandler = new ScriptHandler(triggerParam.getJobId(), triggerParam.getGlueUpdatetime(), triggerParam.getGlueSource(), GlueTypeEnum.match(triggerParam.getGlueType()));
                 }
 
                 break;
@@ -175,7 +171,7 @@ public class DefaultExecutor implements Executor {
         }
         // replace thread (new or exists invalid)
         if (jobThread == null) {
-            jobThread = this.jobThreadRepository.save(triggerParam.getJobId(), jobHandler, removeOldReason);
+            jobThread = this.scheduledThreadRepository.save(triggerParam.getJobId(), jobHandler, removeOldReason);
         }
         // push data to queue
         R<String> pushResult = jobThread.pushTriggerQueue(triggerParam);
@@ -185,9 +181,9 @@ public class DefaultExecutor implements Executor {
     @Override
     public R<String> kill(KillParam killParam) {
         // kill handlerThread, and create new one
-        ScheduledTaskThread jobThread = this.jobThreadRepository.findOne(killParam.getJobId().intValue());
+        ScheduledTaskThread jobThread = this.scheduledThreadRepository.findOne(killParam.getJobId().intValue());
         if (jobThread != null) {
-            this.jobThreadRepository.remove(killParam.getJobId().intValue(), "scheduling center kill job.");
+            this.scheduledThreadRepository.remove(killParam.getJobId().intValue(), "scheduling center kill job.");
             return R.SUCCESS;
         }
 
@@ -205,14 +201,22 @@ public class DefaultExecutor implements Executor {
     @Override
     public R<List<TaskInfo>> tasks() {
         List<TaskInfo> tasks = new ArrayList<>();
-        Collection<AbstractJobHandler> handlers = this.jobHandlerRepository.findAll();
-        for (AbstractJobHandler handler : handlers) {
-            if (handler instanceof MethodJobHandler) {
-                MethodJobHandler methodJobHandler = (MethodJobHandler) handler;
+        Collection<AbstractHandler> handlers = this.scheduledHandlerRepository.findAll();
+        for (AbstractHandler handler : handlers) {
+            if (handler instanceof MethodHandler) {
+                MethodHandler methodHandler = (MethodHandler) handler;
                 TaskInfo task = new TaskInfo();
-                task.setName(methodJobHandler.getName());
-                task.setDescription(methodJobHandler.getDescription());
-                task.setDeprecated(methodJobHandler.isDeprecated());
+                task.setName(methodHandler.getName());
+                task.setDescription(methodHandler.getDescription());
+                task.setDeprecated(methodHandler.isDeprecated());
+                tasks.add(task);
+            }
+            if (handler instanceof BeanHandler) {
+                BeanHandler beanHandler = (BeanHandler) handler;
+                TaskInfo task = new TaskInfo();
+                task.setName(beanHandler.getName());
+                task.setDescription(beanHandler.getDescription());
+                task.setDeprecated(beanHandler.isDeprecated());
                 tasks.add(task);
             }
         }

@@ -51,7 +51,7 @@ public class XxlJobCompleter {
         if (XxlJobContext.HANDLE_CODE_SUCCESS == log.getHandleStatus()) {
             Task info = SpringContextUtils.getBean(TaskRepository.class).getOne(log.getTaskId());
             if (info !=null && info.getChildJobId()!=null && info.getChildJobId().trim().length()>0) {
-                triggerChildMsg = "<br><br><span style=\"color:#00c0ef;\" > "+ I18nUtil.getString("jobconf_trigger_child_run") +"<<<<<<<<<<< </span><br>";
+                triggerChildMsg = "<br><br><span style=\"color:#00c0ef;\" > "+ I18nUtil.getString("jobconf_trigger_child_run") +"</span><br>";
 
                 String[] childJobIds = info.getChildJobId().split(",");
                 for (int i = 0; i < childJobIds.length; i++) {

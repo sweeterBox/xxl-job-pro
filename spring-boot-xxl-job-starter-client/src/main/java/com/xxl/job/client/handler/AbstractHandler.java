@@ -5,7 +5,7 @@ package com.xxl.job.client.handler;
  *
  * @author xuxueli 2015-12-19 19:06:38
  */
-public abstract class AbstractJobHandler {
+public abstract class AbstractHandler {
 
 	/**
 	 * execute handler, invoked when executor receives a scheduling request

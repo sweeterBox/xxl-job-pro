@@ -174,43 +174,32 @@ $(function(){
             element.parent('div').append(error);
         },
         submitHandler : function(form) {
-            $.post(base_url + "/user/updatePwd",  $("#updatePwdModal .form").serialize(), function(data, status) {
-                if (data.code == 200) {
-                    $('#updatePwdModal').modal('hide');
 
-                    layer.msg( I18n.change_pwd_suc_to_logout );
-                    setTimeout(function(){
-                        $.post(base_url + "/logout", function(data, status) {
-                            if (data.code == 200) {
-                                window.location.href = base_url + "/";
-                            } else {
-                                layer.open({
-                                    icon: '2',
-                                    content: (data.msg|| I18n.logout_fail)
-                                });
-                            }
-                        });
-                    }, 500);
-                } else {
-                    layer.open({
-                        icon: '2',
-                        content: (data.msg|| I18n.change_pwd + I18n.system_fail )
+            $.ajax({
+                type: 'PUT',
+                url: base_url + "/v1.0/user/changePwd",
+                data: {
+                    password: $("#updatePwdModal .form input[name='password']").val(),
+                },
+                success: function (d) {
+                    $.ajax({
+                        type : 'DELETE',
+                        url : base_url + "/v1.0/auth/logout",
+                        success : function(data){
+                            //删除缓存
+                            localStorage.removeItem("userInfo");
+                            window.location.reload();
+                        }
                     });
                 }
             });
         }
-    });
-    $("#updatePwdModal").on('hide.bs.modal', function () {
-        $("#updatePwdModal .form")[0].reset();
-        updatePwdModalValidate.resetForm();
-        $("#updatePwdModal .form .form-group").removeClass("has-error");
     });
 
 
     $("#collapse").click(function(){
         let bodyClass = $('body').attr('class');
         let collapse = bodyClass && bodyClass.search("sidebar-collapse") !== -1;
-        console.log(collapse)
         localStorage.setItem("collapse", !collapse);
     });
 
@@ -226,6 +215,15 @@ $(function(){
             if (bodyCollapse) {
                 $('body').removeClass('sidebar-collapse')
             }
+        }
+    }
+
+    initUserInfo();
+    function initUserInfo() {
+        let userInfo = localStorage.getItem("userInfo");
+        if (userInfo) {
+            let user = JSON.parse(userInfo);
+            $('#header-user-info').text(user.username);
         }
     }
 });

@@ -2,6 +2,7 @@ package com.xxl.job.client.executor;
 
 import com.xxl.job.client.annotation.ScheduledTask;
 import com.xxl.job.client.glue.GlueFactory;
+import com.xxl.job.client.handler.AbstractScheduledTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -67,22 +68,29 @@ public class XxlJobSpringExecutor extends XxlJobExecutor implements ApplicationC
         String[] beanDefinitionNames = applicationContext.getBeanNamesForType(Object.class, false, true);
         for (String beanDefinitionName : beanDefinitionNames) {
             Object bean = applicationContext.getBean(beanDefinitionName);
-            // referred to ：org.springframework.context.event.EventListenerMethodProcessor.processBean
-            Map<Method, ScheduledTask> annotatedMethods = null;
-            try {
-                annotatedMethods = MethodIntrospector.selectMethods(bean.getClass(), (MethodIntrospector.MetadataLookup<ScheduledTask>) method -> AnnotatedElementUtils.findMergedAnnotation(method, ScheduledTask.class));
-            } catch (Throwable ex) {
-                logger.error("xxl-job method-jobhandler resolve error for bean[" + beanDefinitionName + "].", ex);
-            }
-            if (annotatedMethods == null || annotatedMethods.isEmpty()) {
-                continue;
-            }
+            if (bean instanceof AbstractScheduledTask) {
+                AbstractScheduledTask scheduledTask = (AbstractScheduledTask) bean;
+                super.registryBeanHandler(scheduledTask);
+            }else {
+                // referred to ：org.springframework.context.event.EventListenerMethodProcessor.processBean
+                Map<Method, ScheduledTask> annotatedMethods = null;
+                try {
+                    annotatedMethods = MethodIntrospector.selectMethods(bean.getClass(), (MethodIntrospector.MetadataLookup<ScheduledTask>) method -> AnnotatedElementUtils.findMergedAnnotation(method, ScheduledTask.class));
+                } catch (Throwable ex) {
+                    logger.error("xxl-job method-jobhandler resolve error for bean[" + beanDefinitionName + "].", ex);
+                }
+                if (annotatedMethods == null || annotatedMethods.isEmpty()) {
+                    continue;
+                }
 
-            for (Map.Entry<Method, ScheduledTask> methodScheduledTaskEntry : annotatedMethods.entrySet()) {
-                Method executeMethod = methodScheduledTaskEntry.getKey();
-                ScheduledTask scheduledTask = methodScheduledTaskEntry.getValue();
-                registryJobHandler(scheduledTask, bean, executeMethod);
+                for (Map.Entry<Method, ScheduledTask> methodScheduledTaskEntry : annotatedMethods.entrySet()) {
+                    Method executeMethod = methodScheduledTaskEntry.getKey();
+                    ScheduledTask scheduledTask = methodScheduledTaskEntry.getValue();
+                    super.registryMethodHandler(scheduledTask, bean, executeMethod);
+                }
             }
         }
     }
+
+
 }

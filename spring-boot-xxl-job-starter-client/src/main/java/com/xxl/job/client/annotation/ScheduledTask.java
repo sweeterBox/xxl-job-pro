@@ -19,6 +19,12 @@ public @interface ScheduledTask {
     String description() default "UNKNOWN";
 
     /**
+     *
+     * @return
+     */
+    String author() default "anonymous";
+
+    /**
      * init handler, invoked when JobThread init
      */
     String init() default "";

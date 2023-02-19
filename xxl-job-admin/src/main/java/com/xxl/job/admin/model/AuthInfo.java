@@ -17,4 +17,16 @@ public class AuthInfo {
 
     private Boolean success;
 
+    private UserInfo user;
+
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    public static class UserInfo {
+
+        private String username;
+
+    }
+
 }

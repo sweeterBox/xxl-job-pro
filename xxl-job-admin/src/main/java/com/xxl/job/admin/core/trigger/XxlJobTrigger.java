@@ -167,7 +167,7 @@ public class XxlJobTrigger {
         StringBuffer triggerMsgSb = new StringBuffer();
         triggerMsgSb.append(I18nUtil.getString("jobconf_trigger_type")).append("：").append(triggerType.getTitle());
         triggerMsgSb.append("<br>").append(I18nUtil.getString("jobconf_trigger_admin_adress")).append("：").append(IpUtil.getIp());;
-        triggerMsgSb.append("<br>").append(I18nUtil.getString("jobconf_trigger_exe_regaddress")).append("：").append(instanceUrls);
+        triggerMsgSb.append("<br>").append("客户端地址").append("：").append(instanceUrls);
         triggerMsgSb.append("<br>").append(I18nUtil.getString("jobinfo_field_executorRouteStrategy")).append("：").append(executorRouteStrategyEnum);
         if (shardingParam != null) {
             triggerMsgSb.append("("+shardingParam+")");

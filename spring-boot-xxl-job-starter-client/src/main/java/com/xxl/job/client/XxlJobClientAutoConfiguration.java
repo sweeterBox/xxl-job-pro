@@ -4,10 +4,10 @@ import com.xxl.job.client.executor.Executor;
 import com.xxl.job.client.executor.XxlJobExecutor;
 import com.xxl.job.client.executor.XxlJobSpringExecutor;
 import com.xxl.job.client.executor.impl.DefaultExecutor;
-import com.xxl.job.client.repository.JobHandlerRepository;
-import com.xxl.job.client.repository.JobThreadRepository;
-import com.xxl.job.client.repository.SimpleJobHandlerRepository;
-import com.xxl.job.client.repository.SimpleJobThreadRepository;
+import com.xxl.job.client.repository.ScheduledHandlerRepository;
+import com.xxl.job.client.repository.ScheduledThreadRepository;
+import com.xxl.job.client.repository.SimpleScheduledHandlerRepository;
+import com.xxl.job.client.repository.SimpleScheduledThreadRepository;
 import com.xxl.job.client.utils.PortUtils;
 import org.mitre.dsmiley.httpproxy.ProxyServlet;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -37,25 +37,25 @@ public class XxlJobClientAutoConfiguration {
         }
         @ConditionalOnMissingBean
         @Bean
-        public JobHandlerRepository jobHandlerRepository() {
-            return new SimpleJobHandlerRepository();
+        public ScheduledHandlerRepository jobHandlerRepository() {
+            return new SimpleScheduledHandlerRepository();
         }
 
         @ConditionalOnMissingBean
         @Bean
-        public JobThreadRepository jobThreadRepository() {
-            return new SimpleJobThreadRepository();
+        public ScheduledThreadRepository jobThreadRepository() {
+            return new SimpleScheduledThreadRepository();
         }
 
         @ConditionalOnMissingBean
         @Bean
-        public Executor executor(JobHandlerRepository jobHandlerRepository,JobThreadRepository jobThreadRepository) {
+        public Executor executor(ScheduledHandlerRepository jobHandlerRepository, ScheduledThreadRepository jobThreadRepository) {
             return new DefaultExecutor(jobHandlerRepository, jobThreadRepository);
         }
 
         @ConditionalOnMissingBean
         @Bean
-        public XxlJobExecutor xxlJobExecutor(JobHandlerRepository jobHandlerRepository, JobThreadRepository jobThreadRepository, Executor executor) {
+        public XxlJobExecutor xxlJobExecutor(ScheduledHandlerRepository jobHandlerRepository, ScheduledThreadRepository jobThreadRepository, Executor executor) {
             XxlJobSpringExecutor xxlJobSpringExecutor = new XxlJobSpringExecutor();
             //TODO 需要支持多admin
             xxlJobSpringExecutor.setAdminAddresses(this.xxlJobProperties.getAdminAddresses()[0]);
@@ -89,27 +89,27 @@ public class XxlJobClientAutoConfiguration {
 
         @ConditionalOnMissingBean
         @Bean
-        public JobHandlerRepository jobHandlerRepository() {
-            return new SimpleJobHandlerRepository();
+        public ScheduledHandlerRepository jobHandlerRepository() {
+            return new SimpleScheduledHandlerRepository();
         }
 
         @ConditionalOnMissingBean
         @Bean
-        public JobThreadRepository jobThreadRepository() {
-            return new SimpleJobThreadRepository();
+        public ScheduledThreadRepository jobThreadRepository() {
+            return new SimpleScheduledThreadRepository();
         }
 
         @ConditionalOnMissingBean
         @Bean
-        public Executor executor(JobHandlerRepository jobHandlerRepository,JobThreadRepository jobThreadRepository) {
+        public Executor executor(ScheduledHandlerRepository jobHandlerRepository, ScheduledThreadRepository jobThreadRepository) {
             return new DefaultExecutor(jobHandlerRepository, jobThreadRepository);
         }
 
         @Order(Ordered.HIGHEST_PRECEDENCE)
         @ConditionalOnMissingBean
         @Bean(destroyMethod = "destroy")
-        public XxlJobExecutor xxlJobExecutor(JobHandlerRepository jobHandlerRepository
-                , JobThreadRepository jobThreadRepository, Executor executor, ProxyProperties proxyProperties) {
+        public XxlJobExecutor xxlJobExecutor(ScheduledHandlerRepository jobHandlerRepository
+                , ScheduledThreadRepository jobThreadRepository, Executor executor, ProxyProperties proxyProperties) {
             XxlJobSpringExecutor xxlJobSpringExecutor = new XxlJobSpringExecutor();
             //TODO 需要支持多admin
             xxlJobSpringExecutor.setAdminAddresses(this.xxlJobProperties.getAddress());

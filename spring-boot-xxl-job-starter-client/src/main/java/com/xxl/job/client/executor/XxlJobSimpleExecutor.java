@@ -61,7 +61,7 @@ public class XxlJobSimpleExecutor extends XxlJobExecutor {
             for (Method executeMethod : methods) {
                 ScheduledTask xxlJob = executeMethod.getAnnotation(ScheduledTask.class);
                 // registry
-                registryJobHandler(xxlJob, bean, executeMethod);
+                registryMethodHandler(xxlJob, bean, executeMethod);
             }
 
         }

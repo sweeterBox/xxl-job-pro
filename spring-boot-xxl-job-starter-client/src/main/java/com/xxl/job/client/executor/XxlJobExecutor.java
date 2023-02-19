@@ -3,11 +3,13 @@ package com.xxl.job.client.executor;
 import com.alibaba.nacos.shaded.com.google.common.collect.Lists;
 import com.xxl.job.client.executor.client.AdminApiClient;
 import com.xxl.job.client.annotation.ScheduledTask;
-import com.xxl.job.client.handler.MethodJobHandler;
+import com.xxl.job.client.handler.AbstractScheduledTask;
+import com.xxl.job.client.handler.BeanHandler;
+import com.xxl.job.client.handler.MethodHandler;
 import com.xxl.job.client.executor.impl.DefaultExecutor;
 import com.xxl.job.client.executor.server.ClientServer;
-import com.xxl.job.client.repository.JobHandlerRepository;
-import com.xxl.job.client.repository.JobThreadRepository;
+import com.xxl.job.client.repository.ScheduledHandlerRepository;
+import com.xxl.job.client.repository.ScheduledThreadRepository;
 import com.xxl.job.client.task.TriggerCallbackThread;
 import com.xxl.job.utils.SpringContextUtils;
 import org.slf4j.Logger;
@@ -17,6 +19,7 @@ import org.springframework.core.annotation.AnnotatedElementUtils;
 import javax.annotation.PreDestroy;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by xuxueli on 2016/3/2 21:14.
@@ -43,9 +46,9 @@ public abstract class XxlJobExecutor {
 
     private int logRetentionDays;
 
-    private JobHandlerRepository jobHandlerRepository;
+    private ScheduledHandlerRepository jobHandlerRepository;
 
-    private JobThreadRepository jobThreadRepository;
+    private ScheduledThreadRepository jobThreadRepository;
 
     private Executor executor = new DefaultExecutor(this.jobHandlerRepository, this.jobThreadRepository);
 
@@ -94,19 +97,19 @@ public abstract class XxlJobExecutor {
         this.logRetentionDays = logRetentionDays;
     }
 
-    public JobHandlerRepository getJobHandlerRepository() {
+    public ScheduledHandlerRepository getJobHandlerRepository() {
         return jobHandlerRepository;
     }
 
-    public void setJobHandlerRepository(JobHandlerRepository jobHandlerRepository) {
+    public void setJobHandlerRepository(ScheduledHandlerRepository jobHandlerRepository) {
         this.jobHandlerRepository = jobHandlerRepository;
     }
 
-    public JobThreadRepository getJobThreadRepository() {
+    public ScheduledThreadRepository getJobThreadRepository() {
         return jobThreadRepository;
     }
 
-    public void setJobThreadRepository(JobThreadRepository jobThreadRepository) {
+    public void setJobThreadRepository(ScheduledThreadRepository jobThreadRepository) {
         this.jobThreadRepository = jobThreadRepository;
     }
 
@@ -169,8 +172,9 @@ public abstract class XxlJobExecutor {
     }
 
 
-    protected void registryJobHandler(ScheduledTask scheduledTask, Object bean, Method executeMethod){
+    protected void registryMethodHandler(ScheduledTask scheduledTask, Object bean, Method executeMethod){
         if (scheduledTask == null) {
+            log.error("ScheduledTask is null");
             return;
         }
 
@@ -207,7 +211,13 @@ public abstract class XxlJobExecutor {
                 throw new RuntimeException("xxl-job method-jobhandler destroyMethod invalid, for[" + clazz + "#" + methodName + "] .");
             }
         }
-        this.jobHandlerRepository.save(name, new MethodJobHandler(bean, executeMethod, initMethod, destroyMethod, name, description,deprecated));
+        this.jobHandlerRepository.save(name, new MethodHandler(bean, executeMethod, initMethod, destroyMethod, name, description,deprecated));
+    }
+
+
+    protected void registryBeanHandler(AbstractScheduledTask scheduledTask) {
+        boolean deprecated = Objects.nonNull(scheduledTask.getClass().getAnnotation(Deprecated.class));
+        this.jobHandlerRepository.save(scheduledTask.name(), new BeanHandler(scheduledTask, scheduledTask.name(), scheduledTask.description(), deprecated));
     }
 
 }

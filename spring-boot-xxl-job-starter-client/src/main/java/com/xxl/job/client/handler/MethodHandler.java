@@ -5,11 +5,13 @@ import java.lang.reflect.Method;
 /**
  * @author xuxueli 2019-12-11 21:12:18
  */
-public class MethodJobHandler extends AbstractJobHandler {
+public class MethodHandler extends AbstractHandler {
 
     private String name;
 
     private String description;
+
+    private String author;
 
     private boolean deprecated = false;
 
@@ -21,7 +23,17 @@ public class MethodJobHandler extends AbstractJobHandler {
 
     private Method destroyMethod;
 
-    public MethodJobHandler(Object target, Method method, Method initMethod, Method destroyMethod,String name,String description) {
+    public MethodHandler(Object target, Method method, Method initMethod, Method destroyMethod, String name, String description,String author) {
+        this.target = target;
+        this.method = method;
+        this.initMethod = initMethod;
+        this.destroyMethod = destroyMethod;
+        this.name = name;
+        this.description = description;
+        this.author = author;
+    }
+
+    public MethodHandler(Object target, Method method, Method initMethod, Method destroyMethod, String name, String description) {
         this.target = target;
         this.method = method;
         this.initMethod = initMethod;
@@ -30,7 +42,7 @@ public class MethodJobHandler extends AbstractJobHandler {
         this.description = description;
     }
 
-    public MethodJobHandler(Object target, Method method, Method initMethod, Method destroyMethod,String name,String description,boolean deprecated) {
+    public MethodHandler(Object target, Method method, Method initMethod, Method destroyMethod, String name, String description, boolean deprecated) {
         this.target = target;
         this.method = method;
         this.initMethod = initMethod;
@@ -92,5 +104,13 @@ public class MethodJobHandler extends AbstractJobHandler {
 
     public void setDeprecated(boolean deprecated) {
         this.deprecated = deprecated;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }

@@ -56,6 +56,9 @@ public class ReqTask {
             if (StringUtils.isBlank(this.executorHandler)) {
                 throw new RuntimeException("executorHandler is null");
             }
+            if (StringUtils.isBlank(this.scheduleConf)) {
+                throw new RuntimeException("CRON is null");
+            }
 
         }
     }

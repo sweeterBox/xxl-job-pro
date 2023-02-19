@@ -1,7 +1,7 @@
 package com.xxl.job.client.glue;
 
 
-import com.xxl.job.client.handler.AbstractJobHandler;
+import com.xxl.job.client.handler.AbstractHandler;
 import com.xxl.job.client.glue.impl.SpringGlueFactory;
 import groovy.lang.GroovyClassLoader;
 
@@ -44,15 +44,15 @@ public class GlueFactory {
 	 * @return
 	 * @throws Exception
 	 */
-	public AbstractJobHandler loadNewInstance(String codeSource) throws Exception{
+	public AbstractHandler loadNewInstance(String codeSource) throws Exception{
 		if (codeSource!=null && codeSource.trim().length()>0) {
 			Class<?> clazz = getCodeSourceClass(codeSource);
 			if (clazz != null) {
 				Object instance = clazz.newInstance();
 				if (instance!=null) {
-					if (instance instanceof AbstractJobHandler) {
+					if (instance instanceof AbstractHandler) {
 						this.injectService(instance);
-						return (AbstractJobHandler) instance;
+						return (AbstractHandler) instance;
 					} else {
 						throw new IllegalArgumentException(" xxl-glue, loadNewInstance error, "
 								+ "cannot convert from instance["+ instance.getClass() +"] to IJobHandler");

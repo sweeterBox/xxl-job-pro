@@ -40,8 +40,8 @@ public class UserController {
 
 
     @ApiOperation(value = "修改当前用户密码(Change password )",notes = "Change the password of the current user")
-    @PutMapping("/changePwd")
-    public ResponseEntity<Void> changePwd(String password) {
+    @PutMapping("changePwd")
+    public ResponseEntity<Void> changePwd(@RequestParam String password) {
         userService.changePwd(password);
         return ResponseEntity.ok(null);
     }

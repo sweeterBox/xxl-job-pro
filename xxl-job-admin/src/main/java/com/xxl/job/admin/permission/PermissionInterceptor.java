@@ -1,9 +1,6 @@
 package com.xxl.job.admin.permission;
 
-import com.xxl.job.admin.permission.Permission;
-import com.xxl.job.admin.entity.User;
-import com.xxl.job.admin.core.util.I18nUtil;
-import com.xxl.job.admin.service.LoginService;
+import com.xxl.job.admin.service.AuthService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
@@ -20,7 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 public class PermissionInterceptor implements AsyncHandlerInterceptor {
 
 	@Resource
-	private LoginService loginService;
+	private AuthService authService;
+
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -31,12 +29,10 @@ public class PermissionInterceptor implements AsyncHandlerInterceptor {
 
 		// if need login
 		boolean needLogin = true;
-		boolean needAdminuser = false;
 		HandlerMethod method = (HandlerMethod)handler;
 		Permission permission = method.getMethodAnnotation(Permission.class);
 		if (permission!=null) {
 			needLogin = permission.limit();
-			needAdminuser = permission.admin();
 		}
 		if (request.getRequestURI().contains("login.html")) {
 			needLogin = false;
@@ -44,20 +40,14 @@ public class PermissionInterceptor implements AsyncHandlerInterceptor {
 		if (request.getRequestURI().contains("login")) {
 			needLogin = false;
 		}
-
 		if (needLogin) {
-			User loginUser = loginService.ifLogin(request, response);
-			if (loginUser == null) {
+			boolean flag = authService.loginCheck(request, response);
+			if (!flag) {
 				response.setStatus(302);
 				response.setHeader("location", request.getContextPath()+"/login.html");
 				return false;
 			}
-			if (needAdminuser && loginUser.getRole()!=1) {
-				throw new RuntimeException(I18nUtil.getString("system_permission_limit"));
-			}
-			request.setAttribute(LoginService.LOGIN_IDENTITY_KEY, loginUser);
 		}
-
 		return true;
 	}
 
@@ -68,12 +58,10 @@ public class PermissionInterceptor implements AsyncHandlerInterceptor {
 
 		// if need login
 		boolean needLogin = true;
-		boolean needAdminuser = false;
 		HandlerMethod method = (HandlerMethod)handler;
 		Permission permission = method.getMethodAnnotation(Permission.class);
 		if (permission!=null) {
 			needLogin = permission.limit();
-			needAdminuser = permission.admin();
 		}
 		if (request.getRequestURI().contains("login.html")) {
 			needLogin = false;
@@ -83,18 +71,13 @@ public class PermissionInterceptor implements AsyncHandlerInterceptor {
 		}
 
 		if (needLogin) {
-			User loginUser = loginService.ifLogin(request, response);
-			if (loginUser == null) {
+			boolean flag = authService.loginCheck(request, response);
+			if (!flag) {
 				response.setStatus(302);
 				response.setHeader("location", request.getContextPath()+"/login.html");
 				return false;
 			}
-			if (needAdminuser && loginUser.getRole()!=1) {
-				throw new RuntimeException(I18nUtil.getString("system_permission_limit"));
-			}
-			request.setAttribute(LoginService.LOGIN_IDENTITY_KEY, loginUser);
 		}
-
 		return true;
 	}
 

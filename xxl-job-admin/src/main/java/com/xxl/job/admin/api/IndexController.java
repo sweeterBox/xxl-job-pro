@@ -1,7 +1,7 @@
 package com.xxl.job.admin.api;
 
 import com.xxl.job.admin.permission.Permission;
-import com.xxl.job.admin.service.LoginService;
+import com.xxl.job.admin.service.AuthService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,12 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 public class IndexController {
 
 	@Resource
-	private LoginService loginService;
+	private AuthService authService;
 
 	@RequestMapping("/login.html")
 	@Permission(limit = false)
 	public ModelAndView toLogin(HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView) {
-		if (loginService.ifLogin(request, response) != null) {
+		if (authService.loginCheck(request, response)) {
 			modelAndView.setView(new RedirectView("/", true, false));
 			return modelAndView;
 		}

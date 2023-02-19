@@ -416,18 +416,24 @@ $(function() {
 var ComAlertTec = {
 	html:function(){
 		var html =
-			'<div class="modal fade" id="ComAlertTec" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
-			'	<div class="modal-dialog modal-lg-">' +
-			'		<div class="modal-content-tec">' +
-			'			<div class="modal-body">' +
-			'				<div class="alert" style="color:#fff;word-wrap: break-word;">' +
+			'<div class="modal fade" id="ComAlertTec" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">' +
+			'	<div class="modal-dialog">' +
+			'		<div class="modal-content-tec" style="background-color: #fff">' +
+			'		<div class="modal-header">' +
+			'				<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+			'				     <span aria-hidden="true">&times;</span>' +
+			'				</button>' +
+			'		</div>' +
+			'					<div class="modal-body">' +
+			'				<div class="alert" style="color:#212529;word-wrap: break-word;">' +
 			'				</div>' +
-			'			</div>' +
 			'				<div class="modal-footer">' +
-			'				<div class="text-center" >' +
-			'					<button type="button" class="btn btn-info ok" data-dismiss="modal" >'+ I18n.system_ok +'</button>' +
-			'				</div>' +
+/*
+			'					<button type="button" class="btn btn-default btn-copy">复制</button>' +
+*/
+			'					<button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>' +
 			'			</div>' +
+			'        </div>' +
 			'		</div>' +
 			'	</div>' +
 			'</div>';

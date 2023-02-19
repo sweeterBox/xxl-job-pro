@@ -147,11 +147,11 @@ $(function() {
 						"render": function ( data, type, row ) {
 							var html = data;
 							if (data == 200) {
-								html = '<span style="color: green">'+ I18n.system_success +'</span>';
+								html = '<span style="color: green">成功</span>';
 							} else if (data == 500) {
-								html = '<span style="color: red">'+ I18n.system_fail +'</span>';
+								html = '<span style="color: red">失败</span>';
 							} else if (data == 0) {
-                                html = '';
+                                html = '<span style="color: red">执行中</span>';
 							}
                             return html;
 						}

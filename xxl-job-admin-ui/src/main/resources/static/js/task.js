@@ -480,14 +480,23 @@ $(function() {
 		var applicationName = $(this).val();
 		 getTask(applicationName);
 	});
+
 	$('#tasks ').on('click', '.dropdown-item', function () {
 		let handlerName = $(this).data('name');
 		let handlerDescription = $(this).data('description');
+		let handlerAuthor = $(this).data('author');
 		$('input[name="executorHandler"]').val(handlerName);
 		let description = $('input[name="description"]').val();
+		let author = $('input[name="author"]').val();
 		if (description && description != '') {
+
 		}else {
 			$('input[name="description"]').val(handlerDescription)
+		}
+		if (author && author != '') {
+
+		}else {
+			$('input[name="author"]').val(handlerAuthor)
 		}
 	});
 	// scheduleType change
@@ -661,11 +670,7 @@ $(function() {
 			});
 		}
 	});
-	$("#updateModal").on('hide.bs.modal', function () {
-        updateModalValidate.resetForm();
-        $("#updateModal .form")[0].reset();
-        $("#updateModal .form .form-group").removeClass("has-error");
-	});
+
 
     /**
 	 * find title by name, GlueType
@@ -710,9 +715,9 @@ $(function() {
 					data.forEach(m => {
 						html += '<div role="separator" class="dropdown-divider"></div>'
 						if (m.deprecated) {
-							html += '<a class="dropdown-item" style="text-decoration:line-through" data-name="' + m.name + '" data-description="' + m.description + '" href="#">' + m.name + '(' + m.description + ')' + '</a>';
+							html += '<a class="dropdown-item" style="text-decoration:line-through" data-name="' + m.name + '" data-author="' + m.author + '" data-description="' + m.description + '" href="#">' + m.name + '(' + m.description + ')' + '</a>';
 						}else {
-							html += '<a class="dropdown-item" data-name="' + m.name + '" data-description="' + m.description + '" href="#">' + m.name + '(' + m.description + ')' + '</a>';
+							html += '<a class="dropdown-item" data-name="' + m.name + '" data-author="' + m.author + '" data-description="' + m.description + '" href="#">' + m.name + '(' + m.description + ')' + '</a>';
 						}
 					});
 					$('#tasks').html(html);

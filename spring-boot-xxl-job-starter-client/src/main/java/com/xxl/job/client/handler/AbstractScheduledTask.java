@@ -23,6 +23,15 @@ public abstract class AbstractScheduledTask {
     public abstract String description();
 
     /**
+     * 作者
+     * @return
+     */
+    public String author() {
+        return "anonymous";
+    }
+
+
+    /**
      * 执行
      */
     public abstract void execute();

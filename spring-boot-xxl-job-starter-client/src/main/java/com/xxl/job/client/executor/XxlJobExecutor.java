@@ -180,6 +180,7 @@ public abstract class XxlJobExecutor {
 
         String name = scheduledTask.value();
         String description = scheduledTask.description();
+        String author = scheduledTask.author();
         //make and simplify the variables since they'll be called several times later
         Class<?> clazz = bean.getClass();
         String methodName = executeMethod.getName();
@@ -211,13 +212,12 @@ public abstract class XxlJobExecutor {
                 throw new RuntimeException("xxl-job method-jobhandler destroyMethod invalid, for[" + clazz + "#" + methodName + "] .");
             }
         }
-        this.jobHandlerRepository.save(name, new MethodHandler(bean, executeMethod, initMethod, destroyMethod, name, description,deprecated));
+        this.jobHandlerRepository.save(name, new MethodHandler(bean, executeMethod, initMethod, destroyMethod, name, description, deprecated, author));
     }
 
 
     protected void registryBeanHandler(AbstractScheduledTask scheduledTask) {
-        boolean deprecated = Objects.nonNull(scheduledTask.getClass().getAnnotation(Deprecated.class));
-        this.jobHandlerRepository.save(scheduledTask.name(), new BeanHandler(scheduledTask, scheduledTask.name(), scheduledTask.description(), deprecated));
+        this.jobHandlerRepository.save(scheduledTask.name(), new BeanHandler(scheduledTask));
     }
 
 }

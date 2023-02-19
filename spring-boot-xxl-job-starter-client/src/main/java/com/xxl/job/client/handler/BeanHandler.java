@@ -1,6 +1,8 @@
 package com.xxl.job.client.handler;
 
 
+import java.util.Objects;
+
 /**
  * @author sweeter
  * @date 2023/2/19
@@ -13,19 +15,23 @@ public class BeanHandler extends AbstractHandler {
 
     private boolean deprecated = false;
 
+    private String author;
+
     private final AbstractScheduledTask target;
 
-
-    public BeanHandler(AbstractScheduledTask target, String name, String description) {
+    public BeanHandler(AbstractScheduledTask target) {
         this.target = target;
-        this.name = name;
-        this.description = description;
+        this.name = target.name();
+        this.description = target.description();
+        this.author = target.author();
+        this.deprecated = Objects.nonNull(target.getClass().getAnnotation(Deprecated.class));
     }
 
-    public BeanHandler(AbstractScheduledTask target,String name, String description, boolean deprecated) {
+    public BeanHandler(AbstractScheduledTask target,boolean deprecated) {
         this.target = target;
-        this.name = name;
-        this.description = description;
+        this.name = target.name();
+        this.description = target.description();
+        this.author = target.author();
         this.deprecated = deprecated;
     }
 
@@ -68,5 +74,13 @@ public class BeanHandler extends AbstractHandler {
 
     public void setDeprecated(boolean deprecated) {
         this.deprecated = deprecated;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }

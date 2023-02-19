@@ -11,6 +11,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class SpringBeanScheduledTask extends AbstractScheduledTask {
     /**
+     * 作者
+     *
+     * @return
+     */
+    @Override
+    public String author() {
+        return "作者";
+    }
+
+    /**
      * 任务中文描述信息
      *
      * @return 任务中文描述信息

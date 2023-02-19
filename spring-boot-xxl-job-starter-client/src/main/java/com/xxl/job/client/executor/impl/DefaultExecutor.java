@@ -209,6 +209,7 @@ public class DefaultExecutor implements Executor {
                 task.setName(methodHandler.getName());
                 task.setDescription(methodHandler.getDescription());
                 task.setDeprecated(methodHandler.isDeprecated());
+                task.setAuthor(methodHandler.getAuthor());
                 tasks.add(task);
             }
             if (handler instanceof BeanHandler) {
@@ -217,6 +218,7 @@ public class DefaultExecutor implements Executor {
                 task.setName(beanHandler.getName());
                 task.setDescription(beanHandler.getDescription());
                 task.setDeprecated(beanHandler.isDeprecated());
+                task.setAuthor(beanHandler.getAuthor());
                 tasks.add(task);
             }
         }

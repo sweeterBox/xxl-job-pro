@@ -71,11 +71,11 @@ public class DbLock implements Lock {
         long reqLockEndTime = System.currentTimeMillis() + Math.max(timeOut,DEFAULT_TIME_OUT);
         while (System.currentTimeMillis() < reqLockEndTime) {
             if (this.tryLock(key, timeOut, expire)) {
-                log.info("{}，获取到锁", key);
+                log.debug("{}，获取到锁", key);
                 return Boolean.TRUE;
             }
             try {
-                log.info("key[{}]空转取锁", key);
+                log.debug("key[{}]空转取锁", key);
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -123,7 +123,7 @@ public class DbLock implements Lock {
         try {
             if (lockRepository.existsById(key)) {
                 lockRepository.deleteById(key);
-                log.info("{},解锁", key);
+                log.debug("{},解锁", key);
             }
             return true;
         } catch (Exception e) {

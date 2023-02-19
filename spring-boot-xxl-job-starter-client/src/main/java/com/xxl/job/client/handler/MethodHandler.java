@@ -52,6 +52,17 @@ public class MethodHandler extends AbstractHandler {
         this.deprecated = deprecated;
     }
 
+    public MethodHandler(Object target, Method method, Method initMethod, Method destroyMethod, String name, String description, boolean deprecated,String author) {
+        this.target = target;
+        this.method = method;
+        this.initMethod = initMethod;
+        this.destroyMethod = destroyMethod;
+        this.name = name;
+        this.description = description;
+        this.deprecated = deprecated;
+        this.author = author;
+    }
+
     @Override
     public void execute() throws Exception {
         Class<?>[] paramTypes = method.getParameterTypes();

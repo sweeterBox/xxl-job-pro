@@ -166,6 +166,9 @@ public class ScheduledTaskThread extends Thread{
 					} else {
 						// just execute
 						callbackParam.setStartTime(LocalDateTime.now());
+						// 0:执行中
+						callbackParam.setStatus(0);
+						TriggerCallbackThread.pushCallBack(callbackParam);
 						handler.execute();
 						callbackParam.setEndTime(LocalDateTime.now());
 					}

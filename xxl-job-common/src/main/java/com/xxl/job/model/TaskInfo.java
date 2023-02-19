@@ -17,4 +17,7 @@ public class TaskInfo {
      * 已过期
      */
     private boolean deprecated = false;
+
+    private String author;
+
 }

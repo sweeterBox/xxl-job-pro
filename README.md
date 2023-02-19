@@ -39,7 +39,8 @@
 - Postgresql
 
 ## 功能预览
-
+- [体验地址](暂无)
+- 系统初始用户:admin 密码:xxljob
 - 登录页
 ![登录页](./doc/img/xxl-job-pro-login.jpg)
 
@@ -84,7 +85,7 @@ export NACOS_PASSWORD=nacos
 export NACOS_GROUP=DEFAULT_GROUP
 docker-compose up -d
 ```
-## 使用
+## 使用方法
 ### spring-cloud 微服务架构项目
 - spring-cloud-alibaba项目中引入如下maven依赖
 ```xml
@@ -98,8 +99,12 @@ docker-compose up -d
 
 
 ## 消息通知
-### 邮件通知
 
-### 飞书通知
+### 邮件
+- 如果启用了邮件通知配置，在任务调度或执行失败时，会触发通知事件下发邮件通知。
 
-### webhook通知
+### 飞书
+- 如果启用了飞书通知配置，在任务调度或执行失败时，会触发通知事件通过飞书群组机器人下发通知。
+
+### webhook
+- 如果启用了webhook通知配置，在任务调度或执行失败时，会触发通知事件通过http post请求下发通知。

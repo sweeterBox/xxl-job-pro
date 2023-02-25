@@ -34,7 +34,7 @@ public class XxlJobProperties {
     private String title;
 
     /**
-     * 内部代理地址 将netty的tcp端口使用web服务的http端口进行代理
+     * 内部代理路径 将netty的tcp端口使用web服务的http端口进行代理
      */
     private String contextPath;
 

@@ -11,23 +11,54 @@ import com.xxl.job.client.repository.SimpleScheduledThreadRepository;
 import com.xxl.job.client.utils.PortUtils;
 import org.mitre.dsmiley.httpproxy.ProxyServlet;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
+import java.util.Objects;
 
 /**
  * @author sweeter
  * @date 2022/11/3
  */
+@EnableConfigurationProperties(XxlJobProperties.class)
 @Configuration
 public class XxlJobClientAutoConfiguration {
 
-    //@Configuration
-   // @ConditionalOnExpression("${spring.boot.xxljob.enabled:false} && !${spring.boot.xxljob.proxyEnabled:false}")
+    /**
+     * @author sweeter
+     * @date 2023/2/25
+     */
+    public static class ProxyXxlJobClientConditional implements Condition {
+
+        @Override
+        public boolean matches(ConditionContext conditionContext, AnnotatedTypeMetadata annotatedTypeMetadata) {
+            String enabled = conditionContext.getEnvironment().getProperty("spring.boot.xxl.job.client.enabled", "false");
+            String proxyEnabled = conditionContext.getEnvironment().getProperty("spring.boot.xxl.job.client.proxyEnabled", "false");
+            return Boolean.parseBoolean(enabled) && Boolean.parseBoolean(proxyEnabled);
+        }
+    }
+
+    /**
+     * @author sweeter
+     * @date 2023/2/25
+     */
+    public static class SimpleXxlJobClientConditional implements Condition {
+
+        @Override
+        public boolean matches(ConditionContext conditionContext, AnnotatedTypeMetadata annotatedTypeMetadata) {
+            String enabled = conditionContext.getEnvironment().getProperty("spring.boot.xxl.job.enabled", "false");
+            String proxyEnabled = conditionContext.getEnvironment().getProperty("spring.boot.xxl.job.proxyEnabled", "false");
+            return Boolean.parseBoolean(enabled) && !Boolean.parseBoolean(proxyEnabled);
+        }
+    }
+
+    @Conditional(SimpleXxlJobClientConditional.class)
+    @Configuration
     public static class SimpleXxlJobClientConfiguration {
 
         private final XxlJobProperties xxlJobProperties;
@@ -58,7 +89,11 @@ public class XxlJobClientAutoConfiguration {
         public XxlJobExecutor xxlJobExecutor(ScheduledHandlerRepository jobHandlerRepository, ScheduledThreadRepository jobThreadRepository, Executor executor) {
             XxlJobSpringExecutor xxlJobSpringExecutor = new XxlJobSpringExecutor();
             //TODO 需要支持多admin
-            xxlJobSpringExecutor.setAdminAddresses(this.xxlJobProperties.getAdminAddresses()[0]);
+            if (Objects.nonNull(this.xxlJobProperties.getAdminAddresses()) && this.xxlJobProperties.getAdminAddresses().length > 0) {
+                xxlJobSpringExecutor.setAdminAddresses(this.xxlJobProperties.getAdminAddresses()[0]);
+            }else {
+                //
+            }
             xxlJobSpringExecutor.setName(xxlJobProperties.getName());
             xxlJobSpringExecutor.setTitle(xxlJobProperties.getTitle());
             xxlJobSpringExecutor.setIp(xxlJobProperties.getIp());
@@ -77,8 +112,8 @@ public class XxlJobClientAutoConfiguration {
     }
 
 
+    @Conditional(ProxyXxlJobClientConditional.class)
     @Configuration
-   // @ConditionalOnExpression("${spring.boot.xxljob.enabled:false} && ${spring.boot.xxljob.proxyEnabled:false}")
     public static class ProxyXxlJobClientConfiguration {
 
         private final XxlJobProperties xxlJobProperties;

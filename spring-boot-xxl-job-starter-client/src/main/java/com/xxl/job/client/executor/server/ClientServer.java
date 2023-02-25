@@ -78,9 +78,9 @@ public class ClientServer {
                 // wait util stop
                 future.channel().closeFuture().sync();
             } catch (InterruptedException e) {
-                log.info("xxl-job remoting server stop.");
+                log.info("xxl-job remoting server stop. {}", e.getMessage());
             } catch (Exception e) {
-                log.error("xxl-job remoting server error.", e);
+                log.error("xxl-job remoting server error. {}", e.getMessage());
             } finally {
                 // stop
                 try {

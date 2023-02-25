@@ -1,4 +1,5 @@
 # XXL-JOB Pro
+>forked from xuxueli/xxl-job
 >基于XXL-JOB项目二次开发,由于变动较大不准备申请合并到XXL-JOB仓库，后续将独立维护
 ## 简介
   出于学习[XXL-JOB](https://github.com/xuxueli/xxl-job)的目的,作者尝试编码了XXL-JOB Pro，主要目的是让XXL-JOB更好的和Spring Cloud架构融合。
@@ -13,15 +14,18 @@
 - UI界面美化
 - 前端与后端代码分离，便于重写前端UI
 - 添加swagger接口文档
-- 增加任务监控回调api hook，参照spring-boot-admin 实现邮件、钉钉及飞书的通知消息
+- 增加任务监控回调api hook，实现邮件、钉钉及飞书的通知消息
 - 增加监控参数包括内存、网络、磁盘等
 ## 待修改功能点
-- 用户登录支持oauth2
+- 管理端于客户端之间交互接口添加sign鉴权
+- 在修改的过程中一些功能不可用了，将在后期的版本中重新实现
+- 用户登录支持oauth2、LDAP
 - tomcat->netty springMvc ->webflux
 - 优化执行器的执行日志，最好能在admin中实时显示  
 - 编写客户端执行器starter，便于springboot项目集成
 - 前端使用vue重新构建编写
-
+- 故障转移
+- 客户端监控，内存、任务数量等，便于服务端合理的调度任务
 ## 原则及注意事项
 - 非必要不引入新的中间件，越简单越好
 
@@ -97,6 +101,8 @@ docker-compose up -d
 ```
 - 支持的nacos版本 v2.0.3
 
+### XXL-JOB升级方案
+- TODO
 
 ## 消息通知
 

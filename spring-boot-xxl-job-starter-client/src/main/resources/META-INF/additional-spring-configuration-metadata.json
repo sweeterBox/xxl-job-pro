@@ -1,9 +1,19 @@
 {
   "properties": [
     {
-      "name": "spring.boot.xxljob.enabled",
+      "name": "spring.boot.xxl.job.client.enabled",
       "type": "java.lang.Boolean",
       "description": "是否启用xxl-job client."
+    },
+    {
+      "name": "spring.boot.xxl.job.client.proxyEnabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用xxl-job client使用web http代理"
+    },
+    {
+      "name": "spring.boot.xxl.job.client.contextPath",
+      "type": "java.lang.String",
+      "description": "xxl-job client web contextPath."
     }
   ]
 }

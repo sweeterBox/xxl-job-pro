@@ -3,6 +3,7 @@ package com.xxl.job.client.handler;
 import java.lang.reflect.Method;
 
 /**
+ * 和com.xxl.job.client.annotation.ScheduledTask配合使用，将com.xxl.job.client.annotation.ScheduledTask注解标记在spring bean 的方法上可实现任务调度
  * @author xuxueli 2019-12-11 21:12:18
  */
 public class MethodHandler extends AbstractHandler {

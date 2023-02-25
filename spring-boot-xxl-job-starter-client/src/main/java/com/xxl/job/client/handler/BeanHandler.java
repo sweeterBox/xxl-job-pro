@@ -4,6 +4,7 @@ package com.xxl.job.client.handler;
 import java.util.Objects;
 
 /**
+ *  和com.xxl.job.client.handler.AbstractScheduledTask配合，以通过继承来实现任务
  * @author sweeter
  * @date 2023/2/19
  */
@@ -13,7 +14,7 @@ public class BeanHandler extends AbstractHandler {
 
     private String description;
 
-    private boolean deprecated = false;
+    private boolean deprecated;
 
     private String author;
 

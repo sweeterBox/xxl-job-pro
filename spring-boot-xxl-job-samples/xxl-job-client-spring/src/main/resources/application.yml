@@ -1,0 +1,17 @@
+server:
+  port: ${port:8082}
+
+spring:
+  application:
+    name: xxl-job-client
+  boot:
+    xxl:
+      job:
+        client:
+          port: 8899
+          enabled: true
+          proxyEnabled: false
+          adminAddresses: http://127.0.0.1:8282/xxl-job-admin
+          name: ${spring.application.name}
+          title: 'Demo Client'
+          contextPath: /xxl-job

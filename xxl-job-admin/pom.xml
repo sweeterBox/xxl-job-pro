@@ -2,37 +2,35 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.xuxueli</groupId>
+		<groupId>com.github</groupId>
 		<artifactId>xxl-job</artifactId>
-		<version>2.4.0-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</parent>
 	<artifactId>xxl-job-admin</artifactId>
 	<packaging>jar</packaging>
 
 	<properties>
 		<spring-cloud.version>Hoxton.SR11</spring-cloud.version>
+		<spring-cloud-alibaba.version>2.2.8.RELEASE</spring-cloud-alibaba.version>
+		<spring-boot-starter-parent.version>2.3.10.RELEASE</spring-boot-starter-parent.version>
+
+		<xxl-job-admin-ui.version>1.0.0</xxl-job-admin-ui.version>
+		<xxl-job-common.version>1.0.0</xxl-job-common.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
-<!--			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-parent</artifactId>
-				<version>${spring-boot.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>-->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-parent</artifactId>
-				<version>2.3.10.RELEASE</version>
+				<version>${spring-boot-starter-parent.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.alibaba.cloud</groupId>
 				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
-				<version>2.2.8.RELEASE</version>
+				<version>${spring-cloud-alibaba.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -54,26 +52,20 @@
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 		</dependency>
-
-		<!-- Nacos Config -->
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
 		</dependency>
-		<!--此处引入service模块必须用的依赖-->
 		<dependency>
 			<groupId>com.alibaba.nacos</groupId>
 			<artifactId>nacos-client</artifactId>
-			<!--
-                        <version>2.1.0</version>
-            -->
 		</dependency>
 
-		<!-- starter-web：spring-webmvc + autoconfigure + logback + yaml + tomcat -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
 		<!-- starter-test：junit + spring-test + mockito -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -100,13 +92,19 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql-connector-java.version}</version>
 		</dependency>
+		<!--oracle-->
+		<dependency>
+			<groupId>com.oracle.database.jdbc</groupId>
+			<artifactId>ojdbc8</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 
-		<!-- xxl-job-core -->
-<!--		<dependency>
-			<groupId>com.xuxueli</groupId>
-			<artifactId>xxl-job-core</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>-->
+		<!--H2-->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.200</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -130,11 +128,7 @@
 			<version>${knife4j.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>1.4.200</version>
-		</dependency>
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -142,15 +136,15 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.xuxueli</groupId>
+			<groupId>com.github</groupId>
 			<artifactId>xxl-job-admin-ui</artifactId>
-			<version>1.0.0</version>
+			<version>${xxl-job-admin-ui.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.xuxueli</groupId>
+			<groupId>com.github</groupId>
 			<artifactId>xxl-job-common</artifactId>
-			<version>2.4.0-SNAPSHOT</version>
+			<version>${xxl-job-common.version}</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/net.java.dev.jna/jna -->

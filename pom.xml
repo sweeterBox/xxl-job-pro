@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.xuxueli</groupId>
+	<groupId>com.github</groupId>
 	<artifactId>xxl-job</artifactId>
-	<version>2.4.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>pom</packaging>
 
 	<name>${project.artifactId}</name>
@@ -68,12 +68,18 @@
 		<connection>scm:git@github.com:sweeterBox/xxl-job-pro.git</connection>
 		<developerConnection>scm:git:git@github.com:sweeterBox/xxl-job-pro.git</developerConnection>
 	</scm>
+
 	<developers>
 		<developer>
 			<id>XXL</id>
 			<name>xuxueli</name>
 			<email>931591021@qq.com</email>
 			<url>https://github.com/xuxueli</url>
+		</developer>
+		<developer>
+			<id>XXL-JOB-PRO</id>
+			<name>sweeter</name>
+			<url>https://github.com/sweeterBox</url>
 		</developer>
 	</developers>
 

@@ -4,9 +4,9 @@
              xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <modelVersion>4.0.0</modelVersion>
 
-        <groupId>com.xuxueli</groupId>
+        <groupId>com.github</groupId>
         <artifactId>spring-boot-xxl-job-starter-client</artifactId>
-        <version>2.4.0-SNAPSHOT</version>
+        <version>1.0.0</version>
         <name>${project.artifactId}</name>
         <description>Example executor project for spring boot.</description>
         <url>https://www.xuxueli.com/</url>
@@ -19,9 +19,9 @@
     </properties>
 
     <parent>
-        <groupId>com.xuxueli</groupId>
+        <groupId>com.github</groupId>
         <artifactId>xxl-job</artifactId>
-        <version>2.4.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
         <dependencyManagement>
@@ -83,9 +83,9 @@
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>com.xuxueli</groupId>
+                <groupId>com.github</groupId>
                 <artifactId>xxl-job-common</artifactId>
-                <version>2.4.0-SNAPSHOT</version>
+                <version>1.0.0</version>
             </dependency>
         </dependencies>
 

@@ -1,8 +1,12 @@
 # XXL-JOB Pro
 
->forked from xuxueli/xxl-job
+>forked from xuxueli/xxl-job(2.4.0-SNAPSHOT)
+
 >基于XXL-JOB项目二次开发,由于变动较大不准备申请合并到XXL-JOB仓库，后续将独立维护
 
+## Git仓库
+- [Github]()
+- [Gitee](https://gitee.com/sweeter-open/xxl-job-pro)
 ## 简介
 
   出于学习[XXL-JOB](https://github.com/xuxueli/xxl-job)的目的,作者尝试编码了XXL-JOB Pro，主要目的是让XXL-JOB更好的和Spring Cloud架构融合。
@@ -98,14 +102,19 @@ services:
     network_mode: host
     restart: always
 ```
+- 环境变量
 ```shell script
 export NACOS_NAMESPACE=XXL
 export NACOS_SERVER_ADDR=127.0.0.1:8848
 export NACOS_USERNAME=nacos
 export NACOS_PASSWORD=nacos
 export NACOS_GROUP=DEFAULT_GROUP
+```
+- 拉取镜像并后台运行
+```shell script
 docker-compose up -d
 ```
+
 ## 使用方法
 
 ### spring-cloud 微服务架构项目
@@ -113,9 +122,9 @@ docker-compose up -d
 - spring-cloud-alibaba项目中引入如下maven依赖
 ```xml
 <dependency>
-    <groupId>com.xuxueli</groupId>
+    <groupId>com.github</groupId>
     <artifactId>spring-boot-xxl-job-starter-nacos-client</artifactId>
-    <version>2.4.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 - 支持的nacos版本 v2.0.3

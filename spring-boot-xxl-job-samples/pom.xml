@@ -12,6 +12,7 @@
 
     <modules>
         <module>xxl-job-client-spring-cloud</module>
+        <module>xxl-job-client-spring</module>
     </modules>
 
 </project>

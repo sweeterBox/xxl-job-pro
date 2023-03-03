@@ -128,8 +128,6 @@ public abstract class XxlJobExecutor {
 
         // init executor-server
         initEmbedServer(port, executor);
-
-        //TODO 是否启动注册线程
     }
 
     @PreDestroy

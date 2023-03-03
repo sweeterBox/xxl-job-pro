@@ -4,7 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 /**
  * @author sweeter
@@ -12,7 +11,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
  */
 @ComponentScan("com.xxl.job")
 @EnableDiscoveryClient
-@EnableJpaAuditing
 @SpringBootApplication
 public class XxlJobProAdminApplication {
 

@@ -18,10 +18,9 @@ public class TaskScheduler extends ThreadPoolTaskScheduler {
 
     public TaskScheduler() {
         this.setPoolSize(20);
-        this.setThreadNamePrefix("taskScheduler-");
+        this.setThreadNamePrefix("xxl-job-pro-taskScheduler-");
         this.setWaitForTasksToCompleteOnShutdown(true);
         this.setAwaitTerminationSeconds(300);
-        //初始化
         this.initialize();
     }
 }

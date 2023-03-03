@@ -1,13 +1,13 @@
 server:
-  port: ${port:8080}
+  port: ${port:8282}
   servlet:
     context-path: ${context-path:/xxl-job-admin}
 spring:
-  main:
-      allow-bean-definition-overriding: true
   application:
     name: xxl-job-admin
   cloud:
+    discovery:
+      enabled: ${cloudEnabled:true}
     nacos:
       discovery:
         password: ${nacos.password:nacos}
@@ -18,10 +18,13 @@ spring:
         metadata:
           'xxl.job.admin': true
           'xxl.job.admin.contextPath': ${server.servlet.context-path}
+        enabled: ${spring.cloud.discovery.enabled}
       config:
         password: ${spring.cloud.nacos.discovery.password}
         username: ${spring.cloud.nacos.discovery.username}
         server-addr: ${spring.cloud.nacos.discovery.server-addr}
         namespace: ${spring.cloud.nacos.discovery.namespace}
-        file-extension: yaml
+        file-extension: yml
         group: ${spring.cloud.nacos.discovery.group}
+        enabled: ${spring.cloud.discovery.enabled}
+

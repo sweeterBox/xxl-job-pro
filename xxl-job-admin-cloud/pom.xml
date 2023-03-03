@@ -71,10 +71,63 @@
 
     <build>
         <plugins>
+            <!--打包jar-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <!--不打包资源文件-->
+                    <excludes>
+                        <!--
+                                                <exclude>*.**</exclude>
+                        -->
+                        <exclude>*.xml</exclude>
+                        <exclude>*.yml</exclude>
+                        <exclude>*.yaml</exclude>
+                    </excludes>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.xxl.job.admin.XxlJobProAdminApplication</mainClass>
+                        </manifest>
+                        <manifestEntries>
+                            <!--MANIFEST.MF 中 Class-Path 加入资源文件目录-->
+                            <Class-Path>conf/</Class-Path>
+                        </manifestEntries>
+                    </archive>
+                    <outputDirectory>${project.build.directory}/${project.artifactId}/</outputDirectory>
+                </configuration>
+            </plugin>
+
+            <!--拷贝资源文件 copy-resources-->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                </resource>
+                            </resources>
+                            <outputDirectory>${project.build.directory}/${project.artifactId}/conf/</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
+                <configuration>
+                    <!-- <mainClass>com.xxl.job.admin.XxlJobProAdminCloudApplication</mainClass> -->
+                    <outputDirectory>${project.build.directory}/${project.artifactId}/</outputDirectory>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -84,5 +137,6 @@
                 </executions>
             </plugin>
         </plugins>
+        <finalName>${project.artifactId}</finalName>
     </build>
 </project>

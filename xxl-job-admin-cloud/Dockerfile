@@ -8,7 +8,7 @@ LABEL "version"="v1.0" \
 RUN echo "http://mirrors.aliyun.com/alpine/v3.9/main" > /etc/apk/repositories \
     && echo "http://mirrors.aliyun.com/alpine/v3.9/community" >> /etc/apk/repositories \
     && apk update upgrade \
-    && apk add --no-cache curl bash tzdata ttf-dejavu \
+    && apk add --no-cache curl bash tzdata \
     && rm -rf /var/cache/apk/* \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone
@@ -16,11 +16,12 @@ RUN echo "http://mirrors.aliyun.com/alpine/v3.9/main" > /etc/apk/repositories \
 #指令集的工作目录，可作用于RUN、CMD、ENTRYPOINT、COPY和ADD
 WORKDIR /app
 
-ADD ./target/*-app.jar ./app.jar
+ADD ./target/xxl-job-admin-cloud/* ./
+# 拷贝一份初始配置
+ADD ./target/xxl-job-admin-cloud/conf/* ./init-conf/
 
-ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar  app.jar ${0} ${@}"]
+ENTRYPOINT ["sh", "ENTRYPOINT.sh"]
 
-#指定默认端口/协议
 EXPOSE ${port:-8282}/tcp
 
 #检查容器健康状况,每分钟检查一次，接口超时时间3秒，连续5次返回1则容器不健康

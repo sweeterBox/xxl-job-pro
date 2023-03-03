@@ -1,11 +1,17 @@
 # XXL-JOB Pro
+
 >forked from xuxueli/xxl-job
 >基于XXL-JOB项目二次开发,由于变动较大不准备申请合并到XXL-JOB仓库，后续将独立维护
+
 ## 简介
+
   出于学习[XXL-JOB](https://github.com/xuxueli/xxl-job)的目的,作者尝试编码了XXL-JOB Pro，主要目的是让XXL-JOB更好的和Spring Cloud架构融合。
+
 ## 原XXL-JOB文档
+
 - [XXL-JOB](https://github.com/xuxueli/xxl-job/blob/master/README.md)  
 - [XXL-JOB官方文档](https://www.xuxueli.com/xxl-job/#%E3%80%8A%E5%88%86%E5%B8%83%E5%BC%8F%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E5%B9%B3%E5%8F%B0XXL-JOB%E3%80%8B)
+
 ## 已修改的功能点
 - 后端mybatis切换为spring-data-jpa
 - 客户端实例服务（执行器）自动发现,支持spring cloud自动发现client执行服务
@@ -16,7 +22,9 @@
 - 添加swagger接口文档
 - 增加任务监控回调api hook，实现邮件、钉钉及飞书的通知消息
 - 增加监控参数包括内存、网络、磁盘等
+
 ## 待修改功能点
+
 - 管理端于客户端之间交互接口添加sign鉴权
 - 在修改的过程中一些功能不可用了，将在后期的版本中重新实现
 - 用户登录支持oauth2、LDAP
@@ -27,7 +35,9 @@
 - 故障转移
 - 客户端监控，内存、任务数量等，便于服务端合理的调度任务
 - 兼容测试xxl-job的客户端，便于阶段性升级
+- 支持amd64(x86)、arm/v8 、arm/v7架构
 - 考虑支持Kettle ETL工具
+
 ## 原则及注意事项
 - 非必要不引入新的中间件，越简单越好
 
@@ -58,10 +68,15 @@
 
 ## Docker 
 
+- docker hub
 ```shell script
 docker pull sweeter/xxl-job-pro-admin:v2.4
 docker run --network=host --restart=always  --name xxl-job-pro-admin -d sweeter/xxl-job-pro-admin:v2.4
 ```
+- 阿里云docker镜像仓
+
+
+
 - docker-compose
 ```yaml
 version: '3'
@@ -92,7 +107,9 @@ export NACOS_GROUP=DEFAULT_GROUP
 docker-compose up -d
 ```
 ## 使用方法
+
 ### spring-cloud 微服务架构项目
+
 - spring-cloud-alibaba项目中引入如下maven依赖
 ```xml
 <dependency>
@@ -103,7 +120,7 @@ docker-compose up -d
 ```
 - 支持的nacos版本 v2.0.3
 
-### XXL-JOB升级方案
+### XXL-JOB升级至XXL-JOB Pro方案
 - TODO
 
 ## 消息通知

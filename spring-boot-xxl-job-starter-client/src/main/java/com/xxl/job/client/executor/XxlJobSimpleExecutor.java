@@ -1,6 +1,7 @@
 package com.xxl.job.client.executor;
 
 import com.xxl.job.client.annotation.ScheduledTask;
+import com.xxl.job.client.task.InstanceRegistryThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.lang.reflect.Method;
@@ -38,11 +39,14 @@ public class XxlJobSimpleExecutor extends XxlJobExecutor {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        InstanceRegistryThread.getInstance().start(this.getName(), this.getClientUrl(), this.getTitle());
+
     }
 
     @Override
     public void destroy() {
         super.destroy();
+        InstanceRegistryThread.getInstance().toStop();
     }
 
 

@@ -63,9 +63,13 @@ public class XxlJobProperties {
         this.accessToken = accessToken;
     }
 
+    /**
+     * 当前客户端uri
+     * @return client uri
+     */
     public String getAddress() {
         if (StringUtils.isNotBlank(ip) && Objects.nonNull(port)) {
-            return "http://" + ip + ":" + port;
+            return "http://" + this.ip + ":" + this.port;
         }
         return null;
     }

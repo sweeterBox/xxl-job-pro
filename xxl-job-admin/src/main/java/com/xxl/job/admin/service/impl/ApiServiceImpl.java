@@ -89,9 +89,11 @@ public class ApiServiceImpl  {
 
     @Transactional
     public R<String> registry(InstanceRegistry registry) {
-        if (StringUtils.isBlank(registry.getName())
-                || StringUtils.isBlank(registry.getUrl())) {
-            return new R<>(400, "Illegal Argument.");
+        if (StringUtils.isBlank(registry.getName())) {
+            return new R<>(400, "Illegal Argument, name is null");
+        }
+        if (StringUtils.isBlank(registry.getUrl())) {
+            return new R<>(400, "Illegal Argument,url is null");
         }
         Optional<Instance> instanceOpt = this.instanceRepository.findAllByNameAndUrl(registry.getName(), registry.getUrl());
         if (instanceOpt.isPresent()) {

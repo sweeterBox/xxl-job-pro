@@ -6,6 +6,8 @@ spring:
   application:
     name: xxl-job-admin
   cloud:
+    discovery:
+      enabled: false
     nacos:
       discovery:
         password: ${nacos.password:nacos}
@@ -16,6 +18,7 @@ spring:
         metadata:
           'xxl.job.admin': true
           'xxl.job.admin.contextPath': ${server.servlet.context-path}
+        enabled: ${spring.cloud.discovery.enabled}
       config:
         password: ${spring.cloud.nacos.discovery.password}
         username: ${spring.cloud.nacos.discovery.username}
@@ -23,3 +26,5 @@ spring:
         namespace: ${spring.cloud.nacos.discovery.namespace}
         file-extension: yml
         group: ${spring.cloud.nacos.discovery.group}
+        enabled: ${spring.cloud.discovery.enabled}
+

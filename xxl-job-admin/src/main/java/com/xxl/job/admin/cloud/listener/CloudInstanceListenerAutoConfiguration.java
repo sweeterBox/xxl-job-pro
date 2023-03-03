@@ -1,3 +1,4 @@
+/*
 package com.xxl.job.admin.cloud.listener;
 
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -7,10 +8,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import java.util.List;
 
+*/
 /**
  * @author sweeter
  * @date 2023/1/14
- */
+ *//*
+
 @Configuration(proxyBeanMethods = false)
 public class CloudInstanceListenerAutoConfiguration {
 
@@ -44,3 +47,4 @@ public class CloudInstanceListenerAutoConfiguration {
         }
     }
 }
+*/

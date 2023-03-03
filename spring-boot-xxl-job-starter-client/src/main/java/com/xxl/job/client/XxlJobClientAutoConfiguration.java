@@ -3,12 +3,16 @@ package com.xxl.job.client;
 import com.xxl.job.client.executor.Executor;
 import com.xxl.job.client.executor.XxlJobExecutor;
 import com.xxl.job.client.executor.XxlJobSpringExecutor;
+import com.xxl.job.client.executor.client.AdminApiHttpClient;
 import com.xxl.job.client.executor.impl.DefaultExecutor;
 import com.xxl.job.client.repository.ScheduledHandlerRepository;
 import com.xxl.job.client.repository.ScheduledThreadRepository;
 import com.xxl.job.client.repository.SimpleScheduledHandlerRepository;
 import com.xxl.job.client.repository.SimpleScheduledThreadRepository;
+import com.xxl.job.client.single.SingleConfiguration;
+import com.xxl.job.client.utils.IpUtil;
 import com.xxl.job.client.utils.PortUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mitre.dsmiley.httpproxy.ProxyServlet;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -51,8 +55,8 @@ public class XxlJobClientAutoConfiguration {
 
         @Override
         public boolean matches(ConditionContext conditionContext, AnnotatedTypeMetadata annotatedTypeMetadata) {
-            String enabled = conditionContext.getEnvironment().getProperty("spring.boot.xxl.job.enabled", "false");
-            String proxyEnabled = conditionContext.getEnvironment().getProperty("spring.boot.xxl.job.proxyEnabled", "false");
+            String enabled = conditionContext.getEnvironment().getProperty("spring.boot.xxl.job.client.enabled", "false");
+            String proxyEnabled = conditionContext.getEnvironment().getProperty("spring.boot.xxl.job.client.proxyEnabled", "false");
             return Boolean.parseBoolean(enabled) && !Boolean.parseBoolean(proxyEnabled);
         }
     }
@@ -96,7 +100,20 @@ public class XxlJobClientAutoConfiguration {
             }
             xxlJobSpringExecutor.setName(xxlJobProperties.getName());
             xxlJobSpringExecutor.setTitle(xxlJobProperties.getTitle());
-            xxlJobSpringExecutor.setIp(xxlJobProperties.getIp());
+            if (StringUtils.isBlank(xxlJobProperties.getIp())) {
+                String ip = IpUtil.getIp();
+                xxlJobSpringExecutor.setIp(ip);
+                xxlJobProperties.setIp(ip);
+            }else {
+                xxlJobSpringExecutor.setIp(xxlJobProperties.getIp());
+            }
+            if (Objects.isNull(xxlJobProperties.getPort())) {
+                int port = PortUtils.findAvailablePort(8283);
+                xxlJobSpringExecutor.setPort(port);
+                xxlJobProperties.setPort(port);
+            }else {
+                xxlJobSpringExecutor.setPort(xxlJobProperties.getPort());
+            }
             xxlJobSpringExecutor.setPort(xxlJobProperties.getPort());
             xxlJobSpringExecutor.setClientUrl(xxlJobProperties.getAddress());
             xxlJobSpringExecutor.setAccessToken(xxlJobProperties.getAccessToken());
@@ -106,6 +123,18 @@ public class XxlJobClientAutoConfiguration {
             xxlJobSpringExecutor.setJobThreadRepository(jobThreadRepository);
             xxlJobSpringExecutor.setExecutor(executor);
             return xxlJobSpringExecutor;
+        }
+
+        @ConditionalOnMissingBean
+        @Bean
+        public AdminApiHttpClient adminApiHttpClient() {
+            return new AdminApiHttpClient(this.xxlJobProperties.getAdminAddresses()[0], this.xxlJobProperties.getAccessToken());
+        }
+
+        @ConditionalOnMissingBean
+        @Bean
+        public SingleConfiguration singleInit() {
+            return new SingleConfiguration(this.xxlJobProperties);
         }
 
 

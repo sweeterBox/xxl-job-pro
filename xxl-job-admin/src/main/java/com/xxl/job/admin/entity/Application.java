@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 @Entity
 public class Application extends IdEntity {
 
-    @Column(columnDefinition ="varchar(50) COMMENT ''",nullable = false,updatable = false,unique = true)
+    @Column(length = 50,nullable = false,updatable = false,unique = true)
     private String name;
 
     private String title;

@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 public class XxlJobProAdminCloudApplication {
 
 	public static void main(String[] args) {
-        SpringApplication.run(XxlJobProAdminApplication.class, args);
+        SpringApplication.run(XxlJobProAdminCloudApplication.class, args);
 	}
 
 }

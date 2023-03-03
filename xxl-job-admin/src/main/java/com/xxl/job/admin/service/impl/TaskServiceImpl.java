@@ -25,12 +25,18 @@ import com.xxl.job.admin.service.TaskService;
 import com.xxl.job.enums.ExecutorBlockStrategy;
 import com.xxl.job.model.R;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.Predicate;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -279,6 +285,24 @@ public class TaskServiceImpl implements TaskService {
             return Optional.ofNullable(executor.tasks()).map(R::getContent).orElse(Collections.emptyList());
         }
         return Collections.emptyList();
+    }
+
+    /**
+     * 查询可以调度的任务
+     *
+     * @param maxNextTime
+     * @param limitSize
+     * @return
+     */
+    @Override
+    public List<Task> findScheduleTasks(Long maxNextTime, Long limitSize) {
+        Pageable pageable = PageRequest.of(0, Math.toIntExact(limitSize), Sort.by("id"));
+        Specification<Task> specification = (root, criteriaQuery, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+            predicate.getExpressions().add(criteriaBuilder.le(root.get("nextTriggerTime"), maxNextTime));
+            return predicate;
+        };
+        return this.taskRepository.findAll(specification,pageable).getContent();
     }
 
 }

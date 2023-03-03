@@ -59,4 +59,12 @@ public interface TaskService {
      * @return
      */
     List<com.xxl.job.model.TaskInfo> tasks(String applicationName);
+
+    /**
+     * 查询可以调度的任务
+     * @param maxNextTime
+     * @param limitSize
+     * @return
+     */
+    List<Task> findScheduleTasks(Long maxNextTime, Long limitSize);
 }

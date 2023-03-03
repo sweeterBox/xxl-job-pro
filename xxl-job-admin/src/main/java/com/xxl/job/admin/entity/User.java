@@ -29,13 +29,16 @@ import java.time.LocalDateTime;
 @Entity
 public class User extends IdEntity {
 
-	@Column(columnDefinition ="varchar(32) COMMENT '用户名'",nullable = false,updatable = false,unique = true)
+	@Column(length = 32,nullable = false,updatable = false,unique = true)
 	private String username;
 
-	@Column(columnDefinition ="varchar(32) COMMENT '用户名'",nullable = false)
+	@Column(length = 32,nullable = false)
 	private String password;
 
-	@Column(columnDefinition ="tinyint(4) COMMENT '角色：0-普通用户、1-管理员'")
+	/**
+	 * 角色：0-普通用户、1-管理员
+	 */
+	@Column(length = 1)
 	private Integer role;
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")

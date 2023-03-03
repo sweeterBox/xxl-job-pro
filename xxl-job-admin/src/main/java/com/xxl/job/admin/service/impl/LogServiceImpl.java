@@ -26,12 +26,6 @@ public class LogServiceImpl  implements LogService {
     @Resource
     private LogRepository logRepository;
 
-    @Transactional(readOnly = false)
-    @Override
-    public int updateAlarmStatus(long failLogId, int i, int i1) {
-        return this.logRepository.updateAlarmStatus(failLogId, i, i1);
-    }
-
     @Override
     public ResultPage<Log> findPageList(LogQuery query) {
         PageRequest pageRequest = query.createPageRequest(Sort.by(Sort.Direction.DESC, "id"));

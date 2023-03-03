@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -74,7 +75,7 @@ public class JobCompleteHelper {
 
 					// 任务结果丢失处理：调度记录停留在 "运行中" 状态超过10min，且对应执行器心跳注册失败不在线，则将本地调度主动标记失败；
 					Date losedTime = DateUtil.addMinutes(new Date(), -10);
-					List<Long> losedJobIds  = SpringContextUtils.getBean(LogRepository.class).findLostJobIds(losedTime);
+					List<Long> losedJobIds  = new ArrayList<>();// SpringContextUtils.getBean(LogRepository.class).findLostJobIds(losedTime);
 
 					if (losedJobIds!=null && losedJobIds.size()>0) {
 						for (Long logId: losedJobIds) {

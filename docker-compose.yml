@@ -1,9 +1,9 @@
 version: '3'
 services:
   xxl-job-pro-admin:
-    container_name: xxl-job-admin-cloud
+    container_name: xxl-job-pro-admin
     build: ./xxl-job-admin-cloud/
-    image: sweeter/xxl-job-admin-cloud:v0.1
+    image: sweeter/xxl-job-pro-admin:v1.0.0
     ports:
       - 8282:8282
     environment:

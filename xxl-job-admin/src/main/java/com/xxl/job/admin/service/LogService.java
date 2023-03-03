@@ -10,7 +10,6 @@ import com.xxl.job.admin.query.LogQuery;
  */
 public interface LogService {
 
-    int updateAlarmStatus(long failLogId, int i, int i1);
 
     ResultPage<Log> findPageList(LogQuery query);
 

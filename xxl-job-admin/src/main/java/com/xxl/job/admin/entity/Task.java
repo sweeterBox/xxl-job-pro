@@ -29,7 +29,7 @@ public class Task extends IdEntity {
 
 	private String applicationName;
 
-	@Column(columnDefinition ="varchar(20) COMMENT '任务描述'")
+	@Column(length = 255)
 	private String description;
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
@@ -44,7 +44,7 @@ public class Task extends IdEntity {
 	@CreatedDate
 	private LocalDateTime createTime;
 
-	@Column(columnDefinition ="varchar(20) COMMENT '负责人or作者'")
+	@Column(length = 20)
 	private String author;
 
 	private String alarmEmail;
@@ -52,11 +52,16 @@ public class Task extends IdEntity {
 	@Enumerated(EnumType.STRING)
 	private ScheduleType scheduleType;
 
-	@Column(columnDefinition ="varchar(128) COMMENT '调度配置'")
+	/**
+	 * 调度配置
+	 */
+	@Column()
 	private String scheduleConf;
 
-
-	@Column(columnDefinition ="varchar(50) COMMENT '调度过期策略'")
+	/**
+	 * 调度过期策略
+	 */
+	@Column(length = 50)
 	@Enumerated(EnumType.STRING)
 	private MisfireStrategy misfireStrategy;
 
@@ -64,10 +69,16 @@ public class Task extends IdEntity {
 	private RouteStrategy executorRouteStrategy;
 
 
-	@Column(columnDefinition ="varchar(50) COMMENT '任务Handler名称'")
+	/**
+	 * 任务Handler名称
+	 */
+	@Column(length = 50)
 	private String executorHandler;
 
-	@Column(columnDefinition ="varchar(255) COMMENT '任务参数'")
+	/**
+	 * 任务参数
+	 */
+	@Column()
 	private String executorParam;
 
 	// 阻塞处理策略

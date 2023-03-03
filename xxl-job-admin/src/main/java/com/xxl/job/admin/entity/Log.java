@@ -53,7 +53,7 @@ public class Log extends IdEntity {
 	/**
 	 * 任务调度内容
 	 */
-	@Column(columnDefinition = "TEXT COMMENT '调度内容'")
+	//@Column(columnDefinition = "TEXT")
 	private String triggerContent;
 	/**
 	 * 执行开始时间
@@ -79,7 +79,7 @@ public class Log extends IdEntity {
 	/**
 	 * 执行日志内容
 	 */
-	@Column(columnDefinition = "TEXT COMMENT '执行日志内容'")
+	//@Column(columnDefinition = "TEXT")
 	private String handleContent;
 
 	/**

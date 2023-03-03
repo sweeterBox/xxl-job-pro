@@ -23,23 +23,29 @@ import java.time.LocalDateTime;
 @Entity
 public class Instance extends IdEntity {
 
-    @Column(columnDefinition ="varchar(255) COMMENT ''",nullable = false)
+    @Column(nullable = false)
     private String url;
 
-    @Column(columnDefinition ="varchar(50) COMMENT ''",nullable = false)
+    @Column(length = 50,nullable = false)
     private String name;
 
-    @Column(columnDefinition ="varchar(255) COMMENT ''",nullable = false)
+    @Column(nullable = false)
     private String title;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition ="varchar(20) COMMENT ''",nullable = false)
+    @Column(length = 20,nullable = false)
     private ClientHostType clientHostType;
 
-    @Column(columnDefinition ="bit(1) COMMENT '是否健康'",nullable = false)
+    /**
+     * 是否健康
+     */
+    @Column(nullable = false)
     private Boolean healthy;
 
-    @Column(columnDefinition ="bit(1) COMMENT '是否是临时实例'",nullable = false)
+    /**
+     * 是否是临时实例
+     */
+    @Column(nullable = false)
     private Boolean ephemeral;
 
     @Column(scale = 1)
@@ -51,8 +57,11 @@ public class Instance extends IdEntity {
 
     private Boolean secure;
 
+    /**
+     * 实例状态
+     */
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition ="varchar(4) COMMENT '实例状态'")
+    @Column(length = 4)
     private InstanceStatus status;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")

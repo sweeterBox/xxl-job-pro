@@ -1,4 +1,20 @@
 # XXL-JOB Pro
+<p align="center" >
+    <p align="center">
+        <a href="https://github.com/sweeterBox/xxl-job-pro/releases">
+         <img src="https://img.shields.io/github/release/sweeterBox/xxl-job-pro.svg" >
+        </a>
+        <a href="https://github.com/sweeterBox/xxl-job-pro/">
+            <img src="https://img.shields.io/github/stars/sweeterBox/xxl-job-pro" >
+        </a>
+        <a href="https://hub.docker.com/r/sweeter/xxl-job-pro-admin/">
+            <img src="https://img.shields.io/docker/pulls/sweeter/xxl-job-pro-admin" >
+        </a>
+        <a href="http://www.gnu.org/licenses/gpl-3.0.html">
+         <img src="https://img.shields.io/badge/license-GPLv3-blue.svg" >
+        </a>
+    </p>
+</p>
 
 >forked from xuxueli/xxl-job(2.4.0-SNAPSHOT)
 
@@ -39,7 +55,7 @@
 - 故障转移
 - 客户端监控，内存、任务数量等，便于服务端合理的调度任务
 - 兼容测试xxl-job的客户端，便于阶段性升级
-- 支持amd64(x86)、arm/v8 、arm/v7架构
+- docker 镜像支持amd64(x86)、arm/v8 、arm/v7架构
 - 考虑支持Kettle ETL工具
 
 ## 原则及注意事项

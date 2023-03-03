@@ -1,6 +1,7 @@
 package com.xxl.job.admin.core.thread;
 
 import com.xxl.job.admin.repository.TaskRepository;
+import com.xxl.job.admin.service.TaskService;
 import com.xxl.job.utils.SpringContextUtils;
 import com.xxl.job.admin.config.SystemProperties;
 import com.xxl.job.admin.core.conf.XxlJobAdminConfig;
@@ -76,7 +77,7 @@ public class JobScheduleHelper {
                         // 1、pre read
                         long nowTime = System.currentTimeMillis();
                         //读取即将执行的任务
-                        List<Task> scheduleList = SpringContextUtils.getBean(TaskRepository.class).scheduleJobQuery(nowTime + PRE_READ_MS, preReadCount);
+                        List<Task> scheduleList = SpringContextUtils.getBean(TaskService.class).findScheduleTasks(nowTime + PRE_READ_MS, preReadCount);
                         if (scheduleList!=null && scheduleList.size()>0) {
                             // 2、push time-ring
                             for (Task jobInfo: scheduleList) {

@@ -1,7 +1,5 @@
 package com.xxl.job.admin.core.thread;
 
-import com.xxl.job.utils.SpringContextUtils;
-import com.xxl.job.admin.config.SystemProperties;
 import com.xxl.job.admin.core.trigger.TriggerTypeEnum;
 import com.xxl.job.admin.core.trigger.XxlJobTrigger;
 import lombok.extern.slf4j.Slf4j;

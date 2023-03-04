@@ -1,24 +1,19 @@
-FROM eclipse-temurin:8-jdk-alpine
+FROM  eclipse-temurin:8-jre-focal
 
 MAINTAINER sweeter
 
 LABEL "version"="v1.0" \
       "author"="sweeter"
 
-RUN echo "http://mirrors.aliyun.com/alpine/v3.9/main" > /etc/apk/repositories \
-    && echo "http://mirrors.aliyun.com/alpine/v3.9/community" >> /etc/apk/repositories \
-    && apk update upgrade \
-    && apk add --no-cache curl bash tzdata \
-    && rm -rf /var/cache/apk/* \
-    && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo "Asia/Shanghai" > /etc/timezone
+RUN apt-get -y update && DEBIAN_FRONTEND="noninteractive" apt -y install tzdata
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-#指令集的工作目录，可作用于RUN、CMD、ENTRYPOINT、COPY和ADD
 WORKDIR /app
 
-ADD ./target/xxl-job-admin-cloud/* ./
+COPY ./target/xxl-job-admin-cloud/* ./
 # 拷贝一份初始配置
-ADD ./target/xxl-job-admin-cloud/conf/* ./init-conf/
+COPY ./target/xxl-job-admin-cloud/conf/* ./init-conf/
 
 ENTRYPOINT ["sh", "ENTRYPOINT.sh"]
 

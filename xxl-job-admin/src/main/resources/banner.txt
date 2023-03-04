@@ -11,5 +11,6 @@ ${AnsiColor.BRIGHT_BLACK}
 ${AnsiColor.BLUE}
                                       ::: XXL-JOB PRO ADMIN v1.0
                                       ::: 服务名: ${spring.application.name}
+                                      ::: database.platform: ${database.platform}
                                       ::: Spring-Boot ${spring-boot.version}
 ${AnsiColor.BRIGHT_BLACK}

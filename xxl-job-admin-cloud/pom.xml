@@ -15,6 +15,10 @@
 
     <properties>
         <spring-cloud.version>Hoxton.SR11</spring-cloud.version>
+        <spring-cloud-alibaba.version>2.2.8.RELEASE</spring-cloud-alibaba.version>
+        <spring-boot-starter-parent.version>2.3.10.RELEASE</spring-boot-starter-parent.version>
+        <xxl-job-admin-ui.version>1.0.0</xxl-job-admin-ui.version>
+        <xxl-job-common.version>1.0.0</xxl-job-common.version>
     </properties>
 
 
@@ -51,8 +55,8 @@
         </dependency>
 
         <dependency>
-            <artifactId>xxl-job-admin</artifactId>
             <groupId>com.github</groupId>
+            <artifactId>xxl-job-admin</artifactId>
             <version>1.0.0</version>
             <exclusions>
                 <exclusion>

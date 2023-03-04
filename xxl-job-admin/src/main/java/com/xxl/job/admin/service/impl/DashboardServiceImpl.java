@@ -57,8 +57,8 @@ public class DashboardServiceImpl implements DashboardService {
 
         List<LogReport> logReportList = logReportRepository.findAllByTriggerDayIsBetweenOrderByTriggerDayAsc(startDate, endDate);
 
-        if (logReportList!=null && logReportList.size()>0) {
-            for (LogReport item: logReportList) {
+        if (logReportList != null && logReportList.size() > 0) {
+            for (LogReport item : logReportList) {
                 String day = DateUtil.formatDate(item.getTriggerDay());
                 int triggerDayCountRunning = item.getRunningCount();
                 int triggerDayCountSuc = item.getSucCount();

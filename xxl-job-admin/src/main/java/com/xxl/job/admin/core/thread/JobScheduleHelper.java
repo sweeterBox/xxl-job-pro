@@ -60,7 +60,7 @@ public class JobScheduleHelper {
 
             // pre-read count: treadpool-size * trigger-qps (each trigger cost 50ms, qps = 1000/50 = 20)
             SystemProperties systemProperties = SpringContextUtils.getBean(SystemProperties.class);
-            long preReadCount = (systemProperties.getTriggerPoolFastMax() + systemProperties.getTriggerPoolSlowMax()) * 20;
+            long preReadCount = Math.max((systemProperties.getTriggerPoolFastMax() + systemProperties.getTriggerPoolSlowMax()) * 20,5);
 
             while (!scheduleThreadToStop) {
 
@@ -149,6 +149,7 @@ public class JobScheduleHelper {
                         lock.unlock(lockKey);
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                     if (!scheduleThreadToStop) {
                         logger.error("xxl-job, JobScheduleHelper#scheduleThread error:{}", e.getMessage());
                     }

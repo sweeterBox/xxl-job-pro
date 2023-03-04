@@ -22,17 +22,21 @@ public class SystemProperties {
     @Value("${spring.mail.from:}")
     private String emailFrom;
 
-    @Value("${xxl.job.triggerpool.fast.max:0}")
+    @Value("${xxl.job.triggerpool.fast.max:5}")
     private Integer triggerPoolFastMax;
 
-    @Value("${xxl.job.triggerpool.slow.max:0}")
+    @Value("${xxl.job.triggerpool.slow.max:5}")
     private Integer triggerPoolSlowMax;
 
-    @Value("${xxl.job.logretentiondays:0}")
+    @Value("${xxl.job.logretentiondays:1}")
     private Integer logretentiondays;
 
     @Value("${spring.cloud.discovery.enabled:false}")
     private Boolean cloudEnabled;
+
+    private String initAdminUsername = "admin";
+
+    private String initAdminPassword = "xxljob";
 
 
     public String getI18n() {
@@ -98,5 +102,21 @@ public class SystemProperties {
 
     public void setCloudEnabled(Boolean cloudEnabled) {
         this.cloudEnabled = cloudEnabled;
+    }
+
+    public String getInitAdminUsername() {
+        return initAdminUsername;
+    }
+
+    public void setInitAdminUsername(String initAdminUsername) {
+        this.initAdminUsername = initAdminUsername;
+    }
+
+    public String getInitAdminPassword() {
+        return initAdminPassword;
+    }
+
+    public void setInitAdminPassword(String initAdminPassword) {
+        this.initAdminPassword = initAdminPassword;
     }
 }

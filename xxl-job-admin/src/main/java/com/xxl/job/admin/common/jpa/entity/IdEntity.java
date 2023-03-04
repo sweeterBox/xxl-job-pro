@@ -2,10 +2,7 @@ package com.xxl.job.admin.common.jpa.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 /**
  * @author sweeter
@@ -17,8 +14,24 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class IdEntity{
 
+    /**
+     * Oracle 不支持IDENTITY
+     * Mysql 不支持SEQUENCE
+     * @GeneratedValue(strategy = GenerationType.AUTO)时Postgresql全局自增不合理
+     *
+     * @GenericGenerator(name = "system-uuid", strategy = "uuid") 或许是最佳方案
+     * @GeneratedValue(generator = "system-uuid")
+     */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO,generator ="table_id_auto_increment")
+    @TableGenerator(
+            name = "table_id_auto_increment",
+            table="identity_auto_increment",
+           // pkColumnName="table_name",
+           // pkColumnValue="auto_increment",
+           // valueColumnName="next_value",
+            initialValue = 0,
+            allocationSize=1
+    )
     protected Long id;
 }

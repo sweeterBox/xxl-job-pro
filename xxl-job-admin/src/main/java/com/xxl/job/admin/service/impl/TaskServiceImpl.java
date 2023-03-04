@@ -32,6 +32,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -296,10 +297,11 @@ public class TaskServiceImpl implements TaskService {
      */
     @Override
     public List<Task> findScheduleTasks(Long maxNextTime, Long limitSize) {
-        Pageable pageable = PageRequest.of(0, Math.toIntExact(limitSize), Sort.by("id"));
+        Pageable pageable = PageRequest.of(0, (int) Math.max(limitSize, 1), Sort.by("id"));
         Specification<Task> specification = (root, criteriaQuery, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
             predicate.getExpressions().add(criteriaBuilder.le(root.get("nextTriggerTime"), maxNextTime));
+            predicate.getExpressions().add(criteriaBuilder.equal(root.get("triggerStatus"), TriggerStatus.ENABLE));
             return predicate;
         };
         return this.taskRepository.findAll(specification,pageable).getContent();

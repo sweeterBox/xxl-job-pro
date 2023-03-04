@@ -16,3 +16,5 @@ services:
       - port=8282
     network_mode: host
     restart: always
+    volumes:
+    - ./xxl-job-pro-admin/conf:/app/conf

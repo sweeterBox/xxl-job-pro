@@ -1,11 +1,8 @@
-package com.xxl.job.admin.config;
+package com.xxl.job.admin.config.db;
 
 import lombok.extern.slf4j.Slf4j;
 import org.h2.tools.Server;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -16,10 +13,9 @@ import javax.annotation.Resource;
  * @author sweeter
  * @date 2021/6/11
  */
-@Configuration(proxyBeanMethods = false)
-//@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
+@Configuration
+//@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.ANY)
 @ConditionalOnProperty(prefix = "spring.h2.console", name = {"enabled"}, havingValue = "true")
-@AutoConfigureAfter({DataSourceAutoConfiguration.class})
 @Slf4j
 public class DbH2ConsoleAutoConfiguration {
 

@@ -8,3 +8,5 @@ target/
 /logs/
 
 /xxl-job-admin/src/main/resources/application.yml
+/dbh2/xxl-job.trace.db
+/dbh2/xxl-job.mv.db

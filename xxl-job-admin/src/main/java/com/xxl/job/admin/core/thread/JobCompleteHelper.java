@@ -126,61 +126,6 @@ public class JobCompleteHelper {
 	}
 
 
-	// ---------------------- helper ----------------------
-
-	public R<String> callback(List<HandleCallbackParam> callbackParamList) {
-
-		callbackThreadPool.execute(() -> {
-			for (HandleCallbackParam handleCallbackParam: callbackParamList) {
-				R<String> callbackResult = callback(handleCallbackParam);
-				logger.debug("ApiController.callback {}, handleCallbackParam={}, callbackResult={}", (callbackResult.getCode()== R.SUCCESS_CODE?"success":"fail"), handleCallbackParam, callbackResult);
-			}
-		});
-
-		return R.SUCCESS;
-	}
-
-	private R<String> callback(HandleCallbackParam param) {
-		// valid log item
-		LogService logService = SpringContextUtils.getBean(LogService.class);
-		Log en = logService.findOne(param.getLogId());
-		if (en == null) {
-			return new R<>(R.FAIL_CODE, "log item not found.");
-		}
-
-		// avoid repeat callback, trigger child job etc
-		if (en.getHandleStatus() > 0) {
-			return new R<>(R.FAIL_CODE, "en repeate callback.");
-		}
-
-		// handle msg
-		StringBuffer handleMsg = new StringBuffer();
-		if (en.getHandleContent()!=null) {
-			handleMsg.append(en.getHandleContent()).append("<br>");
-		}
-		if (param.getContent() != null) {
-			handleMsg.append(param.getContent());
-		}
-
-		// success, save log
-		if (Objects.isNull(en.getHandleStartTime())) {
-			en.setHandleStartTime(param.getStartTime());
-		}
-		en.setHandleEndTime(param.getEndTime());
-		en.setHandleStatus(param.getStatus());
-		en.setHandleContent(handleMsg.toString());
-		if (param.getStatus().compareTo(200) == 0 || param.getStatus().compareTo(0) == 0) {
-			en.setNotifyStatus(NotifyStatus.NOT);
-		}else {
-			en.setNotifyStatus(NotifyStatus.TODO);
-		}
-		// text最大64kb 避免长度过长
-		if (StringUtils.isNotBlank(en.getHandleContent()) && en.getHandleContent().length() > 15000) {
-			en.setHandleContent(en.getHandleContent().substring(0, 15000));
-		}
-		XxlJobCompleter.updateHandleInfoAndFinish(en);
-		return R.SUCCESS;
-	}
 
 
 

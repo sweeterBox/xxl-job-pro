@@ -1,0 +1,24 @@
+spring:
+  jpa:
+    hibernate:
+      use-new-id-generator-mappings: true
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      auto-commit: true
+      connection-test-query: select 1 from dual
+      connection-timeout: 10000
+      idle-timeout: 30000
+      max-lifetime: 900000
+      maximum-pool-size: 30
+      minimum-idle: 10
+      pool-name: HikariCP
+      validation-timeout: 1000
+    url: jdbc:oracle:thin:@10.0.0.100:1521:helowin
+    username: system
+    password: helowin
+    #url:${database.url:jdbc:oracle:thin:@127.0.0.1:1521:XE}
+    #username: ${database.username:xxl-job-pro}
+    #password: ${database.password:root}
+    platform: ${database.platform:oracle}

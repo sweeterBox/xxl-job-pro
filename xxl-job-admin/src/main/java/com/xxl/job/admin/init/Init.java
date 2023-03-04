@@ -28,15 +28,15 @@ public class Init implements CommandLineRunner {
     public void run(String... args) throws Exception {
         //TODO 环境检查
         //初始化admin账号
+        String username = systemProperties.getInitAdminUsername();
+        String password = systemProperties.getInitAdminPassword();
         User user = new User();
-        user.setId(1L);
+        user.setUsername(username);
         UserRepository userRepository = SpringContextUtils.getBean(UserRepository.class);
         Optional<User> userOpt = userRepository.findOne(Example.of(user));
         if (userOpt.isPresent()) {
 
         }else {
-            String username = "admin";
-            String password = "xxljob";
             String slat = DigestUtils.md5DigestAsHex(username.getBytes());
             String passwordMd5 = DigestUtils.md5DigestAsHex((DigestUtils.md5DigestAsHex(password.getBytes()) + slat).getBytes());
             user.setUsername(username);
@@ -44,11 +44,12 @@ public class Init implements CommandLineRunner {
             user.setRole(1);
             userRepository.save(user);
             System.out.println("初始化管理员用户信息，用户名：" + username + "密码：" + password);
-            System.out.println("JAVA_HOME:" + System.getProperty("java.home"));
-            System.out.println("JAVA_VERSION:" + System.getProperty("java.version"));
-            System.out.println("USER_HOME:" + System.getProperty("user.home"));
-            System.out.println("USER_NAME:" + System.getProperty("user.name"));
         }
+
+        System.out.println("JAVA_HOME:" + System.getProperty("java.home"));
+        System.out.println("JAVA_VERSION:" + System.getProperty("java.version"));
+        System.out.println("USER_HOME:" + System.getProperty("user.home"));
+        System.out.println("USER_NAME:" + System.getProperty("user.name"));
 
     }
 }

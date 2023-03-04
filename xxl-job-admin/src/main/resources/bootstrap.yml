@@ -7,7 +7,7 @@ spring:
     name: xxl-job-admin
   cloud:
     discovery:
-      enabled: false
+      enabled: ${cloudEnabled:false}
     nacos:
       discovery:
         password: ${nacos.password:nacos}
@@ -28,3 +28,14 @@ spring:
         group: ${spring.cloud.nacos.discovery.group}
         enabled: ${spring.cloud.discovery.enabled}
 
+  profiles:
+    active: ${database.platform:h2}
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: com.xxl.job.admin.config.JpaPhysicalNamingStrategy

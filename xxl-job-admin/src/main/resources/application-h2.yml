@@ -1,0 +1,18 @@
+spring:
+  jpa:
+    hibernate:
+      use-new-id-generator-mappings: false
+  h2:
+    console:
+      enabled: false
+      port: 8284
+      path: /console
+      settings:
+        webAllowOthers: true
+        web-admin-password: 123456
+  datasource:
+    driverClassName: org.h2.Driver
+    url: ${database.url:jdbc:h2:file:./dbh2/xxl-job}
+    username: ${database.username:root}
+    password: ${database.password:root}
+    platform: ${database.platform:h2}

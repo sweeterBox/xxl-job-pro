@@ -1,0 +1,23 @@
+spring:
+  jpa:
+    database-platform: com.xxl.job.admin.config.db.MySQLInnoDBDialect
+    hibernate:
+      use-new-id-generator-mappings: false
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      auto-commit: true
+      connection-test-query: SELECT 1
+      connection-timeout: 10000
+      idle-timeout: 30000
+      max-lifetime: 900000
+      maximum-pool-size: 30
+      minimum-idle: 10
+      pool-name: HikariCP
+      validation-timeout: 1000
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://10.0.0.233:3306/xxl_job_pro?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    #url: ${database.url:jdbc:mysql://127.0.0.1:3306/xxl-job-pro?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true}
+    username: ${database.username:root}
+    password: ${database.password:root}
+    platform: ${database.platform:mysql}

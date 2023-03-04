@@ -2,11 +2,8 @@ package com.xxl.job.admin.repository;
 
 import com.xxl.job.admin.common.jpa.repository.BaseJpaRepository;
 import com.xxl.job.admin.entity.Log;
-import com.xxl.job.admin.enums.TriggerStatus;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,11 +13,6 @@ import java.util.Map;
 public interface LogRepository extends BaseJpaRepository<Log, Long> {
 
 	void deleteByTaskId(Long taskId);
-
-
-	@Deprecated
-	@Query(value = "SELECT  t.id FROM xxl_job_log t LEFT JOIN xxl_job_instance t2 ON t.instance_url = t2.url  WHERE t.trigger_status = 200 AND t.handle_status = 0 AND t.trigger_time  <= ?1 AND t2.id IS NULL", nativeQuery = true)
-	List<Long> findLostJobIds(Date losedTime);
 
 
 	@Deprecated

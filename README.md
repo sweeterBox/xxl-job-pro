@@ -65,14 +65,18 @@
 - URL：http://ip:port/xxl-job-admin/doc.html
 
 ## Supported database
-- mysql v5.7
-- mariadb v10.6.x
-### 待测试
-- h2
-- TiDB
-- oceanBase
-- oracle
-- Postgresql
+
+  | database      | 版本   | ID策略  |备注 |
+  | :---          |:---:   |:----:   |:----:|
+  | Mariadb       | 10.6.x | 自增    |  支持  |
+  | Mysql         | -      | 自增    |  支持  |
+  | Oracle        | -      | Sequence|  支持  |
+  | Postgresql    | -      | 自增    |  支持  |
+  | H2            | -      | 自增    |  支持  |
+  | OceanBase     | -      | 自增    |  待测试|
+  | TiDB          | -      | 自增    |  待测试|
+  | SqlServer     | -      | 自增    |  待测试|
+  
 
 ## 功能预览
 - [体验地址](暂无)
@@ -88,16 +92,23 @@
 
 ## Docker 
 
-- docker hub
+### 镜像制作
+```shell script
+mvn clean install -pl xxl-job-admin-cloud  -am  -Dmaven.test.skip=true
+
+docker buildx build --platform linux/amd64,linux/arm64/v8,linux/arm/v7 -t sweeter/xxl-job-pro-admin:v1.0.0  --push ./xxl-job-admin-cloud/
+```
+### 镜像使用
+- 从docker hub拉取镜像并创建容器
 ```shell script
 docker pull sweeter/xxl-job-pro-admin:v2.4
-docker run --network=host --restart=always  --name xxl-job-pro-admin -d sweeter/xxl-job-pro-admin:v2.4
+docker run --network=host --restart=always  --name xxl-job-pro-admin -d sweeter/xxl-job-pro-admin:v1.0.0
 ```
 - 阿里云docker镜像仓
 
 
 
-- docker-compose
+### docker-compose 编排
 ```yaml
 version: '3'
 services:
@@ -130,10 +141,30 @@ export NACOS_GROUP=DEFAULT_GROUP
 ```shell script
 docker-compose up -d
 ```
+## 环境变量及属性
 
+  | key      | 描述   | 可选值  |默认值 |
+  | :---          |:---:   |:----:   |:----:|
+  | port  | 服务端口 | -    |  8282  |
+  | context-path  | - | -    |  /xxl-job-admin  |
+  | cloudEnabled  | 是否是微服务环境 | true/false    |  true  |
+  | nacos.namespace | nacos名称空间 | -    |  XXL  |
+  | nacos.server-addr | nacos地址 |  -   |  -  |
+  | nacos.group | nacos分组 | -    |  DEFAULT_GROUP  |
+  | nacos.password | nacos密码 | -    |  nacos  |
+  | nacos.username | nacos用户名 | -    |  nacos  |
+  | database.platform  | 数据库平台类型 | h2/mysql/oracle/postgresql    |  h2  |
+  | cloudEnabled  | 是否是微服务环境 | true/false    |  true  |
+  | cloudEnabled  | 是否是微服务环境 | true/false    |  true  |
+  | cloudEnabled  | 是否是微服务环境 | true/false    |  true  |
+  | cloudEnabled  | 是否是微服务环境 | true/false    |  true  |
+  
 ## 使用方法
 
-### spring-cloud 微服务架构项目
+### 单机环境使用
+
+
+### spring-cloud 微服务架构环境使用
 
 - spring-cloud-alibaba项目中引入如下maven依赖
 ```xml
@@ -152,9 +183,48 @@ docker-compose up -d
 
 ### 邮件
 - 如果启用了邮件通知配置，在任务调度或执行失败时，会触发通知事件下发邮件通知。
+- 配置方法
+```yaml
+xxl:
+  job:
+    notify:
+      mail:
+        additional-properties:
+          sign: 'XXL-JOB Pro Admin - by sweeter'
+        # 逗号分隔的抄送收件人列表
+        #cc: zhangsan@xxl.com
+        enabled: false
+        from: robot@xxl.com
+        to: sweeter@xxl.com
+```
 
 ### 飞书
 - 如果启用了飞书通知配置，在任务调度或执行失败时，会触发通知事件通过飞书群组机器人下发通知。
+- 配置方法
+```yaml
+xxl:
+  job:
+    notify:
+      feishu:
+        enabled: false
+        secret: YZp84h85w3rYL7X2R2ly0g
+        # hook地址
+        webhookUrl: 'https://open.feishu.cn/open-apis/bot/v2/hook/48b79606-ca5b-4ab7-beee-11009d6c94fb'
+        # 需要发送的文本信息
+        message: "任务：#{event.task.description} \n作者：#{event.task.author} \n客户端实例地址：#{event.log.instanceUrl} \n调度状态：#{event.log.triggerStatus} \n执行状态：#{event.log.handleStatus}"
+```
 
 ### webhook
 - 如果启用了webhook通知配置，在任务调度或执行失败时，会触发通知事件通过http post请求下发通知。
+- 配置方法
+```yaml
+xxl:
+  job:
+    notify:
+      webhook:
+        enabled: true
+        # hook地址
+        webhookUrl: 'http://localhost:8282/xxl-job-admin/webhook/test'
+        # 需要发送的文本信息
+        message: "任务：#{event.task.description} \n作者：#{event.task.author} \n客户端实例地址：#{event.log.instanceUrl} \n调度状态：#{event.log.triggerStatus} \n执行状态：#{event.log.handleStatus}"
+```

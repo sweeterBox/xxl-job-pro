@@ -1,0 +1,23 @@
+spring:
+  jpa:
+    hibernate:
+      use-new-id-generator-mappings: false
+  #database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      auto-commit: true
+      connection-test-query: SELECT 1
+      connection-timeout: 10000
+      idle-timeout: 30000
+      max-lifetime: 900000
+      maximum-pool-size: 30
+      minimum-idle: 10
+      pool-name: HikariCP
+      validation-timeout: 1000
+    #url: jdbc:postgresql://ip:port/xxl-job-pro
+    url: jdbc:postgresql://10.0.0.100:5432/xxl_job_pro
+    username: ${database.username:postgres}
+    password: ${database.password:mysecretpassword}
+    platform: ${database.platform:postgresql}

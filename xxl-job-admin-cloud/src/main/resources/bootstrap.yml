@@ -7,7 +7,7 @@ spring:
     name: xxl-job-admin
   cloud:
     discovery:
-      enabled: ${cloudEnabled:true}
+      enabled: ${cloudEnabled:false}
     nacos:
       discovery:
         password: ${nacos.password:nacos}
@@ -29,7 +29,7 @@ spring:
         enabled: ${spring.cloud.discovery.enabled}
 
   profiles:
-    active: ${database.platform:mysql}
+    active: ${database.platform:h2}
   jpa:
     show-sql: false
     properties:

@@ -7,12 +7,11 @@ services:
     ports:
       - 8282:8282
     environment:
-      - TZ=Asia/Shanghai
-      - JAVA_OPTS=-Xms1g -Xmx1g
-     #- nacos.namespace=${NACOS_NAMESPACE}
-     #- nacos.server-addr=${NACOS_SERVER_ADDR}
-     #- nacos.group=${NACOS_GROUP}
-      - cloudEnabled=true
+      - JAVA_OPTS=-Dfile.encoding=UTF-8 -server -d64 -Xmx1g -Xms1g -Djava.security.egd=file:/dev/./urandom  -XX:+PrintGCDetails -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCDateStamps -XX:+UseGCLogFileRotation -XX:GCLogFileSize=10M -XX:NumberOfGCLogFiles=10 -Xloggc:./logs/gc.log -XX:+UseG1GC -XX:+PrintTenuringDistribution -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=./logs/dump.hprof
+      - nacos.namespace=${NACOS_NAMESPACE}
+      - nacos.server-addr=${NACOS_SERVER_ADDR}
+      - nacos.group=${NACOS_GROUP}
+      - cloudEnabled=false
       - port=8282
     network_mode: host
     restart: always

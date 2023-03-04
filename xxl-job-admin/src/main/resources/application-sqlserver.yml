@@ -1,0 +1,21 @@
+spring:
+  jpa:
+    hibernate:
+      use-new-id-generator-mappings: false
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      auto-commit: true
+      connection-test-query: SELECT 1
+      connection-timeout: 10000
+      idle-timeout: 30000
+      max-lifetime: 900000
+      maximum-pool-size: 30
+      minimum-idle: 10
+      pool-name: HikariCP
+      validation-timeout: 1000
+    url: ${database.url:jdbc:sqlserver://10.0.0.100:1433;database=xxl_job_pro;encrypt=false}
+    username: ${database.username:root}
+    password: ${database.password:root}
+    platform: ${database.platform:sqlserver}

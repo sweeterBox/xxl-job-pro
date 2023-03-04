@@ -102,7 +102,7 @@ docker buildx build --platform linux/amd64,linux/arm64/v8,linux/arm/v7 -t sweete
 - 从docker hub拉取镜像并创建容器
 ```shell script
 docker pull sweeter/xxl-job-pro-admin:v2.4
-docker run --network=host --restart=always  --name xxl-job-pro-admin -d sweeter/xxl-job-pro-admin:v1.0.0
+docker run --network=host --restart=always  --name xxl-job-pro-admin -d -v ./xxl-job-pro-admin/conf:/app/conf sweeter/xxl-job-pro-admin:v1.0.0
 ```
 - 阿里云docker镜像仓
 
@@ -154,10 +154,10 @@ docker-compose up -d
   | nacos.password | nacos密码 | -    |  nacos  |
   | nacos.username | nacos用户名 | -    |  nacos  |
   | database.platform  | 数据库平台类型 | h2/mysql/oracle/postgresql    |  h2  |
-  | cloudEnabled  | 是否是微服务环境 | true/false    |  true  |
-  | cloudEnabled  | 是否是微服务环境 | true/false    |  true  |
-  | cloudEnabled  | 是否是微服务环境 | true/false    |  true  |
-  | cloudEnabled  | 是否是微服务环境 | true/false    |  true  |
+  | database.username  | 数据库登录用户名 | -    |  -  |
+  | database.password  | 数据库登录密码 | -    |  -  |
+  | database.url  | 数据库jdbc地址 | -    |  -  |
+  | -  | - | -    |  -  |
   
 ## 使用方法
 

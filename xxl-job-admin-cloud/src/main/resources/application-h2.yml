@@ -4,7 +4,7 @@ spring:
       use-new-id-generator-mappings: false
   h2:
     console:
-      enabled: false
+      enabled: true
       port: 8284
       path: /console
       settings:

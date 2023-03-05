@@ -1,5 +1,7 @@
 package com.xxl.job.admin.config.db;
 
+import com.xxl.job.utils.IpUtil;
+import com.xxl.job.utils.SpringContextUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.h2.tools.Server;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -24,9 +26,14 @@ public class DbH2ConsoleAutoConfiguration {
 
     private Server webServer;
 
+
     @EventListener(value = ContextRefreshedEvent.class)
     public void start() throws java.sql.SQLException {
         log.info("starting h2 console at port:{} ", h2ConsoleProperties.getPort());
+        String webContextPath = SpringContextUtils.getApplicationContext().getEnvironment().getProperty("server.servlet.context-path", "/");
+        String port = SpringContextUtils.getEnvironmentProperty("server.port");
+        String webConsole = "http://" + IpUtil.getIp() + ":" + port + webContextPath + h2ConsoleProperties.getPath();
+        log.info("database h2 web console {}", webConsole);
         this.webServer = org.h2.tools.Server.createWebServer("-webPort", h2ConsoleProperties.getPort().toString(), "-tcpAllowOthers").start();
     }
 

@@ -60,9 +60,9 @@ public class DashboardServiceImpl implements DashboardService {
         if (logReportList != null && logReportList.size() > 0) {
             for (LogReport item : logReportList) {
                 String day = DateUtil.formatDate(item.getTriggerDay());
-                int triggerDayCountRunning = item.getRunningCount();
-                int triggerDayCountSuc = item.getSucCount();
-                int triggerDayCountFail = item.getFailCount();
+                Integer triggerDayCountRunning = Optional.ofNullable(item.getRunningCount()).orElse(0);
+                Integer triggerDayCountSuc = Optional.ofNullable(item.getSucCount()).orElse(0);
+                Integer triggerDayCountFail = Optional.ofNullable(item.getFailCount()).orElse(0);
 
                 triggerDayList.add(day);
                 triggerDayCountRunningList.add(triggerDayCountRunning);

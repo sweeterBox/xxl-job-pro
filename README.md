@@ -102,7 +102,8 @@ docker buildx build --platform linux/amd64,linux/arm64/v8,linux/arm/v7 -t sweete
 - 从docker hub拉取镜像并创建容器
 ```shell script
 docker pull sweeter/xxl-job-pro-admin:v2.4
-docker run --network=host --restart=always  --name xxl-job-pro-admin -d -v ./xxl-job-pro-admin/conf:/app/conf sweeter/xxl-job-pro-admin:v1.0.0
+docker run --network=host --restart=always  --name xxl-job-pro-admin -d -v ./xxl-job-pro-admin/conf:/app/conf sweeter/xxl-job-pro-admin:latest
+docker run --restart=always  --name xxl-job-pro-admin -d -p 8282:8282 -v ./xxl-job-pro-admin/conf:/app/conf sweeter/xxl-job-pro-admin:latest
 ```
 - 阿里云docker镜像仓
 
@@ -114,7 +115,7 @@ version: '3'
 services:
   xxl-job-pro-admin:
     container_name: xxl-job-pro-admin
-    image: sweeter/xxl-job-pro-admin:v2.4
+    image: sweeter/xxl-job-pro-admin:latest
     ports:
       - 8282:8282
     environment:

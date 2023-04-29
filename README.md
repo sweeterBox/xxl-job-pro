@@ -42,6 +42,8 @@
 - 添加swagger接口文档
 - 增加任务监控回调api hook，实现邮件、钉钉及飞书的通知消息
 - 增加监控参数包括内存、网络、磁盘等
+- Docker 镜像支持amd64(x86)、arm/v8 、arm/v7架构
+- 客户端监控，内存、任务数量等，便于服务端合理的调度任务
 
 ## 待修改功能点
 
@@ -53,11 +55,9 @@
 - 编写客户端执行器starter，便于springboot项目集成
 - 前端使用vue重新构建编写
 - 故障转移
-- 客户端监控，内存、任务数量等，便于服务端合理的调度任务
 - 兼容测试xxl-job的客户端，便于阶段性升级
-- docker 镜像支持amd64(x86)、arm/v8 、arm/v7架构
 - 考虑支持Kettle ETL工具
-
+- 增加项目启动时任务自动注册功能；任务只保存一次，任务初始化是不处于停用状态，管理端可以修改任务相关配置信息
 ## 原则及注意事项
 - 非必要不引入新的中间件，越简单越好
 
@@ -66,20 +66,17 @@
 
 ## Supported database
 
-  | database      | 版本   | ID策略  |备注 |
-  | :---          |:---:   |:----:   |:----:|
-  | Mariadb       | 10.6.x | 自增    |  支持  |
-  | Mysql         | -      | 自增    |  支持  |
-  | Oracle        | -      | Sequence|  支持  |
-  | Postgresql    | -      | 自增    |  支持  |
-  | H2            | -      | 自增    |  支持  |
-  | OceanBase     | -      | 自增    |  待测试|
-  | TiDB          | -      | 自增    |  待测试|
-  | SqlServer     | -      | 自增    |  待测试|
-  
-
-## 功能预览
-- [体验地址](暂无)
+  | Database      |Version  | Driver class name                          |Driver included |ID策略        |备注    |
+  | :---          |:---:    |:---:                                       |:---:           |:----:         |:----:  |
+  | MariaDB       | 10.6.x  |org.mariadb.jdbc.Driver                     |   Y            | auto increment|  支持  |
+  | MySQL         | 5.7/8.0+|org.mariadb.jdbc.Driver                     |   Y            | auto increment|  支持  |
+  | Oracle        | -       |oracle.jdbc.driver.OracleDriver             |   Y            | sequence      |  支持  |
+  | PostgresSQL   | -       |org.postgresql.Driver                       |   Y            | auto increment|  支持  |
+  | H2            | -       |org.h2.Driver                               |   Y            | auto increment|  支持  |
+  | OceanBase     | -       |-                                           |                | auto increment|  待测试|
+  | TiDB          | -       |-                                           |                | auto increment|  待测试|
+  | SqlServer     | -       |com.microsoft.sqlserver.jdbc.SQLServerDriver|   Y            | auto increment|  待测试|
+## 功能预览(暂无)
 - 系统初始用户:admin 密码:xxljob
 - 登录页
 ![登录页](./doc/img/xxl-job-pro-login.jpg)
@@ -101,8 +98,9 @@ docker buildx build --platform linux/amd64,linux/arm64/v8,linux/arm/v7 -t sweete
 ### 镜像使用
 - 从docker hub拉取镜像并创建容器
 ```shell script
-docker pull sweeter/xxl-job-pro-admin:v2.4
+docker pull sweeter/xxl-job-pro-admin:latest
 docker run --network=host --restart=always  --name xxl-job-pro-admin -d -v ./xxl-job-pro-admin/conf:/app/conf sweeter/xxl-job-pro-admin:latest
+#or
 docker run --restart=always  --name xxl-job-pro-admin -d -p 8282:8282 -v ./xxl-job-pro-admin/conf:/app/conf sweeter/xxl-job-pro-admin:latest
 ```
 - 阿里云docker镜像仓
@@ -224,7 +222,7 @@ xxl:
     notify:
       webhook:
         enabled: true
-        # hook地址
+        # hook地址 http method:POST content-type:application/json 
         webhookUrl: 'http://localhost:8282/xxl-job-admin/webhook/test'
         # 需要发送的文本信息
         message: "任务：#{event.task.description} \n作者：#{event.task.author} \n客户端实例地址：#{event.log.instanceUrl} \n调度状态：#{event.log.triggerStatus} \n执行状态：#{event.log.handleStatus}"

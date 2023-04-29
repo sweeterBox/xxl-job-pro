@@ -41,8 +41,8 @@ public class XxlJobSpringExecutor extends XxlJobExecutor implements ApplicationC
     @Override
     public void afterSingletonsInstantiated() {
 
-        // init JobHandler Repository (for method)
-        initJobHandlerMethodRepository(applicationContext);
+        // init TaskHandler Repository
+        initTaskHandlerRepository(applicationContext);
 
         // refresh GlueFactory
         GlueFactory.refreshInstance(1);
@@ -60,7 +60,7 @@ public class XxlJobSpringExecutor extends XxlJobExecutor implements ApplicationC
         super.destroy();
     }
 
-    private void initJobHandlerMethodRepository(ApplicationContext applicationContext) {
+    private void initTaskHandlerRepository(ApplicationContext applicationContext) {
         if (applicationContext == null) {
             return;
         }

@@ -1,8 +1,10 @@
 package com.xxl.job.client.executor;
 
 import com.alibaba.nacos.shaded.com.google.common.collect.Lists;
+import com.xxl.job.enums.AutoRegistryType;
 import com.xxl.job.client.executor.client.AdminApiClient;
 import com.xxl.job.client.annotation.ScheduledTask;
+import com.xxl.job.client.handler.AbstractHandler;
 import com.xxl.job.client.handler.AbstractScheduledTask;
 import com.xxl.job.client.handler.BeanHandler;
 import com.xxl.job.client.handler.MethodHandler;
@@ -11,11 +13,12 @@ import com.xxl.job.client.executor.server.ClientServer;
 import com.xxl.job.client.repository.ScheduledHandlerRepository;
 import com.xxl.job.client.repository.ScheduledThreadRepository;
 import com.xxl.job.client.task.TriggerCallbackThread;
+import com.xxl.job.model.TaskRegistry;
 import com.xxl.job.utils.SpringContextUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotatedElementUtils;
-
 import javax.annotation.PreDestroy;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -179,11 +182,14 @@ public abstract class XxlJobExecutor {
         String name = scheduledTask.value();
         String description = scheduledTask.description();
         String author = scheduledTask.author();
+        String cron = scheduledTask.cron();
+        boolean autoStart = scheduledTask.autoStart();
+        AutoRegistryType autoRegistryType = scheduledTask.autoRegistry();
         //make and simplify the variables since they'll be called several times later
         Class<?> clazz = bean.getClass();
         String methodName = executeMethod.getName();
-        if (name.trim().length() == 0) {
-            throw new RuntimeException("xxl-job method-jobhandler name invalid, for[" + clazz + "#" + methodName + "] .");
+        if (StringUtils.isBlank(name)) {
+            name = this.toFistLowerCase(bean.getClass().getSimpleName() + "#" + methodName);
         }
         if (jobHandlerRepository.findOne(name) != null) {
             throw new RuntimeException("xxl-job jobhandler[" + name + "(" + description + ")] naming conflicts.");
@@ -194,7 +200,7 @@ public abstract class XxlJobExecutor {
         Method initMethod = null;
         Method destroyMethod = null;
 
-        if (scheduledTask.init().trim().length() > 0) {
+        if (StringUtils.isNotBlank(scheduledTask.init())) {
             try {
                 initMethod = clazz.getDeclaredMethod(scheduledTask.init());
                 initMethod.setAccessible(true);
@@ -202,7 +208,7 @@ public abstract class XxlJobExecutor {
                 throw new RuntimeException("xxl-job method-jobhandler initMethod invalid, for[" + clazz + "#" + methodName + "] .");
             }
         }
-        if (scheduledTask.destroy().trim().length() > 0) {
+        if (StringUtils.isNotBlank(scheduledTask.destroy())) {
             try {
                 destroyMethod = clazz.getDeclaredMethod(scheduledTask.destroy());
                 destroyMethod.setAccessible(true);
@@ -210,12 +216,52 @@ public abstract class XxlJobExecutor {
                 throw new RuntimeException("xxl-job method-jobhandler destroyMethod invalid, for[" + clazz + "#" + methodName + "] .");
             }
         }
-        this.jobHandlerRepository.save(name, new MethodHandler(bean, executeMethod, initMethod, destroyMethod, name, description, deprecated, author));
+        this.jobHandlerRepository.save(name, new MethodHandler(bean, executeMethod, initMethod, destroyMethod, name, description, deprecated, author, cron, autoStart, autoRegistryType));
     }
 
+    /**
+     * 将任务注册到admin server端
+     * @param handler
+     */
+    protected void autoRegistryTask(AbstractHandler handler) {
+        if (handler instanceof BeanHandler) {
 
+
+        }
+
+        if (handler instanceof MethodHandler) {
+            MethodHandler methodHandler = (MethodHandler) handler;
+            TaskRegistry taskRegistry = new TaskRegistry();
+            taskRegistry.setName(methodHandler.getName());
+//TODO
+
+            AdminApiClient adminApiClient = SpringContextUtils.getBean(AdminApiClient.class);
+            if (Objects.nonNull(adminApiClient)) {
+                adminApiClient.saveTask(taskRegistry);
+            }
+        }
+    }
+
+    /**
+     * bean 任务对象存储
+     * @param scheduledTask
+     */
     protected void registryBeanHandler(AbstractScheduledTask scheduledTask) {
         this.jobHandlerRepository.save(scheduledTask.name(), new BeanHandler(scheduledTask));
+    }
+
+    /**
+     * 首字母转换为小写
+     * @param name 任务名称
+     * @return 首字母小写的任务标识
+     */
+    protected String toFistLowerCase(String name) {
+        if (StringUtils.isNotBlank(name)) {
+            char[] cs = name.toCharArray();
+            cs[0]-=32;
+            return String.valueOf(cs);
+        }
+        return name;
     }
 
 }

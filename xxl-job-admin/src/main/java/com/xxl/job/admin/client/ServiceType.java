@@ -13,6 +13,7 @@ public enum ServiceType {
      */
     CALLBACK("callback"),
     REGISTRY("registry"),
+    ADDTASK("registry"),
     DEREGISTER("deregister");
 
     private String value;

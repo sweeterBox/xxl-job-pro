@@ -3,6 +3,7 @@ package com.xxl.job.client.executor.client;
 import com.xxl.job.client.executor.model.HandleCallbackParam;
 import com.xxl.job.client.executor.model.InstanceRegistry;
 import com.xxl.job.model.R;
+import com.xxl.job.model.TaskRegistry;
 import com.xxl.job.utils.HttpClient;
 import java.util.List;
 
@@ -45,6 +46,17 @@ public class AdminApiHttpClient implements AdminApiClient {
     @Override
     public R<String> deregister(InstanceRegistry registryParam) {
         return HttpClient.postBody(adminServerUrl + "api/deregister", accessToken, timeout, registryParam, String.class);
+    }
+
+    /**
+     * 将任务注册到admin server
+     *
+     * @param taskRegistry
+     * @return
+     */
+    @Override
+    public R<String> saveTask(TaskRegistry taskRegistry) {
+        return HttpClient.postBody(adminServerUrl + "api/saveTask", accessToken, timeout, taskRegistry, String.class);
     }
 
 }

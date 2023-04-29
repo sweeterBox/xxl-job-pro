@@ -3,6 +3,7 @@ package com.xxl.job.client.executor.client;
 import com.xxl.job.client.executor.model.HandleCallbackParam;
 import com.xxl.job.client.executor.model.InstanceRegistry;
 import com.xxl.job.model.R;
+import com.xxl.job.model.TaskRegistry;
 import java.util.List;
 
 /**
@@ -34,6 +35,13 @@ public interface AdminApiClient {
      * @return
      */
      R<String> deregister(InstanceRegistry instance);
+
+    /**
+     * 将任务注册到admin server
+     * @param taskRegistry
+     * @return
+     */
+    R<String> saveTask(TaskRegistry taskRegistry);
 
 
 }

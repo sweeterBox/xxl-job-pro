@@ -2,7 +2,7 @@ package com.xxl.job.utils;
 
 
 import com.xxl.job.model.R;
-
+import lombok.extern.slf4j.Slf4j;
 import javax.net.ssl.*;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -15,6 +15,7 @@ import java.security.cert.X509Certificate;
 /**
  * @author xuxueli 2018-11-25 00:55:31
  */
+@Slf4j
 public class HttpClient {
     public static final String XXL_JOB_ACCESS_TOKEN = "XXL-JOB-ACCESS-TOKEN";
 
@@ -28,7 +29,7 @@ public class HttpClient {
 
             connection.setSSLSocketFactory(newFactory);
         } catch (Exception e) {
-           // logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         connection.setHostnameVerifier(new HostnameVerifier() {
             @Override
@@ -123,13 +124,13 @@ public class HttpClient {
             try {
                 return JsonUtils.json2Obj(resultJson, R.class, returnTargClassOfT);
             } catch (Exception e) {
-                //logger.error("xxl-job remoting (url="+url+") response content invalid("+ resultJson +").", e);
-                return new R<String>(R.FAIL_CODE, "xxl-job remoting (url="+url+") response content invalid("+ resultJson +").");
+                log.error("xxl-job remoting (url="+url+") response content invalid("+ resultJson +").", e);
+                return new R<String>(R.FAIL_CODE, "connection xxl-job-admin (url="+url+") response content invalid("+ resultJson +").");
             }
 
         } catch (Exception e) {
-           // logger.error(e.getMessage(), e);
-            return new R<String>(R.FAIL_CODE, "xxl-job remoting error("+ e.getMessage() +"), for url : " + url);
+            log.error(e.getMessage(), e);
+            return new R<String>(R.FAIL_CODE, "connection xxl-job-admin error("+ e.getMessage() +"), for url : " + url);
         } finally {
             try {
                 if (bufferedReader != null) {
@@ -139,7 +140,7 @@ public class HttpClient {
                     connection.disconnect();
                 }
             } catch (Exception e2) {
-               // logger.error(e2.getMessage(), e2);
+               log.error(e2.getMessage(), e2);
             }
         }
     }

@@ -1,6 +1,8 @@
 package com.xxl.job.client.handler;
 
 
+import com.xxl.job.enums.AutoRegistryType;
+
 import java.util.Objects;
 
 /**
@@ -18,6 +20,21 @@ public class BeanHandler extends AbstractHandler {
 
     private String author;
 
+    /**
+     * CRON 表达式
+     */
+    private String cron;
+
+    /**
+     * 初始化时启动任务
+     */
+    private boolean autoStart;
+
+    /**
+     * 任务自动注册，当cron不为空时有效
+     */
+    private AutoRegistryType autoRegistry;
+
     private final AbstractScheduledTask target;
 
     public BeanHandler(AbstractScheduledTask target) {
@@ -26,6 +43,9 @@ public class BeanHandler extends AbstractHandler {
         this.description = target.description();
         this.author = target.author();
         this.deprecated = Objects.nonNull(target.getClass().getAnnotation(Deprecated.class));
+        this.autoRegistry = target.autoRegistry();
+        this.cron = target.cron();
+        this.autoStart = target.autoStart();
     }
 
     public BeanHandler(AbstractScheduledTask target,boolean deprecated) {
@@ -34,6 +54,9 @@ public class BeanHandler extends AbstractHandler {
         this.description = target.description();
         this.author = target.author();
         this.deprecated = deprecated;
+        this.autoRegistry = target.autoRegistry();
+        this.cron = target.cron();
+        this.autoStart = target.autoStart();
     }
 
     @Override
@@ -83,5 +106,29 @@ public class BeanHandler extends AbstractHandler {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getCron() {
+        return cron;
+    }
+
+    public void setCron(String cron) {
+        this.cron = cron;
+    }
+
+    public boolean isAutoStart() {
+        return autoStart;
+    }
+
+    public void setAutoStart(boolean autoStart) {
+        this.autoStart = autoStart;
+    }
+
+    public AutoRegistryType getAutoRegistry() {
+        return autoRegistry;
+    }
+
+    public void setAutoRegistry(AutoRegistryType autoRegistry) {
+        this.autoRegistry = autoRegistry;
     }
 }

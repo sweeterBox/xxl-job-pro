@@ -1,5 +1,6 @@
 package com.xxl.job.client.handler;
 
+import com.xxl.job.enums.AutoRegistryType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,12 +36,22 @@ public abstract class AbstractScheduledTask {
         return "anonymous";
     }
 
+    public boolean autoStart(){
+        return false;
+    }
+
+    public AutoRegistryType autoRegistry(){
+        return AutoRegistryType.NONE;
+    }
+
+    public String cron(){
+        return "";
+    }
 
     /**
      * 执行
      */
     public abstract void execute();
-
 
     public void init(){
 

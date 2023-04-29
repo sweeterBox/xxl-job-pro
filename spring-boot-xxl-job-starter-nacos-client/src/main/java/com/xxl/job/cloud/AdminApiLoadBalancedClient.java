@@ -4,6 +4,7 @@ import com.xxl.job.client.executor.client.AdminApiClient;
 import com.xxl.job.client.executor.model.HandleCallbackParam;
 import com.xxl.job.client.executor.model.InstanceRegistry;
 import com.xxl.job.model.R;
+import com.xxl.job.model.TaskRegistry;
 import com.xxl.job.utils.JsonUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.cloud.client.ServiceInstance;
@@ -31,8 +32,8 @@ public class AdminApiLoadBalancedClient implements AdminApiClient {
     @Resource
     private DiscoveryClient discoveryClient;
 
-    @Resource(name = "loadBalancedRestTemplate")
-    private RestTemplate loadBalancedRestTemplate;
+    @Resource(name = "xxlLoadBalancedRestTemplate")
+    private RestTemplate xxlLoadBalancedRestTemplate;
     /**
      * callback
      *
@@ -42,7 +43,7 @@ public class AdminApiLoadBalancedClient implements AdminApiClient {
     @Override
     public R<String> callback(List<HandleCallbackParam> params) {
         String adminUrl = this.getAdminService() + "/api/callback";
-        ResponseEntity<String> responseEntity = loadBalancedRestTemplate.postForEntity(adminUrl, params, String.class);
+        ResponseEntity<String> responseEntity = xxlLoadBalancedRestTemplate.postForEntity(adminUrl, params, String.class);
         return JsonUtils.json2Obj(responseEntity.getBody(), R.class, String.class);
     }
 
@@ -55,7 +56,7 @@ public class AdminApiLoadBalancedClient implements AdminApiClient {
     @Override
     public R<String> register(InstanceRegistry instance) {
         String adminUrl = this.getAdminService() + "/api/registry";
-        ResponseEntity<String> responseEntity = loadBalancedRestTemplate.postForEntity(adminUrl, instance, String.class);
+        ResponseEntity<String> responseEntity = xxlLoadBalancedRestTemplate.postForEntity(adminUrl, instance, String.class);
         return JsonUtils.json2Obj(responseEntity.getBody(), R.class, String.class);
     }
 
@@ -68,7 +69,20 @@ public class AdminApiLoadBalancedClient implements AdminApiClient {
     @Override
     public R<String> deregister(InstanceRegistry instance) {
         String adminUrl = this.getAdminService() + "/api/deregister";
-        ResponseEntity<String> responseEntity = loadBalancedRestTemplate.postForEntity(adminUrl, instance, String.class);
+        ResponseEntity<String> responseEntity = xxlLoadBalancedRestTemplate.postForEntity(adminUrl, instance, String.class);
+        return JsonUtils.json2Obj(responseEntity.getBody(), R.class, String.class);
+    }
+
+    /**
+     * 将任务注册到admin server
+     *
+     * @param taskRegistry
+     * @return
+     */
+    @Override
+    public R<String> saveTask(TaskRegistry taskRegistry) {
+        String adminUrl = this.getAdminService() + "/api/saveTask";
+        ResponseEntity<String> responseEntity = xxlLoadBalancedRestTemplate.postForEntity(adminUrl, taskRegistry, String.class);
         return JsonUtils.json2Obj(responseEntity.getBody(), R.class, String.class);
     }
 

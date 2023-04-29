@@ -20,4 +20,6 @@ public class TaskInfo {
 
     private String author;
 
+    private String cron;
+
 }

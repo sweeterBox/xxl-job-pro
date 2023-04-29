@@ -1,5 +1,7 @@
 package com.xxl.job.client.handler;
 
+import com.xxl.job.enums.AutoRegistryType;
+
 import java.lang.reflect.Method;
 
 /**
@@ -15,6 +17,21 @@ public class MethodHandler extends AbstractHandler {
     private String author;
 
     private boolean deprecated = false;
+
+    /**
+     * CRON 表达式
+     */
+    private String cron;
+
+    /**
+     * 初始化时启动任务
+     */
+    private boolean autoStart;
+
+    /**
+     * 任务自动注册，当cron不为空时有效
+     */
+    private AutoRegistryType autoRegistry;
 
     private final Object target;
 
@@ -53,7 +70,7 @@ public class MethodHandler extends AbstractHandler {
         this.deprecated = deprecated;
     }
 
-    public MethodHandler(Object target, Method method, Method initMethod, Method destroyMethod, String name, String description, boolean deprecated,String author) {
+    public MethodHandler(Object target, Method method, Method initMethod, Method destroyMethod, String name, String description, boolean deprecated,String author,String cron,boolean autoStart,AutoRegistryType autoRegistry) {
         this.target = target;
         this.method = method;
         this.initMethod = initMethod;
@@ -62,6 +79,9 @@ public class MethodHandler extends AbstractHandler {
         this.description = description;
         this.deprecated = deprecated;
         this.author = author;
+        this.cron = cron;
+        this.autoStart = autoStart;
+        this.autoRegistry = autoRegistry;
     }
 
     @Override
@@ -124,5 +144,29 @@ public class MethodHandler extends AbstractHandler {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getCron() {
+        return cron;
+    }
+
+    public void setCron(String cron) {
+        this.cron = cron;
+    }
+
+    public boolean isAutoStart() {
+        return autoStart;
+    }
+
+    public void setAutoStart(boolean autoStart) {
+        this.autoStart = autoStart;
+    }
+
+    public AutoRegistryType getAutoRegistry() {
+        return autoRegistry;
+    }
+
+    public void setAutoRegistry(AutoRegistryType autoRegistry) {
+        this.autoRegistry = autoRegistry;
     }
 }

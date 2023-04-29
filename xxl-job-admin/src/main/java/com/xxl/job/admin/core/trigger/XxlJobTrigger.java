@@ -176,8 +176,11 @@ public class XxlJobTrigger {
         triggerMsgSb.append("<br>").append(I18nUtil.getString("jobinfo_field_timeout")).append("：").append(task.getExecutorTimeout());
         triggerMsgSb.append("<br>").append(I18nUtil.getString("jobinfo_field_executorFailRetryCount")).append("：").append(finalFailRetryCount);
 
-        triggerMsgSb.append("<br><br><span style=\"color:#00c0ef;\" > " + I18nUtil.getString("jobconf_trigger_run") + "<<<<<<<<<<< </span><br>")
-                .append((routeAddressResult != null && routeAddressResult.getMsg() != null) ? routeAddressResult.getMsg() + "<br><br>" : "").append(triggerResult.getMsg() != null ? triggerResult.getMsg() : "");
+        triggerMsgSb.append("<br><br><span style=\"color:#00c0ef;\" > " +
+                "调度信息:" +
+                "</span><br>")
+                .append((routeAddressResult != null && routeAddressResult.getMsg() != null) ? routeAddressResult.getMsg() +
+                        "<br><br>" : "").append(triggerResult.getMsg() != null ? triggerResult.getMsg() : "");
 
         // 6、save log trigger-info
         taskLog.setInstanceUrl(address);

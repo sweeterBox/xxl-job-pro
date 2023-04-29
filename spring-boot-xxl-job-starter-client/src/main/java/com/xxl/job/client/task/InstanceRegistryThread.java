@@ -52,10 +52,10 @@ public class InstanceRegistryThread {
                                 log.info("xxl-job instance registry success, registryParam:{}, registryResult:{}", new Object[]{registryParam, registryResult});
                                 break;
                             } else {
-                                log.info("xxl-job instance registry fail, registryParam:{}, registryResult:{}", new Object[]{registryParam, registryResult});
+                                log.error("xxl-job instance registry fail, registryParam:{}, registryResult:{}", new Object[]{registryParam, registryResult});
                             }
                         } catch (Exception e) {
-                            log.info("xl-job instance registry error, registryParam:{}", registryParam, e);
+                            log.error("xl-job instance registry error, registryParam:{}", registryParam, e);
                         }
                     }
                 } catch (Exception e) {

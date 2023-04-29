@@ -21,7 +21,7 @@ public class AdminApiCloudAutoConfiguration {
     @ConditionalOnMissingBean
     @LoadBalanced
     @Bean
-    public RestTemplate loadBalancedRestTemplate() {
+    public RestTemplate xxlLoadBalancedRestTemplate() {
         return new RestTemplate();
     }
 

@@ -50,10 +50,10 @@ public class ClientHealthCheck implements CommandLineRunner {
                 Optional<R<String>> resOpt = Optional.ofNullable(executor.beat())
                         .filter(v -> v.getCode() == 200);
                 if (resOpt.isPresent()) {
-                    log.info("{}-{} 健康检查", instance.getName(), instance.getUrl());
+                    log.info("{}-({}) 健康检查", instance.getName(), instance.getUrl());
                 } else {
                     //下线处理
-                    log.warn("{}-{} 下线", instance.getName(), instance.getUrl());
+                    log.warn("{}-({}) 下线", instance.getName(), instance.getUrl());
                     if (instance.getEphemeral()) {
                         instanceRepository.delete(instance);
                     }else {

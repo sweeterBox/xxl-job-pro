@@ -3,14 +3,18 @@ package com.xxl.job.admin.service.impl;
 import com.xxl.job.admin.entity.Application;
 import com.xxl.job.admin.entity.Instance;
 import com.xxl.job.admin.entity.Log;
-import com.xxl.job.admin.enums.InstanceStatus;
-import com.xxl.job.admin.enums.NotifyStatus;
+import com.xxl.job.admin.entity.Task;
+import com.xxl.job.admin.enums.*;
 import com.xxl.job.admin.repository.ApplicationRepository;
 import com.xxl.job.admin.repository.InstanceRepository;
 import com.xxl.job.admin.repository.LogRepository;
+import com.xxl.job.admin.repository.TaskRepository;
+import com.xxl.job.enums.AutoRegistryType;
+import com.xxl.job.enums.ExecutorBlockStrategy;
 import com.xxl.job.model.HandleCallbackParam;
 import com.xxl.job.model.InstanceRegistry;
 import com.xxl.job.model.R;
+import com.xxl.job.model.TaskRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -34,6 +38,9 @@ public class ApiServiceImpl  {
 
     @Resource
     private InstanceRepository instanceRepository;
+
+    @Resource
+    private TaskRepository taskRepository;
 
     @Resource
     private ApplicationRepository applicationRepository;
@@ -151,6 +158,39 @@ public class ApiServiceImpl  {
         }else {
           return new R<>(R.FAIL_CODE, "not found.");
         }
+        return R.SUCCESS;
+    }
+
+    public R<String> saveTask(TaskRegistry taskRegistry) {
+        //保存任务信息
+        boolean exist = this.taskRepository.existsAllByExecutorHandler(taskRegistry.getName());
+        Task task = null;
+        if (exist) {
+            if (AutoRegistryType.UPDATE.equals(taskRegistry.getAutoRegistry())) {
+                task = this.taskRepository.findByExecutorHandler(taskRegistry.getName());
+                task.setScheduleConf(taskRegistry.getCron());
+                task.setDescription(taskRegistry.getDescription());
+                this.taskRepository.save(task);
+            }
+        }else {
+            if (AutoRegistryType.CREATE.equals(taskRegistry.getAutoRegistry())) {
+                task = new Task();
+                task.setApplicationName(taskRegistry.getApplicationName());
+                task.setAuthor(taskRegistry.getAuthor());
+                task.setMisfireStrategy(MisfireStrategy.DO_NOTHING);
+                task.setExecutorBlockStrategy(ExecutorBlockStrategy.SERIAL_EXECUTION.name());
+                task.setExecutorRouteStrategy(RouteStrategy.ROUND);
+                task.setExecutorHandler(taskRegistry.getName());
+                task.setDescription(taskRegistry.getDescription());
+                task.setGlueType(GlueType.BEAN);
+                task.setScheduleConf(taskRegistry.getCron());
+                task.setScheduleType(ScheduleType.CRON);
+                task.setTriggerStatus(taskRegistry.isAutoStart()?TriggerStatus.ENABLE:TriggerStatus.DISABLE);
+                task.setExecutorFailRetryCount(0);
+                this.taskRepository.save(task);
+            }
+        }
+
         return R.SUCCESS;
     }
 

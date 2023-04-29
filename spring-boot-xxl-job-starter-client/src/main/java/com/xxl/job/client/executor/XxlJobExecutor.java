@@ -216,7 +216,9 @@ public abstract class XxlJobExecutor {
                 throw new RuntimeException("xxl-job method-jobhandler destroyMethod invalid, for[" + clazz + "#" + methodName + "] .");
             }
         }
-        this.jobHandlerRepository.save(name, new MethodHandler(bean, executeMethod, initMethod, destroyMethod, name, description, deprecated, author, cron, autoStart, autoRegistryType));
+        MethodHandler methodHandler = new MethodHandler(bean, executeMethod, initMethod, destroyMethod, name, description, deprecated, author, cron, autoStart, autoRegistryType);
+        this.autoRegistryTask(methodHandler);
+        this.jobHandlerRepository.save(name, methodHandler);
     }
 
     /**
@@ -224,21 +226,34 @@ public abstract class XxlJobExecutor {
      * @param handler
      */
     protected void autoRegistryTask(AbstractHandler handler) {
+        TaskRegistry taskRegistry = new TaskRegistry();
+        taskRegistry.setApplicationName(this.name);
         if (handler instanceof BeanHandler) {
-
-
+            BeanHandler beanHandler = (BeanHandler) handler;
+            taskRegistry.setName(beanHandler.getName());
+            taskRegistry.setAuthor(beanHandler.getAuthor());
+            taskRegistry.setAutoRegistry(beanHandler.getAutoRegistry());
+            taskRegistry.setAutoStart(beanHandler.isAutoStart());
+            taskRegistry.setCron(beanHandler.getCron());
+            taskRegistry.setDeprecated(beanHandler.isDeprecated());
+            taskRegistry.setDescription(beanHandler.getDescription());
         }
 
         if (handler instanceof MethodHandler) {
             MethodHandler methodHandler = (MethodHandler) handler;
-            TaskRegistry taskRegistry = new TaskRegistry();
             taskRegistry.setName(methodHandler.getName());
-//TODO
+            taskRegistry.setAuthor(methodHandler.getAuthor());
+            taskRegistry.setAutoRegistry(methodHandler.getAutoRegistry());
+            taskRegistry.setAutoStart(methodHandler.isAutoStart());
+            taskRegistry.setCron(methodHandler.getCron());
+            taskRegistry.setDeprecated(methodHandler.isDeprecated());
+            taskRegistry.setDescription(methodHandler.getDescription());
 
-            AdminApiClient adminApiClient = SpringContextUtils.getBean(AdminApiClient.class);
-            if (Objects.nonNull(adminApiClient)) {
-                adminApiClient.saveTask(taskRegistry);
-            }
+        }
+
+        AdminApiClient adminApiClient = SpringContextUtils.getBean(AdminApiClient.class);
+        if (Objects.nonNull(adminApiClient)) {
+            adminApiClient.saveTask(taskRegistry);
         }
     }
 
@@ -247,7 +262,9 @@ public abstract class XxlJobExecutor {
      * @param scheduledTask
      */
     protected void registryBeanHandler(AbstractScheduledTask scheduledTask) {
-        this.jobHandlerRepository.save(scheduledTask.name(), new BeanHandler(scheduledTask));
+        BeanHandler beanHandler = new BeanHandler(scheduledTask);
+        this.autoRegistryTask(beanHandler);
+        this.jobHandlerRepository.save(scheduledTask.name(), beanHandler);
     }
 
     /**

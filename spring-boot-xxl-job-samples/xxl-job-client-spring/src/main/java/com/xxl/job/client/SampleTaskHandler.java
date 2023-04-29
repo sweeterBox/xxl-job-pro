@@ -4,6 +4,7 @@ package com.xxl.job.client;
 import com.xxl.job.client.annotation.ScheduledTask;
 import com.xxl.job.client.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
+import com.xxl.job.enums.AutoRegistryType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -47,8 +48,8 @@ public class SampleTaskHandler {
         logger.error("demoJobHandler 执行完成");
     }
 
-    @ScheduledTask(value = "exceptionJobHandler",description = "这是一个异常任务")
-    public void exceptionJobHandler(){
+    @ScheduledTask(value = "exceptionJobHandler", description = "这是一个异常任务", cron = "0/10 * * * * ?", autoStart = true, autoRegistry = AutoRegistryType.CREATE)
+    public void exceptionJobHandler() {
         logger.error("这是一个异常任务");
         throw new RuntimeException("这是一个异常任务");
     }

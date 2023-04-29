@@ -14,4 +14,9 @@ public interface TaskRepository extends BaseJpaRepository<Task, Long> {
     Long countAllByTriggerStatus(TriggerStatus triggerStatus);
 
 
+    boolean existsAllByExecutorHandler(String executorHandler);
+
+    Task findByExecutorHandler(String executorHandler);
+
+
 }

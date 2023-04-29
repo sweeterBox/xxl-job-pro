@@ -10,6 +10,8 @@ import lombok.Data;
 @Data
 public class TaskRegistry {
 
+    private String applicationName;
+
     private String name;
 
     private String description;

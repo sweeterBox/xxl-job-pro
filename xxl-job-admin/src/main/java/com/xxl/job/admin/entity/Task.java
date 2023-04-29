@@ -23,7 +23,10 @@ import java.time.LocalDateTime;
 @EntityListeners(value = {AuditingEntityListener.class})
 @Getter
 @Setter
-@Table(name = "task")
+@Table(name = "task"
+		,indexes= {
+		@Index(name = "xxl_job_task_executor_handler_index", columnList = "executorHandler")
+})
 @Entity
 public class Task extends IdEntity {
 

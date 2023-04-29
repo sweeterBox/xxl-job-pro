@@ -5,6 +5,7 @@ import com.xxl.job.admin.service.impl.ApiServiceImpl;
 import com.xxl.job.model.HandleCallbackParam;
 import com.xxl.job.model.InstanceRegistry;
 import com.xxl.job.model.R;
+import com.xxl.job.model.TaskRegistry;
 import com.xxl.job.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -50,6 +51,10 @@ public class ApiController {
             case DEREGISTER:{
                 InstanceRegistry registryParam = JsonUtils.json2Obj(data, InstanceRegistry.class);
                 return apiService.deregister(registryParam);
+            }
+            case SAVETASK:{
+                TaskRegistry taskRegistry = JsonUtils.json2Obj(data, TaskRegistry.class);
+                return apiService.saveTask(taskRegistry);
             }
             default:{
                 return new R<>(R.FAIL_CODE, "invalid request, uri-mapping(" + type + ") not found.");

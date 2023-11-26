@@ -11,8 +11,8 @@ spring:
       discovery:
         password: ${nacos.password:nacos}
         username: ${nacos.username:nacos}
-        server-addr: ${nacos.server-addr:10.0.0.100:8848}
-        namespace: ${nacos.namespace:xxl}
+        server-addr: ${nacos.server-addr:10.0.0.233:8848}
+        namespace: ${nacos.namespace:XXL}
         metadata:
           'xxl.job.client': true
       config:

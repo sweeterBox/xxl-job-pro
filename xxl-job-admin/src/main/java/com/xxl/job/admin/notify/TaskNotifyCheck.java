@@ -22,6 +22,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -68,25 +69,30 @@ public class TaskNotifyCheck implements CommandLineRunner {
     }
 
     private void doNotify(Log en) {
-        Task task = taskRepository.findById(en.getTaskId()).get();
-        TaskEvent taskEvent = new TaskEvent();
-        TaskEvent.Task taskInfo = new TaskEvent.Task();
-        TaskEvent.Log logInfo = new TaskEvent.Log();
-        BeanUtils.copyProperties(task,taskInfo);
-        BeanUtils.copyProperties(en,logInfo);
-        taskEvent.setTimestamp(Instant.now());
-        taskEvent.setId(UUID.randomUUID().toString().replace("-", ""));
-        taskEvent.setLog(logInfo);
-        taskEvent.setTask(taskInfo);
-        try {
-            compositeNotifier.notify(taskEvent);
-            log.info("触发通知,{}", JsonUtils.obj2Json(taskEvent));
-            en.setNotifyStatus(NotifyStatus.NOTIFIED);
-        } catch (Exception e) {
-            en.setNotifyStatus(NotifyStatus.FAIL);
-            e.printStackTrace();
+        Optional<Task> taskOpt = taskRepository.findById(en.getTaskId());
+        if (taskOpt.isPresent()) {
+            Task task = taskOpt.get();
+            TaskEvent taskEvent = new TaskEvent();
+            TaskEvent.Task taskInfo = new TaskEvent.Task();
+            TaskEvent.Log logInfo = new TaskEvent.Log();
+            BeanUtils.copyProperties(task,taskInfo);
+            BeanUtils.copyProperties(en,logInfo);
+            taskEvent.setTimestamp(Instant.now());
+            taskEvent.setId(UUID.randomUUID().toString().replace("-", ""));
+            taskEvent.setLog(logInfo);
+            taskEvent.setTask(taskInfo);
+            try {
+                compositeNotifier.notify(taskEvent);
+                log.info("触发通知,{}", JsonUtils.obj2Json(taskEvent));
+                en.setNotifyStatus(NotifyStatus.NOTIFIED);
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                en.setNotifyStatus(NotifyStatus.FAIL);
+                e.printStackTrace();
+            }
+            logRepository.save(en);
         }
-        logRepository.save(en);
+
     }
 
 

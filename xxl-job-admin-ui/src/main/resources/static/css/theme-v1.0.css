@@ -222,6 +222,8 @@ textarea:focus-visible,textarea:focus{
 }
 .info-box-card  .info-box-icon {
     min-width: 100px !important;
+    width: auto;
+    font-size: 14px !important;
 }
 .info-box-card  .info-box-icon i{
     margin: 1px;

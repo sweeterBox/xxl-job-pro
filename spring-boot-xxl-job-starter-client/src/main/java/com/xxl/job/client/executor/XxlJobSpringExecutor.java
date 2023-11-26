@@ -14,9 +14,14 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.MethodIntrospector;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.scheduling.annotation.Scheduled;
+
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -41,19 +46,18 @@ public class XxlJobSpringExecutor extends XxlJobExecutor implements ApplicationC
 
     @Override
     public void afterSingletonsInstantiated() {
-
         // init TaskHandler Repository
-        initTaskHandlerRepository(applicationContext);
-
-        // refresh GlueFactory
-        GlueFactory.refreshInstance(1);
-
-        // super start
-        try {
-            super.start();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
+        scheduledExecutorService.schedule(()->{
+            try {
+                this.initTaskHandlerRepository(applicationContext);
+                // refresh GlueFactory
+                GlueFactory.refreshInstance(1);
+                super.start();
+            } catch (Exception e) {
+                logger.error("初始化失败：{}", e.getMessage());
+            }
+        }, 30, TimeUnit.SECONDS);
     }
 
     @Override
